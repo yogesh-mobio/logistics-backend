@@ -1,6 +1,25 @@
 var express = require("express");
 var router = express.Router();
 
+const { signIn, signOut } = require("../controllers/Auth/auth");
+const { newUser, listUsers, removeUser } = require("../controllers/Users/user");
+
+// auth
+router.post("/", signIn);
+
+router.get("/logout", signOut);
+
+// Admin
+router.get("/createUser", (req, res) => {
+  res.render("User/addAdmin");
+});
+
+router.post("/createUser", newUser);
+
+router.get("/displayUsers", listUsers);
+
+router.get("/removeUser/:id", removeUser);
+
 // Dashboard
 router.get("/dashboard", (req, res) => {
   res.render("Dashboard/dashboard1");
