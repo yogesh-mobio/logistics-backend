@@ -1,6 +1,51 @@
 var express = require("express");
 var router = express.Router();
 
+const { signIn, signOut } = require("../controllers/Auth/auth");
+const {
+  newAdmin,
+  listAdmins,
+  removeAdmin,
+} = require("../controllers/Admin/admin");
+const {
+  newTransporter,
+  listTransporters,
+} = require("../controllers/Transpoters/transporter");
+
+// Routes for Signup, Signin and Signout
+router.post("/", signIn);
+
+router.get("/logout", signOut);
+
+// Routes for Admin
+router.get("/createAdmin", (req, res) => {
+  res.render("Users/Admin/addAdmin");
+});
+
+router.post("/createAdmin", newAdmin);
+
+router.get("/displayAdmins", listAdmins);
+
+router.get("/removeAdmin/:id", removeAdmin);
+
+// Routes for Transporters
+router.get("/createTransporter", (req, res) => {
+  res.render("Users/Transporter/addTransporter");
+});
+
+router.post("/createTransporter", newTransporter);
+
+router.get("/displayTransporters", listTransporters);
+
+//  Routes for Driver
+router.get("/createDriver", (req, res) => {
+  res.render("Users/Driver/addDriver");
+});
+
+router.post("/createDriver");
+
+router.get("/displayDrivers");
+
 // Dashboard
 router.get("/dashboard", (req, res) => {
   res.render("Dashboard/dashboard1");

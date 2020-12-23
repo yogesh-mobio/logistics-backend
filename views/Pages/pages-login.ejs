@@ -19,14 +19,16 @@
         <h4 class="font-18 m-b-5 text-center">Welcome Back !</h4>
         <p class="text-muted text-center">Sign in to continue to Admiria.</p>
 
-        <form class="form-horizontal m-t-30" action="/dashboard">
+        <form class="form-horizontal m-t-30" action="/" method="POST">
           <div class="form-group">
-            <label for="username">Username</label>
+            <label for="useremail">Email</label>
             <input
-              type="text"
+              type="email"
               class="form-control"
-              id="username"
-              placeholder="Enter username"
+              name="email"
+              id="useremail"
+              placeholder="Enter email"
+              value="yeshas.mobio@gmail.com"
             />
           </div>
 
@@ -35,8 +37,10 @@
             <input
               type="password"
               class="form-control"
+              name="password"
               id="userpassword"
               placeholder="Enter password"
+              value="yesha123456"
             />
           </div>
 

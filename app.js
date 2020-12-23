@@ -5,9 +5,11 @@ var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 
 var expressLayouts = require("express-ejs-layouts");
+var cors = require("cors");
 
 var router = require("./routes/router");
 var Authrouter = require("./routes/Authrouter");
+// var UserRouter = require("./routes/userRouter");
 
 var app = express();
 
@@ -23,8 +25,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
+app.use(cors());
 
 app.use("/", router);
+// app.use("/user", UserRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
