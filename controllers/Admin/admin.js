@@ -1,9 +1,9 @@
 const { db, firebaseAdmin, firebase } = require("../../config/admin");
-const { validateUserData } = require("./userHelper");
+const { validateAdminData } = require("./adminHelper");
 
-exports.newUser = async (req, res) => {
+exports.newAdmin = async (req, res) => {
   try {
-    const userData = {
+    const adminData = {
       email: req.body.email,
       password: req.body.password,
       firstname: req.body.firstname,
@@ -13,45 +13,45 @@ exports.newUser = async (req, res) => {
       status: req.body.status,
     };
 
-    const { valid, errors } = validateUserData(userData);
+    const { valid, errors } = validateAdminData(adminData);
 
     if (!valid) {
       return res.status(400).json(errors);
     }
 
-    const newUser = await firebase
+    const newAdmin = await firebase
       .auth()
-      .createUserWithEmailAndPassword(userData.email, userData.password);
+      .createUserWithEmailAndPassword(adminData.email, adminData.password);
 
-    const token = newUser.user.getIdToken();
+    const token = newAdmin.user.getIdToken();
     console.log(token);
 
     let status = null;
-    if (userData.status == "true") {
-      status = Boolean(!!userData.status);
+    if (adminData.status == "true") {
+      status = Boolean(!!adminData.status);
     } else {
-      status = Boolean(!userData.status);
+      status = Boolean(!adminData.status);
     }
 
     const data = {
-      first_name: userData.firstname,
-      last_name: userData.lastname,
-      email: userData.email,
-      phone_number: userData.phone,
-      user_type: "admin",
+      first_name: adminData.firstname,
+      last_name: adminData.lastname,
+      email: adminData.email,
+      phone_number: adminData.phone,
+      user_type: "Admin",
       photo: "",
       status: status,
       createdAt: new Date(),
     };
 
-    await db.collection("users").doc(newUser.user.uid).set(data);
+    await db.collection("users").doc(newAdmin.user.uid).set(data);
     await db
       .collection("users")
-      .doc(newUser.user.uid)
+      .doc(newAdmin.user.uid)
       .collection("documents")
-      .add({ type: userData.documentType, url: "", updatedAt: new Date() });
+      .add({ type: adminData.documentType, url: "", updatedAt: new Date() });
 
-    res.render("User/addAdmin", { message: "Admin is created...!!" });
+    res.render("Users/Admin/addAdmin", { message: "Admin is created...!!" });
   } catch (error) {
     if (error.code == "auth/email-already-in-use") {
       return res.status(400).json({ email: "Email already exist!" });
@@ -60,23 +60,23 @@ exports.newUser = async (req, res) => {
   }
 };
 
-exports.listUsers = async (req, res) => {
+exports.listAdmins = async (req, res) => {
   try {
-    const users = [];
+    const admins = [];
     const data = await db.collection("users").get();
     data.forEach((doc) => {
-      if (doc.data().user_type == "admin") {
-        const user = { id: doc.id, userData: doc.data() };
-        users.push(user);
+      if (doc.data().user_type == "Admin") {
+        const admin = { id: doc.id, adminData: doc.data() };
+        admins.push(admin);
       }
     });
-    res.render("User/displayUsers", { users: users });
+    res.render("Users/Admin/displayAdmins", { admins: admins });
   } catch (error) {
-    console.log(error);
+    return res.render({ error: error.code });
   }
 };
 
-exports.removeUser = async (req, res) => {
+exports.removeAdmin = async (req, res) => {
   try {
     const uid = req.params.id;
 
@@ -94,9 +94,9 @@ exports.removeUser = async (req, res) => {
 
     await db.collection("users").doc(uid).delete();
 
-    await firebaseAdmin.auth().deleteUser(uid);
-    console.log("USER IS DELETED");
-    res.redirect("/displayUsers");
+    // await firebase.auth().deleteUser(uid);
+    // console.log("USER IS DELETED");
+    res.redirect("/displayAdmins");
   } catch (error) {
     res.status(400).json({ error: error.code });
   }

@@ -2,23 +2,49 @@ var express = require("express");
 var router = express.Router();
 
 const { signIn, signOut } = require("../controllers/Auth/auth");
-const { newUser, listUsers, removeUser } = require("../controllers/Users/user");
+const {
+  newAdmin,
+  listAdmins,
+  removeAdmin,
+} = require("../controllers/Admin/admin");
+const {
+  newTransporter,
+  listTransporters,
+} = require("../controllers/Transpoters/transporter");
 
-// auth
+// Routes for Signup, Signin and Signout
 router.post("/", signIn);
 
 router.get("/logout", signOut);
 
-// Admin
-router.get("/createUser", (req, res) => {
-  res.render("User/addAdmin");
+// Routes for Admin
+router.get("/createAdmin", (req, res) => {
+  res.render("Users/Admin/addAdmin");
 });
 
-router.post("/createUser", newUser);
+router.post("/createAdmin", newAdmin);
 
-router.get("/displayUsers", listUsers);
+router.get("/displayAdmins", listAdmins);
 
-router.get("/removeUser/:id", removeUser);
+router.get("/removeAdmin/:id", removeAdmin);
+
+// Routes for Transporters
+router.get("/createTransporter", (req, res) => {
+  res.render("Users/Transporter/addTransporter");
+});
+
+router.post("/createTransporter", newTransporter);
+
+router.get("/displayTransporters", listTransporters);
+
+//  Routes for Driver
+router.get("/createDriver", (req, res) => {
+  res.render("Users/Driver/addDriver");
+});
+
+router.post("/createDriver");
+
+router.get("/displayDrivers");
 
 // Dashboard
 router.get("/dashboard", (req, res) => {

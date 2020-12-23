@@ -9,7 +9,7 @@ const isEmpty = (string) => {
 };
 
 // Validating user data
-exports.validateUserData = (data) => {
+exports.validateAdminData = (data) => {
   let errors = [];
   if (isEmpty(data.firstname)) {
     errors.push("First name is required");
