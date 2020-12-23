@@ -11,6 +11,7 @@ const {
   newTransporter,
   listTransporters,
 } = require("../controllers/Transpoters/transporter");
+const { newDriver } = require("../controllers/Driver/driver");
 
 // Routes for Signup, Signin and Signout
 router.post("/", signIn);
@@ -38,11 +39,11 @@ router.post("/createTransporter", newTransporter);
 router.get("/displayTransporters", listTransporters);
 
 //  Routes for Driver
-router.get("/createDriver", (req, res) => {
+router.get("/transporter/:id/createDriver", (req, res) => {
   res.render("Users/Driver/addDriver");
 });
 
-router.post("/createDriver");
+router.post("/transporter/:id/createDriver", newDriver);
 
 router.get("/displayDrivers");
 
