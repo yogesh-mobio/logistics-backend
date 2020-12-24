@@ -14,6 +14,8 @@ exports.newTransporter = async (req, res) => {
       pincode: req.body.pincode,
       state: req.body.state,
       country: req.body.country,
+      registerNo: req.body.registerNo,
+      gstNo: req.body.gstNo,
       // documentType: req.body.documentType,
       status: req.body.status,
     };
@@ -23,6 +25,10 @@ exports.newTransporter = async (req, res) => {
     if (!valid) {
       return res.status(400).json(errors);
     }
+
+    // const newTransporter = await firebase
+    //   .auth()
+    //   .createUserWithEmailAndPassword(data.email, data.password);
 
     let status = null;
     if (data.status == "true") {
@@ -37,8 +43,10 @@ exports.newTransporter = async (req, res) => {
       email: data.email,
       phone_number: data.phone,
       user_type: "Transporter",
+      register_number: data.registerNo,
+      gst_number: data.gstNo,
       status: status,
-      createdAt: new Date(),
+      created_at: new Date(),
     };
 
     const address = {
@@ -73,7 +81,10 @@ exports.listTransporters = async (req, res) => {
     const transporters = [];
     const data = await db.collection("users").get();
     data.forEach((doc) => {
-      if (doc.data().user_type == "Transporter") {
+      if (
+        doc.data().user_type == "Transporter" ||
+        doc.data().user_type == "transporter"
+      ) {
         const transporter = { id: doc.id, transporterData: doc.data() };
         transporters.push(transporter);
       }
@@ -85,3 +96,6 @@ exports.listTransporters = async (req, res) => {
     return res.render({ error: error.code });
   }
 };
+
+// FIELDS
+// 1. reg_no 2. gst_no 3. is_register

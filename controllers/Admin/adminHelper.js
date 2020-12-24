@@ -8,6 +8,16 @@ const isEmpty = (string) => {
   }
 };
 
+// for checking input value is numeric or not
+const isNumeric = (string) => {
+  var numbers = /^[0-9]+$/;
+  if (string.match(numbers)) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
 // Validating user data
 exports.validateAdminData = (data) => {
   let errors = [];
@@ -26,11 +36,15 @@ exports.validateAdminData = (data) => {
   if (isEmpty(data.password)) {
     errors.push("Password is required");
   }
+
   if (data.phone.length !== 10) {
     errors.push("Phone number should be exact 10 digits");
   }
   if (data.password.length < 6) {
     errors.push("The password should be at least 6 character long");
+  }
+  if (!isNumeric(data.phone)) {
+    errors.push("Phone number should be numbers only.");
   }
 
   return {
