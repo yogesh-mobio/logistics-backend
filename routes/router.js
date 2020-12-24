@@ -10,8 +10,9 @@ const {
 const {
   newTransporter,
   listTransporters,
-} = require("../controllers/Transpoters/transporter");
+} = require("../controllers/Transporter/transporter");
 const { newDriver } = require("../controllers/Driver/driver");
+// const {} = require("../controllers");
 
 // Routes for Signup, Signin and Signout
 router.post("/", signIn);
@@ -39,13 +40,22 @@ router.post("/createTransporter", newTransporter);
 router.get("/displayTransporters", listTransporters);
 
 //  Routes for Driver
-router.get("/transporter/:id/createDriver", (req, res) => {
+router.get("/transporter/:transporter_id/createDriver", (req, res) => {
   res.render("Users/Driver/addDriver");
 });
 
-router.post("/transporter/:id/createDriver", newDriver);
+router.post("/transporter/:transporter_id/createDriver", newDriver);
 
 router.get("/displayDrivers");
+
+// Routes for Vehicle
+router.get("/transporter/:transporter_id/createVehicle", (req, res) => {
+  res.render("Vehicle/addVehicle");
+});
+
+router.post("/transporter/:transporter_id/createVehicle");
+
+router.get("/displayVehicles");
 
 // Dashboard
 router.get("/dashboard", (req, res) => {

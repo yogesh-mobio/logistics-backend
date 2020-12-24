@@ -8,14 +8,14 @@ const isEmpty = (string) => {
 };
 
 // for checking input value is numeric or not
-// const isNumeric = (string) => {
-//   var numbers = /^[0-9]+$/;
-//   if (string == numbers) {
-//     return true;
-//   } else {
-//     return false;
-//   }
-// };
+const isNumeric = (string) => {
+  var numbers = /^[0-9]+$/;
+  if (string.match(numbers)) {
+    return true;
+  } else {
+    return false;
+  }
+};
 
 // Validating Trasporter data
 exports.validateTransporterData = (data) => {
@@ -58,9 +58,17 @@ exports.validateTransporterData = (data) => {
   if (data.phone.length !== 10) {
     errors.push("Phone number should be exact 10 digits long");
   }
-  // if (!isNumeric(data.pincode)) {
-  //   errors.push("Pincode must be numbers only.");
-  // }
+  if (!isNumeric(data.pincode)) {
+    errors.push("Pincode should be numbers only.");
+  }
+  if (!isNumeric(data.phone)) {
+    errors.push("Phone number should be numbers only.");
+  }
+  if (data.gstNo) {
+    if (data.gstNo.length !== 15) {
+      errors.push("GST number should be 15 characters long");
+    }
+  }
 
   return {
     errors,

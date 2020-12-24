@@ -23,8 +23,8 @@ exports.newAdmin = async (req, res) => {
       .auth()
       .createUserWithEmailAndPassword(adminData.email, adminData.password);
 
-    const token = newAdmin.user.getIdToken();
-    console.log(token);
+    // const token = newAdmin.user.getIdToken();
+    // console.log(token);
 
     let status = null;
     if (adminData.status == "true") {
@@ -41,7 +41,7 @@ exports.newAdmin = async (req, res) => {
       user_type: "Admin",
       photo: "",
       status: status,
-      createdAt: new Date(),
+      created_at: new Date(),
     };
 
     await db.collection("users").doc(newAdmin.user.uid).set(data);
@@ -49,12 +49,13 @@ exports.newAdmin = async (req, res) => {
       .collection("users")
       .doc(newAdmin.user.uid)
       .collection("documents")
-      .add({ type: adminData.documentType, url: "", updatedAt: new Date() });
+      .doc()
+      .add({ type: adminData.documentType, url: "", updated_at: new Date() });
 
     res.render("Users/Admin/addAdmin", { message: "Admin is created...!!" });
   } catch (error) {
     if (error.code == "auth/email-already-in-use") {
-      return res.status(400).json({ email: "Email already exist!" });
+      return res.status(400).json({ message: "Email already exists!" });
     }
     return res.render({ error: error.code });
   }
@@ -65,7 +66,7 @@ exports.listAdmins = async (req, res) => {
     const admins = [];
     const data = await db.collection("users").get();
     data.forEach((doc) => {
-      if (doc.data().user_type == "Admin") {
+      if (doc.data().user_type == "Admin" || doc.data().user_type == "admin") {
         const admin = { id: doc.id, adminData: doc.data() };
         admins.push(admin);
       }
