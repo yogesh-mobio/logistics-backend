@@ -1,12 +1,7 @@
 var express = require("express");
 var router = express.Router();
 
-const { signIn, signOut } = require("../controllers/Auth/auth");
-const {
-  newAdmin,
-  listAdmins,
-  removeAdmin,
-} = require("../controllers/Admin/admin");
+const { signIn, signOut, forgetPassword } = require("../controllers/Auth/auth");
 const {
   newTransporter,
   listTransporters,
@@ -19,16 +14,8 @@ router.post("/", signIn);
 
 router.get("/logout", signOut);
 
-// Routes for Admin
-router.get("/createAdmin", (req, res) => {
-  res.render("Users/Admin/addAdmin");
-});
-
-router.post("/createAdmin", newAdmin);
-
-router.get("/displayAdmins", listAdmins);
-
-router.get("/removeAdmin/:id", removeAdmin);
+// Routes for Forget Password
+router.post("/forget-password", forgetPassword);
 
 // Routes for Transporters
 router.get("/createTransporter", (req, res) => {
@@ -325,14 +312,8 @@ router.get("/pages-gallery", (req, res) => {
 router.get("/pages-invoice", (req, res) => {
   res.render("Pages/pages-invoice");
 });
-router.get("/pages-lock-screen-2", (req, res) => {
-  res.render("Pages/pages-lock-screen-2");
-});
 router.get("/pages-lock-screen", (req, res) => {
   res.render("Pages/pages-lock-screen");
-});
-router.get("/pages-login-2", (req, res) => {
-  res.render("Pages/pages-login-2");
 });
 router.get("/pages-maintenance", (req, res) => {
   res.render("Pages/pages-maintenance");
@@ -340,14 +321,8 @@ router.get("/pages-maintenance", (req, res) => {
 router.get("/pages-pricing", (req, res) => {
   res.render("Pages/pages-pricing");
 });
-router.get("/pages-recoverpw-2", (req, res) => {
-  res.render("Pages/pages-recoverpw-2");
-});
 router.get("/pages-recoverpw", (req, res) => {
   res.render("Pages/pages-recoverpw");
-});
-router.get("/pages-register-2", (req, res) => {
-  res.render("Pages/pages-register-2");
 });
 router.get("/pages-register", (req, res) => {
   res.render("Pages/pages-register");

@@ -22,29 +22,29 @@ const isNumeric = (string) => {
 exports.validateAdminData = (data) => {
   let errors = [];
   if (isEmpty(data.firstname)) {
-    errors.push("First name is required");
+    errors.push({ msg: "First name is required" });
   }
   if (isEmpty(data.lastname)) {
-    errors.push("Last name is required");
+    errors.push({ msg: "Last name is required" });
   }
   if (isEmpty(data.phone)) {
-    errors.push("Phone is required");
+    errors.push({ msg: "Phone is required" });
   }
   if (isEmpty(data.email)) {
-    errors.push("Email is required");
+    errors.push({ msg: "Email is required" });
   }
   if (isEmpty(data.password)) {
-    errors.push("Password is required");
+    errors.push({ msg: "Password is required" });
   }
 
   if (data.phone.length !== 10) {
-    errors.push("Phone number should be exact 10 digits");
+    errors.push({ msg: "Phone number should be exact 10 digits" });
   }
   if (data.password.length < 6) {
-    errors.push("The password should be at least 6 character long");
+    errors.push({ msg: "The password should be at least 6 character long" });
   }
   if (!isNumeric(data.phone)) {
-    errors.push("Phone number should be numbers only.");
+    errors.push({ msg: "Phone number should be numbers only." });
   }
 
   return {

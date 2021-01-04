@@ -1,10 +1,12 @@
 const firebase = require("firebase");
 const firebaseAdmin = require("firebase-admin");
+// const serviceAccount = require("./serviceAccountKey.json");
 require("dotenv").config();
 
 const firebaseConfig = require("./config");
 
 // firebaseAdmin.initializeApp({
+//   credential: firebaseAdmin.credential.cert(serviceAccount),
 //   credential: firebaseAdmin.credential.applicationDefault(),
 //   databaseURL: process.env.DATABASE_URL,
 // });

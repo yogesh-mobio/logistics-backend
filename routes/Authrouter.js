@@ -16,7 +16,8 @@ Authrouter.get("/pages-lock-screen", (req, res) => {
 Authrouter.get("/pages-maintenance", (req, res) => {
   res.render("Pages/pages-maintenance");
 });
-Authrouter.get("/pages-recoverpw", (req, res) => {
+
+Authrouter.get("/forget-password", (req, res) => {
   res.render("Pages/pages-recoverpw");
 });
 

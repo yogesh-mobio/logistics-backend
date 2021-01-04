@@ -16,48 +16,55 @@ exports.newAdmin = async (req, res) => {
     const { valid, errors } = validateAdminData(adminData);
 
     if (!valid) {
-      return res.status(400).json(errors);
-    }
-
-    const newAdmin = await firebase
-      .auth()
-      .createUserWithEmailAndPassword(adminData.email, adminData.password);
-
-    // const token = newAdmin.user.getIdToken();
-    // console.log(token);
-
-    let status = null;
-    if (adminData.status == "true") {
-      status = Boolean(!!adminData.status);
+      res.render("Users/Admin/addAdmin", {
+        errors,
+      });
     } else {
-      status = Boolean(!adminData.status);
+      const newAdmin = await firebase
+        .auth()
+        .createUserWithEmailAndPassword(adminData.email, adminData.password);
+
+      // const token = newAdmin.user.getIdToken();
+      // console.log(token);
+
+      let status = null;
+      if (adminData.status == "true") {
+        status = Boolean(!!adminData.status);
+      } else {
+        status = Boolean(!adminData.status);
+      }
+
+      const data = {
+        first_name: adminData.firstname,
+        last_name: adminData.lastname,
+        email: adminData.email,
+        phone_number: adminData.phone,
+        user_type: "Admin",
+        photo: "",
+        status: status,
+        created_at: new Date(),
+      };
+
+      await db.collection("users").doc(newAdmin.user.uid).set(data);
+      await db
+        .collection("users")
+        .doc(newAdmin.user.uid)
+        .collection("documents")
+        .add({ type: adminData.documentType, url: "", updated_at: new Date() });
+
+      res.render("Users/Admin/addAdmin", {
+        message: "Admin is created...!!",
+      });
     }
-
-    const data = {
-      first_name: adminData.firstname,
-      last_name: adminData.lastname,
-      email: adminData.email,
-      phone_number: adminData.phone,
-      user_type: "Admin",
-      photo: "",
-      status: status,
-      created_at: new Date(),
-    };
-
-    await db.collection("users").doc(newAdmin.user.uid).set(data);
-    await db
-      .collection("users")
-      .doc(newAdmin.user.uid)
-      .collection("documents")
-      .doc()
-      .add({ type: adminData.documentType, url: "", updated_at: new Date() });
-
-    res.render("Users/Admin/addAdmin", { message: "Admin is created...!!" });
   } catch (error) {
+    const errors = [];
     if (error.code == "auth/email-already-in-use") {
-      return res.status(400).json({ message: "Email already exists!" });
+      errors.push({ msg: "Email already exists!" });
+      res.render("Users/Admin/addAdmin", {
+        errors,
+      });
     }
-    return res.render({ error: error.code });
+    return res.render("Users/Admin/addAdmin", { errors: error.code });
   }
 };
 
