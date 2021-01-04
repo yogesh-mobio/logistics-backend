@@ -9,15 +9,16 @@ const isEmpty = (string) => {
 
 // for validating signin data
 exports.validateSignInData = (data) => {
-  let errors = {};
+  let errors = [];
   if (isEmpty(data.email)) {
-    errors.email = "Email is required.";
-  } else if (isEmpty(data.password)) {
-    errors.password = "Password is required";
+    errors.push({ msg: "Email is required." });
+  }
+  if (isEmpty(data.password)) {
+    errors.push({ msg: "Password is required" });
   }
 
   return {
     errors,
-    valid: Object.keys(errors).length === 0 ? true : false,
+    valid: errors.length === 0 ? true : false,
   };
 };

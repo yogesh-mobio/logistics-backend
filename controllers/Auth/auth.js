@@ -1,4 +1,4 @@
-const { firebase } = require("../../config/admin");
+const { firebase, db } = require("../../config/admin");
 const { validateSignInData } = require("./authHelper");
 // const User = require("../../models/auth");
 
@@ -9,7 +9,7 @@ exports.signIn = async (req, res) => {
       password: req.body.password,
     };
 
-    const { valid, errors } = await validateSignInData(user);
+    const { valid, errors } = validateSignInData(user);
 
     if (!valid) {
       return res.status(400).json(errors);
@@ -20,6 +20,13 @@ exports.signIn = async (req, res) => {
       .signInWithEmailAndPassword(user.email, user.password);
 
     const token = await data.user.getIdToken();
+
+    // const currentUser = firebase.auth().currentUser;
+    // if (currentUser != null) {
+    //   const uid = currentUser.uid;
+    //   console.log("UID", uid);
+    //   // console.log("USER", currentUser);
+    // }
 
     if (token) {
       res.redirect("/dashboard");
@@ -46,6 +53,22 @@ exports.signOut = async (req, res) => {
   try {
     await firebase.auth().signOut();
     res.redirect("/");
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+exports.forgetPassword = async (req, res) => {
+  try {
+    const email = req.body.email;
+    let errors = [];
+    if (email != "") {
+      await firebase.auth().sendPasswordResetEmail(email);
+      res.redirect("/");
+    } else {
+      errors.push({ msg: "Please enter your Email" });
+      res.render("Pages/pages-recoverpw", { errors: errors });
+    }
   } catch (error) {
     console.log(error);
   }
@@ -82,3 +105,9 @@ exports.signOut = async (req, res) => {
 //   vehicles.push(vehicle);
 // });
 // return vehicles;
+
+// firebase.auth().onAuthStateChanged((user) => {
+//   if (user) {
+//     return user;
+//   }
+// });

@@ -1,12 +1,22 @@
 var express = require("express");
-var userRouter = express.Router();
+var adminRouter = express.Router();
 
-const { newAdmin } = require("../controllers/Admin/admin");
+const {
+  newAdmin,
+  listAdmins,
+  removeAdmin,
+} = require("../controllers/Admin/admin");
+const { isAuthenticated } = require("../middleware/authGaurd");
 
-userRouter.get("/createAdmin", (req, res) => {
+// Routes for Admin
+adminRouter.get("/createAdmin", isAuthenticated, (req, res) => {
   res.render("Users/Admin/addAdmin");
 });
 
-userRouter.post("/createAdmin", newAdmin);
+adminRouter.post("/createAdmin", newAdmin);
 
-module.exports = userRouter;
+adminRouter.get("/displayAdmins", listAdmins);
+
+adminRouter.get("/removeAdmin/:id", removeAdmin);
+
+module.exports = adminRouter;
