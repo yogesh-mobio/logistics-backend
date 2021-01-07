@@ -13,7 +13,11 @@ const firebaseConfig = require("./config");
 
 firebaseAdmin.initializeApp();
 firebase.initializeApp(firebaseConfig);
+const firebaseSecondaryApp = firebase.initializeApp(
+  firebaseConfig,
+  "Secondary"
+);
 
 const db = firebase.firestore();
 
-module.exports = { db, firebase, firebaseAdmin };
+module.exports = { db, firebase, firebaseAdmin, firebaseSecondaryApp };

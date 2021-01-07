@@ -28,13 +28,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
-app.use(cors());
 
 // Session
 app.use(
   session({
     secret: "keyboard cat",
-    resave: false,
+    resave: true,
     saveUninitialized: true,
     cookie: { maxAge: 30000 },
   })
@@ -43,13 +42,15 @@ app.use(
 // Connect Flash
 app.use(flash());
 
-// Flash Error handler
-app.use(function (req, res, next) {
+// error handler
+app.use(async (req, res, next) => {
   // res.locals.success_msg = req.flash("success_msg");
   res.locals.error_msg = req.flash("error_msg");
   // res.locals.error = req.flash("error");
   next();
 });
+
+app.use(cors());
 
 app.use("/", router);
 app.use("/admin", AdminRouter);

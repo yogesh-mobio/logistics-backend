@@ -1,13 +1,20 @@
 var express = require("express");
 var router = express.Router();
 
-const { signIn, signOut, forgetPassword } = require("../controllers/Auth/auth");
+const {
+  signIn,
+  signOut,
+  forgetPassword,
+  changePassword,
+  profile,
+} = require("../controllers/Auth/auth");
 const {
   newTransporter,
   listTransporters,
 } = require("../controllers/Transporter/transporter");
 const { newDriver } = require("../controllers/Driver/driver");
-// const {} = require("../controllers");
+const { isAuthenticated } = require("../middleware/authGaurd");
+const { dashboard } = require("../controllers/Dashboard/dashboard");
 
 // Routes for Signup, Signin and Signout
 router.post("/", signIn);
@@ -45,8 +52,20 @@ router.post("/transporter/:transporter_id/createVehicle");
 router.get("/displayVehicles");
 
 // Dashboard
-router.get("/dashboard", (req, res) => {
-  res.render("Dashboard/dashboard1");
+router.get("/dashboard", isAuthenticated, dashboard);
+
+// Change Password API
+router.get("/changePassword", isAuthenticated, (req, res) => {
+  res.render("Pages/change-password");
+});
+
+router.post("/changePassword", changePassword);
+
+// Profile API
+router.get("/profile", isAuthenticated, profile);
+
+router.get("/update-profile", isAuthenticated, (req, res) => {
+  res.render("Pages/update-profile");
 });
 
 // Calendar
