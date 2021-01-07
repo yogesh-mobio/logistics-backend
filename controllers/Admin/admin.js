@@ -1,4 +1,4 @@
-const { db, firebaseAdmin, firebase } = require("../../config/admin");
+const { db, firebaseSecondaryApp } = require("../../config/admin");
 const { validateAdminData } = require("./adminHelper");
 
 exports.newAdmin = async (req, res) => {
@@ -20,12 +20,9 @@ exports.newAdmin = async (req, res) => {
         errors,
       });
     } else {
-      const newAdmin = await firebase
+      const newAdmin = await firebaseSecondaryApp
         .auth()
         .createUserWithEmailAndPassword(adminData.email, adminData.password);
-
-      // const token = newAdmin.user.getIdToken();
-      // console.log(token);
 
       let status = null;
       if (adminData.status == "true") {
@@ -51,6 +48,8 @@ exports.newAdmin = async (req, res) => {
         .doc(newAdmin.user.uid)
         .collection("documents")
         .add({ type: adminData.documentType, url: "", updated_at: new Date() });
+
+      secondaryApp.auth().signOut();
 
       res.render("Users/Admin/addAdmin", {
         message: "Admin is created...!!",

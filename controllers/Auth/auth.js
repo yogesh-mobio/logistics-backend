@@ -1,5 +1,9 @@
 const { firebase, db } = require("../../config/admin");
-const { validateSignInData } = require("./authHelper");
+const {
+  validateSignInData,
+  validateForgetPasswordData,
+  validateChangePasswordData,
+} = require("./authHelper");
 // const User = require("../../models/auth");
 
 exports.signIn = async (req, res) => {
@@ -21,17 +25,8 @@ exports.signIn = async (req, res) => {
 
     const token = await data.user.getIdToken();
 
-    // const currentUser = firebase.auth().currentUser;
-    // if (currentUser != null) {
-    //   const uid = currentUser.uid;
-    //   console.log("UID", uid);
-    //   // console.log("USER", currentUser);
-    // }
-
     if (token) {
       res.redirect("/dashboard");
-      // console.log(token);
-      // return res.status(201).json({ token });
     }
   } catch (error) {
     if (error.code == "auth/invalid-email") {
@@ -60,17 +55,88 @@ exports.signOut = async (req, res) => {
 
 exports.forgetPassword = async (req, res) => {
   try {
-    const email = req.body.email;
-    let errors = [];
-    if (email != "") {
-      await firebase.auth().sendPasswordResetEmail(email);
-      res.redirect("/");
-    } else {
-      errors.push({ msg: "Please enter your Email" });
-      res.render("Pages/pages-recoverpw", { errors: errors });
+    const userEmail = { email: req.body.email };
+
+    const { valid, errors } = validateForgetPasswordData(userEmail);
+
+    if (!valid) {
+      // res.render("Pages/pages-recoverpw", { errors: errors });
+      return res.status(400).json(errors);
     }
+
+    await firebase.auth().sendPasswordResetEmail(userEmail.email);
+    res.redirect("/");
   } catch (error) {
     console.log(error);
+  }
+};
+
+const getCurrentUser = () => {
+  try {
+    let currentUser = null;
+    currentUser = firebase.auth().currentUser;
+    return currentUser;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+exports.changePassword = async (req, res) => {
+  try {
+    const passwords = {
+      password: req.body.password,
+      newPassword: req.body.newPassword,
+    };
+
+    const { valid, errors } = validateChangePasswordData(passwords);
+
+    if (!valid) {
+      res.render("Pages/change-password", {
+        errors,
+      });
+    }
+
+    const currentUser = getCurrentUser();
+    if (currentUser != null) {
+      await currentUser.updatePassword(passwords.password);
+    }
+    await firebase.auth().signOut();
+    res.redirect("/");
+  } catch (error) {
+    let errors = [];
+    errors.push({ msg: error.message });
+    res.render("Pages/change-password", { errors: errors });
+  }
+};
+
+exports.profile = async (req, res) => {
+  try {
+    const currentUser = getCurrentUser();
+
+    let errors = [];
+    let admin = null;
+
+    if (currentUser != null) {
+      const userUid = currentUser.uid;
+      const user = await db.collection("users").doc(userUid).get();
+      const userAdmin = user.data();
+
+      let status = null;
+      if (userAdmin.status === true) {
+        status = "Active";
+      } else {
+        status = "In-active";
+      }
+
+      admin = { userAdmin, status };
+      res.render("Pages/profile", { admin: admin });
+    }
+    errors.push({ msg: "This user is not available..!!" });
+    res.render("Pages/pages-error", { errors });
+  } catch (error) {
+    let errors = [];
+    errors.push({ msg: error.code });
+    res.render("Pages/pages-error", { errors });
   }
 };
 //   const data = await db.collection("users").get();
