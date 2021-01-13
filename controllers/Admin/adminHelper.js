@@ -18,7 +18,7 @@ const isNumeric = (string) => {
   }
 };
 
-// Validating user data
+// Validating Admin data
 exports.validateAdminData = (data) => {
   let errors = [];
   if (isEmpty(data.firstname)) {

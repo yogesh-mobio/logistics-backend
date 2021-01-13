@@ -12,6 +12,7 @@ var flash = require("connect-flash"); //
 var router = require("./routes/router");
 var Authrouter = require("./routes/Authrouter");
 var AdminRouter = require("./routes/adminRouter");
+var VehicleRouter = require("./routes/vehicleRouter");
 // var passwordRouter = require("./routes/passwordRouter");
 
 var app = express();
@@ -54,6 +55,7 @@ app.use(cors());
 
 app.use("/", router);
 app.use("/admin", AdminRouter);
+app.use("/vehicle", VehicleRouter);
 // app.use("/password", passwordRouter);
 
 // catch 404 and forward to error handler

@@ -43,9 +43,9 @@ router.post("/transporter/:transporter_id/createDriver", newDriver);
 router.get("/displayDrivers");
 
 // Routes for Vehicle
-router.get("/transporter/:transporter_id/createVehicle", (req, res) => {
-  res.render("Vehicle/addVehicle");
-});
+// router.get("/transporter/:transporter_id/createVehicle", (req, res) => {
+//   res.render("Vehicle/addVehicle");
+// });
 
 router.post("/transporter/:transporter_id/createVehicle");
 

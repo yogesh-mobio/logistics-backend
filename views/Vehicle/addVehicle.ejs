@@ -19,7 +19,7 @@
           <div class="card-body">
             <h4 class="mt-0 header-title">Add a new vehicle to the system.</h4>
             <br /><br />
-
+            <% include ../Partials/errorMessages %>
             <form method="POST" class="form-horizontal">
               <div class="form-group row">
                 <label for="vehicleName" class="col-sm-2 col-form-label"
@@ -38,24 +38,6 @@
               </div>
 
               <div class="form-group row">
-                <label
-                  for="vehicleRegisterNumber"
-                  class="col-sm-2 col-form-label"
-                  >Register Number</label
-                >
-                <div class="col-sm-10">
-                  <input
-                    class="form-control"
-                    type="text"
-                    id="vehicleRegisterNumber"
-                    name="registerNo"
-                    placeholder="Enter your vehicle Number"
-                    value="GJ01AA1111"
-                  />
-                </div>
-              </div>
-
-              <div class="form-group row">
                 <label for="vehicleCapacity" class="col-sm-2 col-form-label"
                   >Capacity</label
                 >
@@ -68,77 +50,156 @@
                     placeholder="Enter the capacity of the vehicle"
                     value="1100"
                   />
+                  <div>
+                    <small class="form-text text-muted"
+                      >Please enter capacity in tons.</small
+                    >
+                  </div>
                 </div>
               </div>
 
               <div class="form-group row">
-                <label for="vehiclePrice" class="col-sm-2 col-form-label"
-                  >Price Per Kilometer</label
-                >
+                <label class="col-sm-2 col-form-label">Dimensions</label>
                 <div class="col-sm-10">
-                  <input
-                    class="form-control"
-                    type="text"
-                    id="vehiclePrice"
-                    name="price"
-                    placeholder="Enter the price for the vehicle"
-                    value="15"
-                  />
-                </div>
-              </div>
-
-              <div class="form-group row">
-                <label for="vehicleInsurance" class="col-sm-2 col-form-label"
-                  >Do you have an Insurance?</label
-                >
-                <div class="col-sm-10">
-                  <select
-                    id="vehicleInsurance"
-                    name="insurance"
-                    class="form-control"
+                  <div
+                    class="input-group bootstrap-touchspin bootstrap-touchspin-injected"
                   >
-                    <option disabled selected>Select</option>
-                    <option value="true">Yes</option>
-                    <option value="false">No</option>
-                  </select>
+                    <span
+                      class="input-group-addon bootstrap-touchspin-prefix input-group-prepend"
+                      ><span class="input-group-text">L</span></span
+                    >
+                    <input
+                      class="form-control"
+                      type="text"
+                      name="vehicleLength"
+                      placeholder="Enter vehicle's Length"
+                      value="1360"
+                    />
+                    &nbsp;
+                    <span
+                      class="input-group-addon bootstrap-touchspin-prefix input-group-prepend"
+                      ><span class="input-group-text">W</span></span
+                    >
+                    <input
+                      class="form-control"
+                      type="text"
+                      name="vehicleWidth"
+                      placeholder="Enter vehicle's Width"
+                      value="246"
+                    />
+                    &nbsp;
+                    <span
+                      class="input-group-addon bootstrap-touchspin-prefix input-group-prepend"
+                      ><span class="input-group-text">H</span></span
+                    >
+                    <input
+                      class="form-control"
+                      type="text"
+                      name="vehicleHeight"
+                      placeholder="Enter vehicle's Heigth"
+                      value="280"
+                    />
+                  </div>
+                  <div>
+                    <small class="form-text text-muted"
+                      >Please enter dimentions in centimeter.</small
+                    >
+                  </div>
                 </div>
               </div>
 
               <div class="form-group row">
-                <label for="vehicleStatus" class="col-sm-2 col-form-label"
-                  >Status</label
+                <button
+                  id="btnRates"
+                  type="button"
+                  class="col-sm-2 col-form-label btn btn-outline-secondary btn-sm waves-effect"
                 >
-                <div class="col-sm-10">
-                  <select id="vehicleStatus" name="status" class="form-control">
-                    <option disabled selected>Select</option>
-                    <option value="true">Active</option>
-                    <option value="false">In-Active</option>
-                  </select>
-                </div>
+                  Add Rates
+                </button>
               </div>
 
-              <!-- <div class="form-group row">
-                <label
-                  for="transporterDocumentType"
-                  class="col-sm-2 col-form-label"
-                  >Identity Document</label
-                >
-                <div class="col-sm-10">
-                  <select
-                    id="transporterDocumentType"
-                    name="documentType"
-                    class="form-control"
-                  >
-                    <option disabled>Select the Document Type</option>
-                    <option>PAN</option>
-                    <option>Aadhar Card</option>
-                    <option selected>Passport</option>
-                    <option>Election Card</option>
-                  </select>
+              <div
+                style="display: none"
+                class="form-group row"
+                id="div_rate"
+                name="rates[]"
+              >
+                <label class="col-sm-2 col-form-label">Rates</label>
+                <div class="col-sm-10 rates_input_div">
+                  <div>
+                    <div
+                      class="input-group bootstrap-touchspin bootstrap-touchspin-injected"
+                    >
+                      <span
+                        class="input-group-addon bootstrap-touchspin-prefix input-group-prepend"
+                        ><span class="input-group-text">Start</span></span
+                      >
+                      <input
+                        id="km_from"
+                        class="form-control"
+                        type="text"
+                        name="km_from"
+                        placeholder="Enter Kilometer"
+                        value="0"
+                      />
+                      &nbsp;
+                      <span
+                        class="input-group-addon bootstrap-touchspin-prefix input-group-prepend"
+                        ><span class="input-group-text">End</span></span
+                      >
+                      <input
+                        id="km_to"
+                        class="form-control"
+                        type="text"
+                        name="km_to"
+                        placeholder="Enter Kilometers"
+                        value="100"
+                      />
+                      &nbsp;
+                      <span
+                        class="input-group-addon bootstrap-touchspin-prefix input-group-prepend"
+                        ><span class="input-group-text">Price</span></span
+                      >
+                      <input
+                        id="price"
+                        class="form-control"
+                        type="text"
+                        name="price"
+                        placeholder="Enter price"
+                        value="12"
+                      />
+                      &nbsp;
+                    </div>
+                    <br />
+                    <div>
+                      <input type="checkbox" name="chb" />
+                      <!-- <button
+                      id="btnRate"
+                      type="button"
+                      class="btn btn-blue-grey btn-sm waves-effect add_more_rate"
+                    >
+                      Add
+                    </button> -->
+                    </div>
+                  </div>
                 </div>
-              </div> -->
+
+                <!-- <div class="form-group row"> -->
+                <!-- <div class="col-sm-10"> -->
+                <button
+                  id="btnAddRate"
+                  type="button"
+                  class="btn btn-blue-grey btn-sm waves-effect add_more_rate"
+                >
+                  Add
+                </button>
+                <!-- </div>
+                </div> -->
+              </div>
 
               <button
+                id="btnSubmit"
+                name="btnSubmit"
                 type="submit"
                 class="btn btn-primary btn-sm btn-block waves-effect"
               >
@@ -146,6 +207,8 @@
               </button>
 
               <button
+                id="btnCnacel"
+                name="btnCnacel"
                 type="button"
                 class="btn btn-danger btn-sm btn-block waves-effect"
                 onclick="location.href='/dashboard'"
@@ -161,3 +224,130 @@
 </div>
 
 <%- contentFor('FooterJs') %> <%- contentFor('BottomJs') %>
+<script>
+  $(function () {
+    $("#btnRates").click(function () {
+      $("#div_rate").toggle();
+    });
+
+    $(document).on("click", ".add_more_rate", function (e) {
+      e.preventDefault();
+      let cnt = $(".rates").length;
+      let id = "newRate_" + cnt;
+      // alert(cnt);
+      var html =
+        `<div class="rates" id=` +
+        id +
+        `>
+                  <br />
+                  <div
+                    class="input-group bootstrap-touchspin bootstrap-touchspin-injected"
+                  >
+                    <span
+                      class="input-group-addon bootstrap-touchspin-prefix input-group-prepend"
+                      ><span class="input-group-text">Start</span></span
+                    >
+                    <input
+                      id="km_from"
+                      class="form-control"
+                      type="text"
+                      name="km_from"
+                      placeholder="Enter Kilometer"
+                      value="0"
+                    />
+                    &nbsp;
+                    <span
+                      class="input-group-addon bootstrap-touchspin-prefix input-group-prepend"
+                      ><span class="input-group-text">End</span></span
+                    >
+                    <input
+                      id="km_to"
+                      class="form-control"
+                      type="text"
+                      name="km_to"
+                      placeholder="Enter Kilometers"
+                      value="100"
+                    />
+                    &nbsp;
+                    <span
+                      class="input-group-addon bootstrap-touchspin-prefix input-group-prepend"
+                      ><span class="input-group-text">Price</span></span
+                    >
+                    <input
+                      id="price"
+                      class="form-control"
+                      type="text"
+                      name="price"
+                      placeholder="Enter price"
+                      value="12"
+                    />
+                    &nbsp;
+                  </div>
+                  <br/>
+                  <div>
+                    <input type="checkbox" name="chb" />
+                    <button
+    id="btnRemoveRate_` +
+        id +
+        `"
+    type="button"
+    class="btn btn-danger btn-sm waves-effect remove_rate"
+  >
+    Remove
+  </button>
+                  </div>
+                </div>
+                </div>`;
+      $(".rates_input_div").append(html);
+    });
+
+    $(document).on("click", ".remove_rate", function () {
+      let id = $(this).attr("id");
+      // console.log("ID", id);
+      let split_id = id.split("_");
+      // console.log("*********", split_id);
+      let removeId = "#newRate_" + split_id[2];
+      // console.log("Remove", removeId);
+      $(removeId).remove();
+    });
+  });
+
+  //   let rates = [];
+  //   $.fn.setRates = function () {
+  //     // $("#btnRate").click(function (e) {
+  //     var km_from = $("#km_from").val();
+  //     var km_to = $("#km_to").val();
+  //     var price = $("#price").val();
+  //     $("div[name^=rates]").each(function () {
+  //       var obj = {
+  //         km_from: km_from,
+  //         km_to: km_to,
+  //         rate: price,
+  //       };
+  //       rates.push(obj);
+  //       $("#km_from").val("");
+  //       $("#km_to").val("");
+  //       $("#price").val("");
+  //     });
+  //     return rates;
+  //     // });
+  //   };
+
+  //   $("#btnAddRate").click(function (e) {
+  //     e.preventDefault();
+  //     let ary = $.fn.setRates();
+  //     console.log("********************************************", ary);
+  //   });
+  // });
+
+  // $("#btnRemoveRate_newRate_0").click(function () {
+  // var target_input = $(this).parent();
+  //    let id = $(this).attr("id");
+  //    let split_id = id.split("_");
+  //    let removeId = "#newRate_" + split_id[1];
+  //   $(removeId).remove();
+  //   console.log("REMOVED");
+  //   alert("Handler for .click() called.");
+  // alert("Handler for .click() called.");
+  // target_input.empty();
+</script>

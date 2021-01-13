@@ -1,6 +1,6 @@
 const { db } = require("../../config/admin");
 
-const transporterCounter = async (req, res) => {
+const transporterCounter = async () => {
   try {
     let counter = 0;
     const transportersData = await db.collection("users").get();
@@ -18,7 +18,7 @@ const transporterCounter = async (req, res) => {
   }
 };
 
-const adminCounter = async (req, res) => {
+const adminCounter = async () => {
   try {
     let counter = 0;
     const adminsData = await db.collection("users").get();
@@ -33,7 +33,7 @@ const adminCounter = async (req, res) => {
   }
 };
 
-const customersCounter = async (req, res) => {
+const customersCounter = async () => {
   try {
     let counter = 0;
     const customersData = await db.collection("users").get();
@@ -51,7 +51,7 @@ const customersCounter = async (req, res) => {
   }
 };
 
-const driversCounter = async (req, res) => {
+const driversCounter = async () => {
   try {
     let counter = 0;
     const driversData = await db.collection("users").get();
@@ -69,12 +69,44 @@ const driversCounter = async (req, res) => {
   }
 };
 
-const orderCounter = async (req, res) => {
+const pendingOrderCounter = async () => {
   try {
     let counter = 0;
     const orderData = await db.collection("order_details").get();
     orderData.forEach((doc) => {
-      counter++;
+      if (doc.data().status == "pending" || doc.data().status == "Pending") {
+        counter++;
+      }
+    });
+    return counter;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const onGoingOrderCounter = async () => {
+  try {
+    let counter = 0;
+    const orderData = await db.collection("order_details").get();
+    orderData.forEach((doc) => {
+      if (doc.data().status == "ongoing" || doc.data().status == "Ongoing") {
+        counter++;
+      }
+    });
+    return counter;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const completeOrderCounter = async () => {
+  try {
+    let counter = 0;
+    const orderData = await db.collection("order_details").get();
+    orderData.forEach((doc) => {
+      if (doc.data().status == "complete" || doc.data().status == "Complete") {
+        counter++;
+      }
     });
     return counter;
   } catch (error) {
@@ -88,36 +120,51 @@ exports.dashboard = async (req, res) => {
     let cntTransporter = await transporterCounter();
     let cntAdmin = await adminCounter();
     let cntCustomer = await customersCounter();
-    let cntOrder = await orderCounter();
+    let cntPendingOrder = await pendingOrderCounter();
+    let cntOnGoingOrder = await onGoingOrderCounter();
+    let cntCompleteOrder = await completeOrderCounter();
     let cntDriver = await driversCounter();
+
     const transporter = {
       counter: cntTransporter,
-      heading: "Transporters +",
+      heading: "Transporters",
       icon: "mdi mdi-truck",
     };
     const admin = {
       counter: cntAdmin,
-      heading: "Admins +",
+      heading: "Admins",
       icon: "mdi mdi-account-star-variant",
     };
     const customer = {
       counter: cntCustomer,
-      heading: "Customers +",
+      heading: "Customers",
       icon: "mdi mdi-account-multiple",
     };
-    const order = {
-      counter: cntOrder,
-      heading: "Orders +",
+    const pendingOrder = {
+      counter: cntPendingOrder,
+      heading: "Pending  Orders",
+      icon: "mdi mdi-cart",
+    };
+    const onGoingOrder = {
+      counter: cntOnGoingOrder,
+      heading: "Ongoing Orders",
+      icon: "mdi mdi-cart",
+    };
+    const completeOrder = {
+      counter: cntCompleteOrder,
+      heading: "Ongoing Orders",
       icon: "mdi mdi-cart",
     };
     const driver = {
       counter: cntDriver,
-      heading: "Drivers +",
+      heading: "Drivers",
       icon: "mdi mdi-seat-recline-normal",
     };
     data.push(customer);
     data.push(transporter);
-    data.push(order);
+    data.push(pendingOrder);
+    data.push(onGoingOrder);
+    data.push(completeOrder);
     data.push(driver);
     data.push(admin);
 
