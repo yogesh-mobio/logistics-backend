@@ -23,6 +23,7 @@ exports.validateSignInData = (data) => {
   };
 };
 
+// for validating Forget Password data
 exports.validateForgetPasswordData = (data) => {
   let errors = [];
   if (isEmpty(data.email)) {
@@ -34,6 +35,7 @@ exports.validateForgetPasswordData = (data) => {
   };
 };
 
+// for validating Change Password data
 exports.validateChangePasswordData = (data) => {
   let errors = [];
   if (isEmpty(data.password)) {

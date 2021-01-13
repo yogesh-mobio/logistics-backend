@@ -63,7 +63,8 @@ exports.newAdmin = async (req, res) => {
         errors,
       });
     }
-    return res.render("Users/Admin/addAdmin", { errors: error.code });
+    errors.push({ msg: error.message });
+    return res.render("Users/Admin/addAdmin", { errors });
   }
 };
 

@@ -1,0 +1,336 @@
+<%- contentFor('HeaderCss') %> <%- contentFor('breadcrumb') %>
+<ul class="list-inline menu-left mb-0">
+  <li class="list-inline-item">
+    <button type="button" class="button-menu-mobile open-left waves-effect">
+      <i class="ion-navicon"></i>
+    </button>
+  </li>
+  <li class="hide-phone list-inline-item app-search">
+    <h3 class="page-title">Add Vehicle</h3>
+  </li>
+</ul>
+
+<%- contentFor('body') %>
+<div class="page-content-wrapper">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12">
+        <div class="card m-b-20">
+          <div class="card-body">
+            <h4 class="mt-0 header-title">Add a new vehicle to the system.</h4>
+            <br /><br />
+            <% include ../Partials/errorMessages %>
+            <form method="POST" class="form-horizontal">
+              <div class="form-group row">
+                <label for="vehicleName" class="col-sm-2 col-form-label"
+                  >Vehicle Name</label
+                >
+                <div class="col-sm-10">
+                  <input
+                    class="form-control"
+                    type="text"
+                    id="vehicleName"
+                    name="name"
+                    placeholder="Enter your Name of the Vehicle"
+                    value="TATA"
+                  />
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <label for="vehicleCapacity" class="col-sm-2 col-form-label"
+                  >Capacity</label
+                >
+                <div class="col-sm-10">
+                  <input
+                    class="form-control"
+                    type="text"
+                    id="vehicleCapacity"
+                    name="capacity"
+                    placeholder="Enter the capacity of the vehicle"
+                    value="1100"
+                  />
+                  <div>
+                    <small class="form-text text-muted"
+                      >Please enter capacity in tons.</small
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <label class="col-sm-2 col-form-label">Dimensions</label>
+                <div class="col-sm-10">
+                  <div
+                    class="input-group bootstrap-touchspin bootstrap-touchspin-injected"
+                  >
+                    <span
+                      class="input-group-addon bootstrap-touchspin-prefix input-group-prepend"
+                      ><span class="input-group-text">L</span></span
+                    >
+                    <input
+                      class="form-control"
+                      type="text"
+                      name="vehicleLength"
+                      placeholder="Enter vehicle's Length"
+                      value="1360"
+                    />
+                    &nbsp;
+                    <span
+                      class="input-group-addon bootstrap-touchspin-prefix input-group-prepend"
+                      ><span class="input-group-text">W</span></span
+                    >
+                    <input
+                      class="form-control"
+                      type="text"
+                      name="vehicleWidth"
+                      placeholder="Enter vehicle's Width"
+                      value="246"
+                    />
+                    &nbsp;
+                    <span
+                      class="input-group-addon bootstrap-touchspin-prefix input-group-prepend"
+                      ><span class="input-group-text">H</span></span
+                    >
+                    <input
+                      class="form-control"
+                      type="text"
+                      name="vehicleHeight"
+                      placeholder="Enter vehicle's Heigth"
+                      value="280"
+                    />
+                  </div>
+                  <div>
+                    <small class="form-text text-muted"
+                      >Please enter dimentions in centimeter.</small
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <label class="col-sm-2 col-form-label">Rates</label>
+                <div class="col-sm-10">
+                  <div
+                    class="input-group bootstrap-touchspin bootstrap-touchspin-injected"
+                  >
+                    <span
+                      class="input-group-addon bootstrap-touchspin-prefix input-group-prepend"
+                      ><span class="input-group-text">Start</span></span
+                    >
+                    <input
+                      class="form-control"
+                      type="text"
+                      name="start"
+                      placeholder="Enter Kilometer"
+                      value="0"
+                    />
+                    &nbsp;
+                    <span
+                      class="input-group-addon bootstrap-touchspin-prefix input-group-prepend"
+                      ><span class="input-group-text">End</span></span
+                    >
+                    <input
+                      class="form-control"
+                      type="text"
+                      name="end"
+                      placeholder="Enter Kilometers"
+                      value="100"
+                    />
+                    &nbsp;
+                    <span
+                      class="input-group-addon bootstrap-touchspin-prefix input-group-prepend"
+                      ><span class="input-group-text">Price</span></span
+                    >
+                    <input
+                      class="form-control"
+                      type="text"
+                      name="price"
+                      placeholder="Enter price"
+                      value="12"
+                    />
+                    &nbsp;
+                  </div>
+                  <br />
+                  <div>
+                    <input type="checkbox" name="chb" />
+                    <button
+                      id="rate"
+                      type="button"
+                      class="btn btn-blue-grey btn-sm waves-effect"
+                    >
+                      Add Rate
+                    </button>
+                  </div>
+                  <!-- <div>
+                    <small class="form-text text-muted"
+                      >Please enter dimentions in centimeter.</small
+                    >
+                  </div> -->
+                </div>
+              </div>
+
+              <!-- <div class="form-group row">
+                <label for="" class="col-sm-2 col-form-label"></label>
+                <div class="col-sm-10">
+                  <input
+                    class="form-control"
+                    type="text"
+                    id=""
+                    name=""
+                    placeholder=""
+                  />
+                </div>
+              </div> -->
+
+              <!-- <div>
+                <div class="form-group row">
+                  <label class="col-sm-2 col-form-label"
+                    ><h6><b>Rates</b></h6></label
+                  >
+                </div>
+
+                <div class="form-group row">
+                  <label for="start" class="col-sm-2 col-form-label"
+                    >Start</label
+                  >
+                  <div>
+                    <input
+                      class="form-control"
+                      type="text"
+                      id="start"
+                      name="km_from"
+                      placeholder="Enter kilometers"
+                      value="0"
+                    />
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label for="end" class="col-sm-2 col-form-label">End</label>
+                  <div>
+                    <input
+                      class="form-control"
+                      type="text"
+                      id="end"
+                      name="km_to"
+                      placeholder="Enter kilometers"
+                      value="100"
+                    />
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label for="price" class="col-sm-2 col-form-label"
+                    >Price</label
+                  >
+                  <div>
+                    <input
+                      class="form-control"
+                      type="text"
+                      id="price"
+                      name="rate"
+                      placeholder="Enter the price"
+                      value="12"
+                    />
+                  </div>
+                </div> -->
+
+              <!-- <div class="form-group row">
+                  <label for="price200to300" class="col-sm-2 col-form-label"
+                    >200 to 300 km</label
+                  >
+                  <div class="col-sm-10">
+                    <input
+                      class="form-control"
+                      type="text"
+                      id="price200to300"
+                      name="price300"
+                      placeholder="Enter the price"
+                      value="17"
+                    />
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label for="price300to400" class="col-sm-2 col-form-label"
+                    >300 to 400 km</label
+                  >
+                  <div class="col-sm-10">
+                    <input
+                      class="form-control"
+                      type="text"
+                      id="price300to400"
+                      name="price400"
+                      placeholder="Enter the price"
+                      value="20"
+                    />
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label for="price400to500" class="col-sm-2 col-form-label"
+                    >400 to 500 km</label
+                  >
+                  <div class="col-sm-10">
+                    <input
+                      class="form-control"
+                      type="text"
+                      id="price400to500"
+                      name="price500"
+                      placeholder="Enter the price"
+                      value="25"
+                    />
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label for="priceAbove500" class="col-sm-2 col-form-label"
+                    >Above 500 km</label
+                  >
+                  <div class="col-sm-10">
+                    <input
+                      class="form-control"
+                      type="text"
+                      id="priceAbove500"
+                      name="price500Plus"
+                      placeholder="Enter the price"
+                      value="30"
+                    />
+                    <div>
+                      <small class="form-text text-muted"
+                        >Rates per kilometer</small
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div> -->
+
+              <button
+                type="submit"
+                class="btn btn-primary btn-sm btn-block waves-effect"
+              >
+                Add Vehicle
+              </button>
+
+              <button
+                type="button"
+                class="btn btn-danger btn-sm btn-block waves-effect"
+                onclick="location.href='/dashboard'"
+              >
+                Cancel
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- contentFor('FooterJs') %> <%- contentFor('BottomJs') %>
+<script>
+  $(function () {
+    $("#rate").click(function () {});
+  });
+</script>

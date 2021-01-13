@@ -13,46 +13,62 @@
     <div id="sidebar-menu">
       <ul>
         <!-- <li class="menu-title">Main</li> -->
-
         <li>
-          <a href="/admin/createAdmin" class="waves-effect">
+          <a href="/dashboard" class="waves-effect">
             <i class="mdi mdi-view-dashboard"></i>
-            <span> Add an Admin </span>
+            <span> Dashboard </span>
           </a>
         </li>
 
-        <li>
-          <a href="/admin/displayAdmins" class="waves-effect">
-            <i class="mdi mdi-view-dashboard"></i>
-            <span> List Admins </span>
-          </a>
+        <li class="has_sub">
+          <a href="javascript:void(0);" class="waves-effect"
+            ><i class="mdi mdi-account-star-variant"></i
+            ><span>
+              Admin
+              <span class="pull-right"
+                ><i class="mdi mdi-chevron-right"></i
+              ></span> </span
+          ></a>
+          <ul class="list-unstyled">
+            <li><a href="/admin/createAdmin">Add an Admin</a></li>
+            <li><a href="/admin/displayAdmins">List Admins</a></li>
+          </ul>
         </li>
 
-        <li>
-          <a href="/createTransporter" class="waves-effect">
-            <i class="mdi mdi-view-dashboard"></i>
-            <span> Add Transporter </span>
-          </a>
+        <li class="has_sub">
+          <a href="javascript:void(0);" class="waves-effect"
+            ><i class="mdi mdi-truck"></i
+            ><span>
+              Trasnporter
+              <span class="pull-right"
+                ><i class="mdi mdi-chevron-right"></i
+              ></span> </span
+          ></a>
+          <ul class="list-unstyled">
+            <li><a href="/createTransporter">Add Transporter </a></li>
+            <li><a href="/displayTransporters">List Transporter </a></li>
+          </ul>
         </li>
 
-        <li>
-          <a href="/displayTransporters" class="waves-effect">
-            <i class="mdi mdi-view-dashboard"></i>
-            <span> List Transporter </span>
-          </a>
+        <li class="has_sub">
+          <a href="javascript:void(0);" class="waves-effect"
+            ><i class="mdi mdi-car"></i
+            ><span>
+              Vehicle
+              <span class="pull-right"
+                ><i class="mdi mdi-chevron-right"></i
+              ></span> </span
+          ></a>
+          <ul class="list-unstyled">
+            <li><a href="/vehicle/createVehicle">Add Vehicle </a></li>
+            <!-- <li><a href="/displayVehicle">List Vehicle </a></li> -->
+          </ul>
         </li>
 
         <li>
           <a href="/displayDrivers" class="waves-effect">
             <i class="mdi mdi-view-dashboard"></i>
             <span> List Drivers </span>
-          </a>
-        </li>
-
-        <li>
-          <a href="/dashboard" class="waves-effect">
-            <i class="mdi mdi-view-dashboard"></i>
-            <span> Dashboard </span>
           </a>
         </li>
 
@@ -111,7 +127,7 @@
             </span>
           </a>
           <ul class="list-unstyled">
-            <li><a href="ui-buttons">Buttons</a></li>
+            <li><a href="/ui-buttons">Buttons</a></li>
             <li><a href="ui-colors">Colors</a></li>
             <li><a href="/ui-cards">Cards</a></li>
             <li><a href="ui-tabs-accordions">Tabs &amp; Accordions</a></li>
