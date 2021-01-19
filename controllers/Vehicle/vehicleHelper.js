@@ -8,6 +8,15 @@ const isEmpty = (string) => {
   }
 };
 
+const isEmptyArray = (ary) => {
+  for (let i = 0; i <= ary.length; i++) {
+    if (ary[i] === "") {
+      return true;
+    }
+  }
+  return false;
+};
+
 // for checking input value is numeric or not
 const isNumeric = (string) => {
   var numbers = /^[0-9]+$/;
@@ -17,6 +26,15 @@ const isNumeric = (string) => {
     return false;
   }
 };
+
+// const isNumeric = (string) => {
+//   var numbers = /^[0-9]+$/;
+//   if (string.match(numbers)) {
+//     return true;
+//   } else {
+//     return false;
+//   }
+// };
 
 // Validating vehicle data
 exports.validateVehicleData = (data) => {
@@ -36,24 +54,31 @@ exports.validateVehicleData = (data) => {
   if (isEmpty(data.vehicleHeight)) {
     errors.push({ msg: "Vehicle's height is required" });
   }
-  // if (isEmpty(data.price100)) {
-  //   errors.push({ msg: "Price for 0 to 100 km is required" });
-  // }
-  // if (isEmpty(data.price200)) {
-  //   errors.push({ msg: "Price for 100 to 200 km is required" });
-  // }
-  // if (isEmpty(data.price300)) {
-  //   errors.push({ msg: "Price for 200 to 300 km is required" });
-  // }
-  // if (isEmpty(data.price400)) {
-  //   errors.push({ msg: "Price for 300 to 400 km is required" });
-  // }
-  // if (isEmpty(data.price500)) {
-  //   errors.push({ msg: "Price for 400 to 500 km is required" });
-  // }
-  // if (isEmpty(data.price500Plus)) {
-  //   errors.push({ msg: "Price for above 500 km is required" });
-  // }
+  if (
+    typeof data.kmFrom === "string" &&
+    typeof data.kmTo === "string" &&
+    typeof data.price === "string"
+  ) {
+    if (isEmpty(data.kmFrom)) {
+      errors.push({ msg: "Please enter Starting kilometers." });
+    }
+    if (isEmpty(data.kmTo)) {
+      errors.push({ msg: "Please enter Ending kilometers." });
+    }
+    if (isEmpty(data.price)) {
+      errors.push({ msg: "Please enter price" });
+    }
+  } else {
+    if (isEmptyArray(data.kmFrom)) {
+      errors.push({ msg: "Please enter Starting kilometers." });
+    }
+    if (isEmptyArray(data.kmTo)) {
+      errors.push({ msg: "Please enter Ending kilometers." });
+    }
+    if (isEmptyArray(data.price)) {
+      errors.push({ msg: "Please enter price" });
+    }
+  }
 
   // ---------------------------------------------------------------------
 
@@ -69,24 +94,6 @@ exports.validateVehicleData = (data) => {
   if (!isNumeric(data.vehicleHeight)) {
     errors.push({ msg: "Vehicle's height should be numbers only..!" });
   }
-  // if (!isNumeric(data.price100)) {
-  //   errors.push({ msg: "Price for 0 to 100 km should be numbers only..!" });
-  // }
-  // if (!isNumeric(data.price200)) {
-  //   errors.push({ msg: "Price for 100 to 200 km should be numbers only..!" });
-  // }
-  // if (!isNumeric(data.price300)) {
-  //   errors.push({ msg: "Price for 200 to 300 km should be numbers only..!" });
-  // }
-  // if (!isNumeric(data.price400)) {
-  //   errors.push({ msg: "Price for 300 to 400 km should be numbers only..!" });
-  // }
-  // if (!isNumeric(data.price500)) {
-  //   errors.push({ msg: "Price for 400 to 500 km should be numbers only..!" });
-  // }
-  // if (!isNumeric(data.price500Plus)) {
-  //   errors.push({ msg: "Price for above 500 km should be numbers only..!" });
-  // }
 
   return {
     errors,
