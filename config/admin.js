@@ -19,5 +19,6 @@ const firebaseSecondaryApp = firebase.initializeApp(
 );
 
 const db = firebase.firestore();
+let bucket = firebaseAdmin.storage().bucket(process.env.STORAGE_BUCKET);
 
-module.exports = { db, firebase, firebaseAdmin, firebaseSecondaryApp };
+module.exports = { db, firebase, firebaseAdmin, firebaseSecondaryApp, bucket };

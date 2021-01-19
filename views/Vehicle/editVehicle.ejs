@@ -6,7 +6,7 @@
     </button>
   </li>
   <li class="hide-phone list-inline-item app-search">
-    <h3 class="page-title">Add Vehicle</h3>
+    <h3 class="page-title">Update Vehicle</h3>
   </li>
 </ul>
 
@@ -17,7 +17,7 @@
       <div class="col-12">
         <div class="card m-b-20">
           <div class="card-body">
-            <h4 class="mt-0 header-title">Add a new vehicle to the system.</h4>
+            <h4 class="mt-0 header-title">Update a vehicle to the system.</h4>
             <br /><br />
             <% include ../Partials/errorMessages %>
             <form method="POST" class="form-horizontal">
@@ -32,7 +32,7 @@
                     id="vehicleName"
                     name="name"
                     placeholder="Enter your Name of the Vehicle"
-                    value="TATA"
+                    value="<%= vehicle.vehicle_name %>"
                   />
                 </div>
               </div>
@@ -48,7 +48,7 @@
                     id="vehicleCapacity"
                     name="capacity"
                     placeholder="Enter the capacity of the vehicle"
-                    value="1100"
+                    value="<%= vehicle.vahicle_capacity %>"
                   />
                   <div>
                     <small class="form-text text-muted"
@@ -74,7 +74,7 @@
                       id="vehicleLength"
                       name="vehicleLength"
                       placeholder="Enter vehicle's Length"
-                      value="1360"
+                      value="<%= vehicle.dimensions.v_length %>"
                     />
                     &nbsp;
                     <span
@@ -86,7 +86,7 @@
                       type="text"
                       id="vehicleWidth"
                       name="vehicleWidth"
-                      placeholder="Enter vehicle's Width"
+                      value="<%= vehicle.dimensions.v_width %>"
                       value="246"
                     />
                     &nbsp;
@@ -100,7 +100,7 @@
                       id="vehicleHeight"
                       name="vehicleHeight"
                       placeholder="Enter vehicle's Heigth"
-                      value="280"
+                      value="<%= vehicle.dimensions.v_height %>"
                     />
                   </div>
                   <div>
@@ -120,7 +120,7 @@
                 </div>
               </div>
 
-              <div class="form-group row">
+              <!-- <div class="form-group row">
                 <button
                   id="btnRates"
                   type="button"
@@ -128,14 +128,9 @@
                 >
                   Add Rates
                 </button>
-              </div>
+              </div> -->
 
-              <div
-                style="display: none"
-                class="form-group row"
-                id="div_rate"
-                name="rates[]"
-              >
+              <div class="form-group row" id="div_rate" name="rates[]">
                 <label class="col-sm-2 col-form-label">Rates</label>
                 <div class="col-sm-10 rates_input_div">
                   <div>
