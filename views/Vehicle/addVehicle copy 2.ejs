@@ -6,7 +6,7 @@
     </button>
   </li>
   <li class="hide-phone list-inline-item app-search">
-    <h3 class="page-title">Update Vehicle</h3>
+    <h3 class="page-title">Add Vehicle</h3>
   </li>
 </ul>
 
@@ -17,7 +17,7 @@
       <div class="col-12">
         <div class="card m-b-20">
           <div class="card-body">
-            <h4 class="mt-0 header-title">Update a vehicle to the system.</h4>
+            <h4 class="mt-0 header-title">Add a new vehicle to the system.</h4>
             <br /><br />
             <% include ../Partials/errorMessages %>
             <form method="POST" class="form-horizontal">
@@ -32,7 +32,7 @@
                     id="vehicleName"
                     name="name"
                     placeholder="Enter your Name of the Vehicle"
-                    value="<%= vehicle.vehicle_name %>"
+                    value="TATA"
                   />
                 </div>
               </div>
@@ -48,7 +48,7 @@
                     id="vehicleCapacity"
                     name="capacity"
                     placeholder="Enter the capacity of the vehicle"
-                    value="<%= vehicle.vahicle_capacity %>"
+                    value="1100"
                   />
                   <div>
                     <small class="form-text text-muted"
@@ -74,7 +74,7 @@
                       id="vehicleLength"
                       name="vehicleLength"
                       placeholder="Enter vehicle's Length"
-                      value="<%= vehicle.dimensions.v_length %>"
+                      value="1360"
                     />
                     &nbsp;
                     <span
@@ -86,7 +86,7 @@
                       type="text"
                       id="vehicleWidth"
                       name="vehicleWidth"
-                      value="<%= vehicle.dimensions.v_width %>"
+                      placeholder="Enter vehicle's Width"
                       value="246"
                     />
                     &nbsp;
@@ -100,7 +100,7 @@
                       id="vehicleHeight"
                       name="vehicleHeight"
                       placeholder="Enter vehicle's Heigth"
-                      value="<%= vehicle.dimensions.v_height %>"
+                      value="280"
                     />
                   </div>
                   <div>
@@ -120,7 +120,7 @@
                 </div>
               </div>
 
-              <!-- <div class="form-group row">
+              <div class="form-group row">
                 <button
                   id="btnRates"
                   type="button"
@@ -128,85 +128,74 @@
                 >
                   Add Rates
                 </button>
-              </div> -->
+              </div>
 
-              <div class="form-group row" id="div_rate" name="rates[]">
+              <div
+                style="display: none"
+                class="form-group row"
+                id="div_rate"
+                name="rates[]"
+              >
                 <label class="col-sm-2 col-form-label">Rates</label>
                 <div class="col-sm-10 rates_input_div">
-                  <% for(var i=0;i<vehicle.rates.length;i++) { %>
-                    <!-- <div> -->
-                    <div class="rates" id="newRate_<%= i %>">
-                        <br />
-                        <div
-                        class="input-group bootstrap-touchspin bootstrap-touchspin-injected"
-                        >
-                        <span
-                            class="input-group-addon bootstrap-touchspin-prefix input-group-prepend"
-                            ><span class="input-group-text">Start</span></span
-                        >
-                        <input
-                            id="kmFrom_newRate_<%= i %>"
-                            class="form-control km-from"
-                            type="text"
-                            name="kmFrom"
-                            placeholder="Enter Kilometer"
-                            value="<%= vehicle.rates[i].start %>"
-                        />
-                        &nbsp;
-                        <span
-                            class="input-group-addon bootstrap-touchspin-prefix input-group-prepend"
-                            ><span class="input-group-text">End</span></span
-                        >
-                        <input
-                            id="kmTo_newRate_<%= i %>"
-                            class="form-control km-to"
-                            type="text"
-                            name="kmTo"
-                            placeholder="Enter Kilometers"
-                            value="<%= vehicle.rates[i].end %>"
-                        />
-                        &nbsp;
-                        <span
-                            class="input-group-addon bootstrap-touchspin-prefix input-group-prepend"
-                            ><span class="input-group-text">Price</span></span
-                        >
-                        <input
-                            id="price_newRate_<%= i %>"
-                            class="form-control"
-                            type="text"
-                            name="price"
-                            placeholder="Enter price"
-                            value="<%= vehicle.rates[i].rate %>"
-                        />
-                        &nbsp;
-                        </div>
-                        <br />
-                        <div>
-                        <label class="col-sm-0">Onwards</label>
-                        <input
-                            type="hidden"
-                            id="chbPriceHidden_newRate_<%= i %>"
-                            value="unchecked"
-                            class="chb_rate"
-                        />
-                        <input
-                            type="checkbox"
-                            id="chbPrice_newRate_<%= i %>"
-                            value="checked"
-                            class="chb_rate"
-                        />
-                        &nbsp;
-                        &nbsp;
-                        &nbsp;
-                        &nbsp;
-                        &nbsp;
-                        <button id="btnRemoveRate_newRate_<%= i %>"
-                            type="button" class="btn btn-danger btn-sm waves-effect remove_rate">
-                          Remove
-                        </button>
-                        </div>
+                  <div>
+                    <div
+                      class="input-group bootstrap-touchspin bootstrap-touchspin-injected"
+                    >
+                      <span
+                        class="input-group-addon bootstrap-touchspin-prefix input-group-prepend"
+                        ><span class="input-group-text">Start</span></span
+                      >
+                      <input
+                        id="kmFrom"
+                        class="form-control km-from"
+                        type="text"
+                        name="kmFrom"
+                        placeholder="Enter Kilometer"
+                      />
+                      &nbsp;
+                      <span
+                        class="input-group-addon bootstrap-touchspin-prefix input-group-prepend"
+                        ><span class="input-group-text">End</span></span
+                      >
+                      <input
+                        id="kmTo"
+                        class="form-control km-to"
+                        type="text"
+                        name="kmTo"
+                        placeholder="Enter Kilometers"
+                      />
+                      &nbsp;
+                      <span
+                        class="input-group-addon bootstrap-touchspin-prefix input-group-prepend"
+                        ><span class="input-group-text">Price</span></span
+                      >
+                      <input
+                        id="price"
+                        class="form-control"
+                        type="text"
+                        name="price"
+                        placeholder="Enter price"
+                      />
+                      &nbsp;
                     </div>
-                  <% } %>
+                    <br />
+                    <div>
+                      <label class="col-sm-0">Onwards</label>
+                      <input
+                        type="hidden"
+                        id="chbPriceHidden"
+                        value="unchecked"
+                        class="chb_rate_default"
+                      />
+                      <input
+                        type="checkbox"
+                        id="chbPrice"
+                        value="checked"
+                        class="chb_rate_default"
+                      />
+                    </div>
+                  </div>
                 </div>
 
                 <button
@@ -222,7 +211,7 @@
                 type="submit"
                 class="btn btn-primary btn-sm btn-block waves-effect"
               >
-                Update Vehicle
+                Add Vehicle
               </button>
 
               <button
@@ -247,7 +236,7 @@
   $(function () {
     $("#btnRates").click(function () {
       $("#div_rate").toggle();
-    }); 
+    });
 
     $(document).on("click", ".add_more_rate", function (e) {
       e.preventDefault();
@@ -337,25 +326,29 @@
       </div>`;
       $(".rates_input_div").append(html);
 
-      if($(".rates").length == 1){
-            $(".rates").find("#kmFrom_"+id).attr("readonly", false);
-            $(".rates")
-                .find("#kmFrom_" + id)
-                .val("");
-            $("#btnRemoveRate_" + id).css("display","none");
-        } else{
-            $(".rates").find("#kmFrom_"+id).attr("readonly", true);
-            $(".rates")
-                .find("#kmFrom_" + id)
-                .val(newValue);
-        }
+      $(".rates").find(".km-from").attr("readonly", true);
+      $(".rates")
+        .find("#kmFrom_" + id)
+        .val(newValue);
     });
 
-    $(document).on("click", ".remove_rate", function (e) {
-        let id = $(this).attr("id");
-        let split_id = id.split("_");
-        let removeId = "#newRate_" + split_id[2];
-        $(removeId).remove();
+    $(document).on("click", ".remove_rate", function () {
+      let id = $(this).attr("id");
+      let split_id = id.split("_");
+      let removeId = "#newRate_" + split_id[2];
+      $(removeId).remove();
+    });
+
+    $(document).on("click", ".chb_rate_default", function () {
+      if ($(this).is(":checked") == true) {
+        $("#kmTo").val("-1");
+        $("#btnAddRate").attr("disabled", true);
+        $("#kmTo").attr("readonly", true);
+      } else {
+        $("#kmTo").val("");
+        $("#btnAddRate").attr("disabled", false);
+        $("#kmTo").attr("readonly", false);
+      }
     });
 
     $(document).on("click", ".chb_rate", function () {

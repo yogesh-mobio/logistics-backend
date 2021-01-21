@@ -144,7 +144,7 @@
                           ><span class="input-group-text">Start</span></span
                         >
                         <input
-                          id="kmFrom"
+                          id="kmFrom_<%= i %>"
                           class="form-control km-from"
                           type="text"
                           name="kmFrom"
@@ -159,7 +159,7 @@
                         >
                         <% if(vehicle.rates[i].end === "-1") { %>
                           <input
-                            id="kmTo"
+                            id="kmTo_<%= i %>"
                             class="form-control km-to"
                             type="text"
                             name="kmTo"
@@ -169,7 +169,7 @@
                           />
                         <% } else { %>
                           <input
-                            id="kmTo"
+                            id="kmTo_<%= i %>"
                             class="form-control km-to"
                             type="text"
                             name="kmTo"
@@ -184,7 +184,7 @@
                           ><span class="input-group-text">Price</span></span
                         >
                         <input
-                          id="price"
+                          id="price_<%= i %>"
                           class="form-control"
                           type="text"
                           name="price"

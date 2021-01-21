@@ -1,5 +1,7 @@
 const { firebase } = require("../config/admin");
 
+// const multer = require("multer");
+
 exports.isAuthenticated = (req, res, next) => {
   const currentUser = firebase.auth().currentUser;
   if (currentUser != null) {

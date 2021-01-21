@@ -45,34 +45,35 @@ exports.newVehicle = async (req, res) => {
   try {
     const data = req.body;
 
-    // console.log("*****DATA*****", data);
+    console.log("*****DATA*****", data);
+    console.log("FILE", req.files);
 
-    const { valid, errors } = validateVehicleData(data);
+    // const { valid, errors } = validateVehicleData(data);
 
-    if (!valid) {
-      res.render("Vehicle/addVehicle", { errors });
-    }
+    // if (!valid) {
+    //   res.render("Vehicle/addVehicle", { errors });
+    // }
 
-    const rates = await vehicleRates(data.kmFrom, data.kmTo, data.price);
+    // const rates = await vehicleRates(data.kmFrom, data.kmTo, data.price);
 
-    const vehicleData = {
-      vehicle_name: data.name,
-      vahicle_capacity: data.capacity,
-      dimensions: {
-        v_length: data.vehicleLength,
-        v_width: data.vehicleWidth,
-        v_height: data.vehicleHeight,
-      },
-      rates: rates,
-    };
+    // const vehicleData = {
+    //   vehicle_name: data.name,
+    //   vahicle_capacity: data.capacity,
+    //   dimensions: {
+    //     v_length: data.vehicleLength,
+    //     v_width: data.vehicleWidth,
+    //     v_height: data.vehicleHeight,
+    //   },
+    //   rates: rates,
+    // };
 
     // console.log("*****VEHICLE DATA*****", vehicleData);
 
-    const newVehicle = await db.collection("vehicles").doc();
-    await newVehicle.set(vehicleData);
-    res.render("Vehicle/addVehicle", {
-      message: "Vehicle is Added...!!",
-    });
+    // const newVehicle = await db.collection("vehicles").doc();
+    // await newVehicle.set(vehicleData);
+    // res.render("Vehicle/addVehicle", {
+    //   message: "Vehicle is Added...!!",
+    // });
   } catch (error) {
     const errors = [];
     errors.push({ msg: error.message });
@@ -141,4 +142,48 @@ exports.updateVehicle = async (req, res) => {
   } catch (error) {
     return res.render({ error: error.message });
   }
+};
+
+exports.updatedVehicle = async (req, res) => {
+  try {
+    const id = req.params.vehicle_id;
+
+    const data = req.body;
+    // console.log("*****DATA*****", data);
+    const { valid, errors } = validateVehicleData(data);
+
+    if (!valid) {
+      res.render(`Vehicle/editVehicle/${id}`, { errors });
+    }
+
+    const rates = await vehicleRates(data.kmFrom, data.kmTo, data.price);
+
+    const vehicleData = {
+      vehicle_name: data.name,
+      vahicle_capacity: data.capacity,
+      dimensions: {
+        v_length: data.vehicleLength,
+        v_width: data.vehicleWidth,
+        v_height: data.vehicleHeight,
+      },
+      rates: rates,
+    };
+
+    // console.log("*****VEHICLE DATA*****", vehicleData);
+
+    const newVehicle = db.collection("vehicles").doc(id);
+    await newVehicle.update(vehicleData);
+    res.redirect("/vehicle/displayVehicles");
+    // res.render("Vehicle/displayVehicles", {
+    //   message: "Vehicle is Added...!!",
+    // });
+  } catch (error) {
+    const errors = [];
+    errors.push({ msg: error.code });
+    return res.render("Vehicle/editVehicles", { errors: errors });
+  }
+};
+
+exports.lol = async (req, res) => {
+  console.log("*****LOL DATA*****", req.file);
 };

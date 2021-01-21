@@ -15,6 +15,13 @@ const {
 const { newDriver } = require("../controllers/Driver/driver");
 const { isAuthenticated } = require("../middleware/authGaurd");
 const { dashboard } = require("../controllers/Dashboard/dashboard");
+const { lol } = require("../controllers/Vehicle/vehicle");
+
+router.get("/lol", (req, res) => {
+  res.render("Vehicle/lol");
+});
+
+router.post("/lol", lol);
 
 // Routes for Signup, Signin and Signout
 router.post("/", signIn);
