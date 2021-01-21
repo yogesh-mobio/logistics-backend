@@ -20,7 +20,11 @@
             <h4 class="mt-0 header-title">Add a new vehicle to the system.</h4>
             <br /><br />
             <% include ../Partials/errorMessages %>
-            <form method="POST" class="form-horizontal">
+            <form
+              method="POST"
+              class="form-horizontal"
+              enctype="multipart/form-data"
+            >
               <div class="form-group row">
                 <label for="vehicleName" class="col-sm-2 col-form-label"
                   >Vehicle Name</label
