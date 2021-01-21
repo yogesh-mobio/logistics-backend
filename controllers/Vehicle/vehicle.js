@@ -183,7 +183,3 @@ exports.updatedVehicle = async (req, res) => {
     return res.render("Vehicle/editVehicles", { errors: errors });
   }
 };
-
-exports.lol = async (req, res) => {
-  console.log("*****LOL DATA*****", req.file);
-};
