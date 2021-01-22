@@ -37,7 +37,7 @@
         <div class="card m-b-20">
           <div class="card-body">
             <h4 class="mt-0 header-title">List of all the Customers</h4>
-
+            <% include ../../Partials/errorMessages %>
             <table
               id="datatable"
               class="table table-bordered dt-responsive nowrap"
@@ -51,7 +51,7 @@
                   <th>Last Name</th>
                   <th>Email</th>
                   <th>Phone</th>
-                  <!-- <th>Status</th> -->
+                  <th>Status</th>
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -64,11 +64,11 @@
                   <td><%= customers[i].customerData.last_name %></td>
                   <td><%= customers[i].customerData.email %></td>
                   <td><%= customers[i].customerData.phone_number %></td>
-                  <!-- <% if( customers[i].customerData.status === true ) { %>
-                    <td>Active</td>
+                  <% if( customers[i].customerData.status === true ) { %>
+                    <td><button class="btn btn-success waves-effect waves-light change_status" id="<%= customers[i].id %>">Active</button></td>
                   <% } else { %>
-                    <td>In-Active</td>
-                  <% } %> -->
+                    <td><button class="btn btn-danger waves-effect waves-light change_status"  id="<%= customers[i].id %>">In-Active</button></td>
+                  <% } %>
                   <td>
                     <button 
                     type="button" 
@@ -91,6 +91,7 @@
                     type="button" 
                     class="btn btn-info waves-effect waves-light m-r-5" 
                     data-toggle="tooltip" data-original-title="View"
+                    onclick="location.href='/customer/customerDetails/<%= customers[i].id %>'"
                     >
                     <i class="mdi mdi-file-document"></i>
                     <!-- <span> View </span> -->
@@ -128,5 +129,22 @@
 
 <!-- Datatable init js -->
 <script src="/assets/pages/datatables.init.js"></script>
+<script>
+  $(function () {
+    $(document).on("click", ".change_status", function (e) {
+      const id=$(this).attr("id");
+      $.ajax({
+        url:`/customer/status/${id}`,
+        type:"POST",
+        success:function(){
+          location.reload();
+        },
+        error:function(){
+          alert(`There is some issue to this ${id}`);
+        }
+      });
+    });
+  });
+</script>
 
 <%- contentFor('BottomJs') %>
