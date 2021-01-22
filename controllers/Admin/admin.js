@@ -49,7 +49,7 @@ exports.newAdmin = async (req, res) => {
         .collection("documents")
         .add({ type: adminData.documentType, url: "", updated_at: new Date() });
 
-      secondaryApp.auth().signOut();
+      firebaseSecondaryApp.auth().signOut();
 
       res.render("Users/Admin/addAdmin", {
         message: "Admin is created...!!",

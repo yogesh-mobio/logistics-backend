@@ -51,30 +51,30 @@
                   <th>Last Name</th>
                   <th>Email</th>
                   <th>Phone</th>
-                  <th>Status</th>
+                  <!-- <th>Status</th> -->
                   <th>Actions</th>
                 </tr>
               </thead>
 
               <tbody>
-              <% for(var i=0;i<admins.length;i++) { %>
+              <% for(var i=0;i<customers.length;i++) { %>
                 <tr>
                   <td><%= i+1 %></td>
-                  <td><%= admins[i].adminData.first_name %></td>
-                  <td><%= admins[i].adminData.last_name %></td>
-                  <td><%= admins[i].adminData.email %></td>
-                  <td><%= admins[i].adminData.phone_number %></td>
-                  <% if( admins[i].adminData.status === true ) { %>
+                  <td><%= customers[i].customerData.first_name %></td>
+                  <td><%= customers[i].customerData.last_name %></td>
+                  <td><%= customers[i].customerData.email %></td>
+                  <td><%= customers[i].customerData.phone_number %></td>
+                  <!-- <% if( customers[i].customerData.status === true ) { %>
                     <td>Active</td>
                   <% } else { %>
                     <td>In-Active</td>
-                  <% } %>
+                  <% } %> -->
                   <td>
                     <button 
                     type="button" 
                     class="btn btn-danger waves-effect waves-light m-r-5" 
                     data-toggle="tooltip" data-original-title="Delete"
-                    onclick="location.href='/admin/removeAdmin/<%= admins[i].id %>'"
+                    onclick="location.href='/admin/removeAdmin/<%= customers[i].id %>'"
                     >
                     <i class="mdi mdi-delete "></i>
                     <!-- <span> Delete </span> -->
