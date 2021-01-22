@@ -57,7 +57,7 @@ exports.newVehicle = async (req, res) => {
     // const rates = await vehicleRates(data.kmFrom, data.kmTo, data.price);
 
     // const vehicleData = {
-    //   vehicle_name: data.name,
+    //   vehicle_type: data.name,
     //   vahicle_capacity: data.capacity,
     //   dimensions: {
     //     v_length: data.vehicleLength,
@@ -159,7 +159,7 @@ exports.updatedVehicle = async (req, res) => {
     const rates = await vehicleRates(data.kmFrom, data.kmTo, data.price);
 
     const vehicleData = {
-      vehicle_name: data.name,
+      vehicle_type: data.name,
       vahicle_capacity: data.capacity,
       dimensions: {
         v_length: data.vehicleLength,

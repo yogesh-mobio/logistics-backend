@@ -6,7 +6,7 @@
     </button>
   </li>
   <li class="hide-phone list-inline-item app-search">
-    <h3 class="page-title">Update Vehicle</h3>
+    <h3 class="page-title">Update Vehicle-Type</h3>
   </li>
 </ul>
 
@@ -17,19 +17,19 @@
       <div class="col-12">
         <div class="card m-b-20">
           <div class="card-body">
-            <h4 class="mt-0 header-title">Update a vehicle to the system.</h4>
+            <h4 class="mt-0 header-title">Update a vehicle type to the system.</h4>
             <br /><br />
             <% include ../Partials/errorMessages %>
             <form method="POST" class="form-horizontal">
               <div class="form-group row">
-                <label for="vehicleName" class="col-sm-2 col-form-label"
-                  >Vehicle Name</label
+                <label for="vehicleTypeName" class="col-sm-2 col-form-label"
+                  >Vehicle Type Name</label
                 >
                 <div class="col-sm-10">
                   <input
                     class="form-control"
                     type="text"
-                    id="vehicleName"
+                    id="vehicleTypeName"
                     name="name"
                     placeholder="Enter your Name of the Vehicle"
                     value="<%= vehicle.vehicle_name %>"

@@ -18,26 +18,30 @@ exports.listCustomers = async (req, res) => {
     const errors = [];
     errors.push({ msg: error.message });
     return res.render("Users/Customer/displayCustomers", {
-      error: errors,
+      errors: errors,
     });
   }
 };
 
 exports.customerDetails = async (req, res) => {
   try {
-    // const errors = [];
+    const errors = [];
     const id = req.params.customer_id;
-    console.log("*****ID*****", id);
+    // console.log("*****ID*****", id);
 
-    // const data = await db.collection("vehicles").doc(id).get();
-    // if (!data) {
-    //   errors.push({ msg: "There are no data available" });
-    //   res.render("Vehicle/displayVehicles", { errors: errors });
-    // }
-    // const vehicleData = data.data();
+    const data = await db.collection("users").doc(id).get();
+    if (!data) {
+      errors.push({ msg: "There are no data available" });
+      res.render("User/Customer/displayCutomers", { errors: errors });
+    }
+    const customerData = data.data();
 
     res.render("Users/Customer/customerDetails", { customer: customerData });
   } catch (error) {
-    return res.render({ error: error.message });
+    const errors = [];
+    errors.push({ msg: error.message });
+    return res.render("Users/Customer/customerDetails", {
+      errors: errors,
+    });
   }
 };
