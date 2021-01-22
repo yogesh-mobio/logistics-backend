@@ -1,10 +1,11 @@
-const { db } = require("../../config/admin");
+const { db, firebaseSecondaryApp } = require("../../config/admin");
 const { validateTransporterData } = require("./transporterHelper");
 
 exports.newTransporter = async (req, res) => {
   try {
     const data = {
       email: req.body.email,
+      password: req.body.password,
       firstname: req.body.firstname,
       lastname: req.body.lastname,
       phone: req.body.phone,
@@ -23,12 +24,14 @@ exports.newTransporter = async (req, res) => {
     const { valid, errors } = validateTransporterData(data);
 
     if (!valid) {
-      return res.status(400).json(errors);
+      res.render("Users/Transporter/addTransporter", {
+        errors,
+      });
     }
 
-    // const newTransporter = await firebase
-    //   .auth()
-    //   .createUserWithEmailAndPassword(data.email, data.password);
+    const newTransporter = await firebaseSecondaryApp
+      .auth()
+      .createUserWithEmailAndPassword(data.email, data.password);
 
     let status = null;
     if (data.status == "true") {
@@ -42,7 +45,7 @@ exports.newTransporter = async (req, res) => {
       last_name: data.lastname,
       email: data.email,
       phone_number: data.phone,
-      user_type: "Transporter",
+      user_type: "transporter",
       register_number: data.registerNo,
       gst_number: data.gstNo,
       status: status,
@@ -59,14 +62,27 @@ exports.newTransporter = async (req, res) => {
       // title: data.city,
     };
 
-    const transporter = await db.collection("users").doc();
-    await transporter.set(transporterData);
+    await db
+      .collection("users")
+      .doc(newTransporter.user.uid)
+      .set(transporterData);
 
     await db
       .collection("users")
-      .doc(transporter.id)
+      .doc(newTransporter.user.uid)
       .collection("address")
       .add(address);
+
+    firebaseSecondaryApp.auth().signOut();
+
+    // const transporter = await db.collection("users").doc();
+    // await transporter.set(transporterData);
+
+    // await db
+    //   .collection("users")
+    //   .doc(transporter.id)
+    //   .collection("address")
+    //   .add(address);
 
     res.render("Users/Transporter/addTransporter", {
       message: "Transporter is created...!!",
@@ -99,3 +115,86 @@ exports.listTransporters = async (req, res) => {
 
 // FIELDS
 // 1. reg_no 2. gst_no 3. is_register
+exports.newTransporterApi = async (req, res) => {
+  try {
+    const data = {
+      email: req.body.email,
+      password: req.body.password,
+      firstname: req.body.firstname,
+      lastname: req.body.lastname,
+      phone: req.body.phone,
+      address: req.body.address,
+      area: req.body.area,
+      city: req.body.city,
+      pincode: req.body.pincode,
+      state: req.body.state,
+      country: req.body.country,
+      registerNo: req.body.registerNo,
+      gstNo: req.body.gstNo,
+      // documentType: req.body.documentType,
+      status: req.body.status,
+    };
+
+    // const { valid, errors } = validateTransporterData(data);
+
+    // if (!valid) {
+    //   res.render("Users/Transporter/addTransporter", {
+    //     errors,
+    //   });
+    // }
+
+    const newTransporter = await firebaseSecondaryApp
+      .auth()
+      .createUserWithEmailAndPassword(data.email, data.password);
+
+    // let status = null;
+    // if (data.status == "true") {
+    //   status = Boolean(!!data.status);
+    // } else {
+    //   status = Boolean(!data.status);
+    // }
+
+    const transporterData = {
+      first_name: data.firstname,
+      last_name: data.lastname,
+      email: data.email,
+      phone_number: data.phone,
+      user_type: "transporter",
+      register_number: data.registerNo,
+      gst_number: data.gstNo,
+      status: data.status,
+      created_at: new Date(),
+    };
+
+    const address = {
+      flatNumber: data.address,
+      area: data.area,
+      city: data.city,
+      pincode: data.pincode,
+      state: data.state,
+      country: data.country,
+      // title: data.city,
+    };
+
+    if (newTransporter) {
+      await db
+        .collection("users")
+        .doc(newTransporter.user.uid)
+        .set(transporterData);
+
+      await db
+        .collection("users")
+        .doc(newTransporter.user.uid)
+        .collection("address")
+        .add(address);
+
+      res.status(201).send({
+        data: { transporterData, address },
+        message: "Transporter is added...!!",
+      });
+      firebaseSecondaryApp.auth().signOut();
+    }
+  } catch (error) {
+    return res.status(400).send({ error: error.message });
+  }
+};

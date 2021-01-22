@@ -9,6 +9,7 @@ const {
   profile,
 } = require("../controllers/Auth/auth");
 const {
+  newTransporterApi,
   newTransporter,
   listTransporters,
 } = require("../controllers/Transporter/transporter");
@@ -16,6 +17,7 @@ const { newDriver } = require("../controllers/Driver/driver");
 const { isAuthenticated } = require("../middleware/authGaurd");
 const { dashboard } = require("../controllers/Dashboard/dashboard");
 
+router.post("/new-transporter-api", newTransporterApi);
 // Routes for Signup, Signin and Signout
 router.post("/", signIn);
 
