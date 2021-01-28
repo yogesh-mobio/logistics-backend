@@ -1,114 +1,116 @@
 const { db } = require("../../config/admin");
 
-const transporterCounter = async () => {
+const userCounter = async () => {
   try {
-    let counter = 0;
-    const transportersData = await db.collection("users").get();
-    transportersData.forEach((doc) => {
+    let cntTransporter = {};
+    let cntCustomer = {};
+    let cntDriver = {};
+    let cntAdmin = {};
+
+    const transporters = [];
+    const customers = [];
+    const drivers = [];
+    const admins = [];
+
+    const users = await db.collection("users").get();
+    users.forEach((doc) => {
       if (
-        doc.data().user_type == "Transporter" ||
-        doc.data().user_type == "transporter"
+        (doc.data().user_type == "Transporter" ||
+          doc.data().user_type == "transporter") &&
+        doc.data().is_deleted == false
       ) {
-        counter++;
-      }
-    });
-    return counter;
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-const adminCounter = async () => {
-  try {
-    let counter = 0;
-    const adminsData = await db.collection("users").get();
-    adminsData.forEach((doc) => {
-      if (doc.data().user_type == "Admin" || doc.data().user_type == "admin") {
-        counter++;
-      }
-    });
-    return counter;
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-const customersCounter = async () => {
-  try {
-    let counter = 0;
-    const customersData = await db.collection("users").get();
-    customersData.forEach((doc) => {
-      if (
-        doc.data().user_type == "Customer" ||
-        doc.data().user_type == "customer"
+        transporters.push(doc.data());
+      } else if (
+        (doc.data().user_type == "Admin" || doc.data().user_type == "admin") &&
+        doc.data().is_deleted == false
       ) {
-        counter++;
-      }
-    });
-    return counter;
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-const driversCounter = async () => {
-  try {
-    let counter = 0;
-    const driversData = await db.collection("users").get();
-    driversData.forEach((doc) => {
-      if (
-        doc.data().user_type == "Driver" ||
-        doc.data().user_type == "driver"
+        admins.push(doc.data());
+      } else if (
+        (doc.data().user_type == "Customer" ||
+          doc.data().user_type == "customer") &&
+        doc.data().is_deleted == false
       ) {
-        counter++;
+        customers.push(doc.data());
+      } else if (
+        (doc.data().user_type == "Driver" ||
+          doc.data().user_type == "driver") &&
+        doc.data().is_deleted == false
+      ) {
+        drivers.push(doc.data());
       }
     });
-    return counter;
+
+    cntTransporter = {
+      counter: transporters.length,
+      heading: "Transporters",
+      icon: "mdi mdi-truck",
+    };
+    cntDriver = {
+      counter: drivers.length,
+      heading: "Drivers",
+      icon: "mdi mdi-seat-recline-normal",
+    };
+    cntCustomer = {
+      counter: customers.length,
+      heading: "Customers",
+      icon: "mdi mdi-account-multiple",
+    };
+    cntAdmin = {
+      counter: admins.length,
+      heading: "Admins",
+      icon: "mdi mdi-account-star-variant",
+    };
+
+    return { cntAdmin, cntTransporter, cntDriver, cntCustomer };
   } catch (error) {
     console.log(error);
   }
 };
 
-const pendingOrderCounter = async () => {
+const orderCounter = async () => {
   try {
-    let counter = 0;
-    const orderData = await db.collection("order_details").get();
-    orderData.forEach((doc) => {
+    let cntPendingOrder = {};
+    let cntOnGoingOrder = {};
+    let cntCompleteOrder = {};
+
+    const pendingOrder = [];
+    const onGoingOrder = [];
+    const completeOrder = [];
+
+    const orders = await db.collection("order_details").get();
+    orders.forEach((doc) => {
       if (doc.data().status == "pending" || doc.data().status == "Pending") {
-        counter++;
+        pendingOrder.push(doc.data());
+      } else if (
+        doc.data().status == "ongoing" ||
+        doc.data().status == "Ongoing"
+      ) {
+        onGoingOrder.push(doc.data());
+      } else if (
+        doc.data().status == "complete" ||
+        doc.data().status == "Complete"
+      ) {
+        completeOrder.push(doc.data());
       }
     });
-    return counter;
-  } catch (error) {
-    console.log(error);
-  }
-};
 
-const onGoingOrderCounter = async () => {
-  try {
-    let counter = 0;
-    const orderData = await db.collection("order_details").get();
-    orderData.forEach((doc) => {
-      if (doc.data().status == "ongoing" || doc.data().status == "Ongoing") {
-        counter++;
-      }
-    });
-    return counter;
-  } catch (error) {
-    console.log(error);
-  }
-};
+    cntPendingOrder = {
+      counter: pendingOrder.length,
+      heading: "Pending  Orders",
+      icon: "mdi mdi-cart",
+    };
+    cntOnGoingOrder = {
+      counter: onGoingOrder.length,
+      heading: "Ongoing Orders",
+      icon: "mdi mdi-cart",
+    };
+    cntCompleteOrder = {
+      counter: completeOrder.length,
+      heading: "Complete Orders",
+      icon: "mdi mdi-cart",
+    };
 
-const completeOrderCounter = async () => {
-  try {
-    let counter = 0;
-    const orderData = await db.collection("order_details").get();
-    orderData.forEach((doc) => {
-      if (doc.data().status == "complete" || doc.data().status == "Complete") {
-        counter++;
-      }
-    });
-    return counter;
+    return { cntPendingOrder, cntOnGoingOrder, cntCompleteOrder };
   } catch (error) {
     console.log(error);
   }
@@ -117,56 +119,16 @@ const completeOrderCounter = async () => {
 exports.dashboard = async (req, res) => {
   try {
     let data = [];
-    let cntTransporter = await transporterCounter();
-    let cntAdmin = await adminCounter();
-    let cntCustomer = await customersCounter();
-    let cntPendingOrder = await pendingOrderCounter();
-    let cntOnGoingOrder = await onGoingOrderCounter();
-    let cntCompleteOrder = await completeOrderCounter();
-    let cntDriver = await driversCounter();
 
-    const transporter = {
-      counter: cntTransporter,
-      heading: "Transporters",
-      icon: "mdi mdi-truck",
-    };
-    const admin = {
-      counter: cntAdmin,
-      heading: "Admins",
-      icon: "mdi mdi-account-star-variant",
-    };
-    const customer = {
-      counter: cntCustomer,
-      heading: "Customers",
-      icon: "mdi mdi-account-multiple",
-    };
-    const pendingOrder = {
-      counter: cntPendingOrder,
-      heading: "Pending  Orders",
-      icon: "mdi mdi-cart",
-    };
-    const onGoingOrder = {
-      counter: cntOnGoingOrder,
-      heading: "Ongoing Orders",
-      icon: "mdi mdi-cart",
-    };
-    const completeOrder = {
-      counter: cntCompleteOrder,
-      heading: "Ongoing Orders",
-      icon: "mdi mdi-cart",
-    };
-    const driver = {
-      counter: cntDriver,
-      heading: "Drivers",
-      icon: "mdi mdi-seat-recline-normal",
-    };
-    data.push(customer);
-    data.push(transporter);
-    data.push(pendingOrder);
-    data.push(onGoingOrder);
-    data.push(completeOrder);
-    data.push(driver);
-    data.push(admin);
+    let users = await userCounter();
+    Object.values(users).forEach((val) => {
+      data.push(val);
+    });
+
+    let orders = await orderCounter();
+    Object.values(orders).forEach((val) => {
+      data.push(val);
+    });
 
     res.render("Dashboard/dashboard1", { data: data });
   } catch (error) {
