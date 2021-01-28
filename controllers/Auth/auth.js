@@ -28,6 +28,27 @@ exports.signIn = async (req, res) => {
     if (token) {
       res.redirect("/dashboard");
     }
+
+    // let userEmail = null;
+    // const usersData = await db.collection("users").get();
+    // usersData.forEach((doc) => {
+    //   if (
+    //     doc.data().email == user.email &&
+    //     (doc.data().user_type == "Admin" || doc.data().user_type == "admin")
+    //   ) {
+    //     userEmail = doc.data().email;
+    //   }
+    // });
+
+    // if (user.email == userEmail) {
+    //   await firebase
+    //     .auth()
+    //     .signInWithEmailAndPassword(user.email, user.password);
+
+    //   res.redirect("/dashboard");
+    // } else {
+    //   res.redirect("/");
+    // }
   } catch (error) {
     if (error.code == "auth/invalid-email") {
       return res.status(403).json("Please enter the valid email ID");
@@ -167,7 +188,7 @@ exports.profile = async (req, res) => {
 // const vehicles = [];
 // const data = await db.collection("vehicles").get();
 // data.forEach((doc) => {
-//   const vehicle = (doc.id, doc.data().vehicle_name);
+//   const vehicle = (doc.id, doc.data().vehicle_type);
 //   vehicles.push(vehicle);
 // });
 // return vehicles;
