@@ -8,7 +8,7 @@ const {
   changePassword,
   profile,
 } = require("../controllers/Auth/auth");
-const { newDriver } = require("../controllers/Driver/driver");
+// const { newDriver } = require("../controllers/Driver/driver");
 const { isAuthenticated } = require("../middleware/authGaurd");
 const { dashboard } = require("../controllers/Dashboard/dashboard");
 
@@ -25,7 +25,7 @@ router.get("/transporter/:transporter_id/createDriver", (req, res) => {
   res.render("Users/Driver/addDriver");
 });
 
-router.post("/transporter/:transporter_id/createDriver", newDriver);
+// router.post("/transporter/:transporter_id/createDriver", newDriver);
 
 router.get("/displayDrivers");
 

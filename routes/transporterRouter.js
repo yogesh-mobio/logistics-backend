@@ -47,6 +47,6 @@ transporterRouter.get("/:transporter_id/vehicles/:vehicle_id", (req, res) => {
 });
 
 // Routes for transporter API
-transporterRouter.post("/new-transporter-api", newTransporterApi);
+// transporterRouter.post("/new-transporter-api", newTransporterApi);
 
 module.exports = transporterRouter;
