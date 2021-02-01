@@ -20,8 +20,4 @@ customerRouter.get("/customerDetails/:customer_id", customerDetails);
 
 customerRouter.post("/status/:customer_id", changeCustomerStatus);
 
-// customerRouter.get("/editVehicle/:vehicle_id", updateVehicle);
-
-// customerRouter.post("/editVehicle/:vehicle_id", updatedVehicle);
-
 module.exports = customerRouter;

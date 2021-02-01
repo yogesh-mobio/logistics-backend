@@ -8,16 +8,10 @@ const {
   changePassword,
   profile,
 } = require("../controllers/Auth/auth");
-const {
-  newTransporterApi,
-  newTransporter,
-  listTransporters,
-} = require("../controllers/Transporter/transporter");
 const { newDriver } = require("../controllers/Driver/driver");
 const { isAuthenticated } = require("../middleware/authGaurd");
 const { dashboard } = require("../controllers/Dashboard/dashboard");
 
-router.post("/new-transporter-api", newTransporterApi);
 // Routes for Signup, Signin and Signout
 router.post("/", signIn);
 
@@ -25,15 +19,6 @@ router.get("/logout", signOut);
 
 // Routes for Forget Password
 router.post("/forget-password", forgetPassword);
-
-// Routes for Transporters
-router.get("/createTransporter", (req, res) => {
-  res.render("Users/Transporter/addTransporter");
-});
-
-router.post("/createTransporter", newTransporter);
-
-router.get("/displayTransporters", listTransporters);
 
 //  Routes for Driver
 router.get("/transporter/:transporter_id/createDriver", (req, res) => {
@@ -55,6 +40,9 @@ router.get("/displayVehicles");
 
 // Dashboard
 router.get("/dashboard", isAuthenticated, dashboard);
+// router.get("/dashboard-copy", (req, res) => {
+//   res.render("Dashboard/dashboard-copy");
+// });
 
 // Change Password API
 router.get("/changePassword", isAuthenticated, (req, res) => {
