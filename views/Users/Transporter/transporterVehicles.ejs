@@ -1,0 +1,56 @@
+<%- contentFor('HeaderCss') %> <%- contentFor('breadcrumb') %>
+<ul class="list-inline menu-left mb-0">
+  <li class="list-inline-item">
+    <button type="button" class="button-menu-mobile open-left waves-effect">
+      <i class="ion-navicon"></i>
+    </button>
+  </li>
+  <li class="hide-phone list-inline-item app-search">
+    <h3 class="page-title">Directory</h3>
+  </li>
+</ul>
+
+<%- contentFor('body') %>
+<div class="page-content-wrapper">
+  <div class="container-fluid">
+    <div class="row">
+        <% if(vehicles.length>=1) { %> 
+            <% for(var i=0;i<vehicles.length;i++) { %>
+                <div class="col-lg-4">
+                    <div class="card m-b-20">
+                    <div class="card-body">
+                        <div class="media">
+                        <img
+                            class="d-flex mr-3 rounded-circle thumb-lg"
+                            src="data:<%= vehicles[i].vehicleData.vehicle_photos[0].type %>;base64,<%= vehicles[i].vehicleData.vehicle_photos[0].base64 %>"
+                            alt="Generic placeholder image"
+                        />
+                        <div class="media-body">
+                            <h5 class="m-t-10 font-18 mb-1">
+                                <%= vehicles[i].vehicleData.vehicle_type %>
+                                <% if(vehicles[i].vehicleData.status == "verified") { %>
+                                    <span>&#x2705;</span>
+                                <% } %>
+                            </h5>
+                            <p class="text-muted m-b-5"><%= vehicles[i].vehicleData.vehicle_number %></p>
+                            <p class="text-muted m-b-5"><%= vehicles[i].vehicleData.phone_number %></p>
+
+                            <a type="button" href="/transporter/<%= vehicles[i].transporter_id %>/vehicles/<%= vehicles[i].id %>" class="btn btn-warning btn-sm">View</a>
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            <% } %>
+        <% } else { %>
+            <h3 style="color: red;align-content: center;">There is no Vehicles</h3>
+        <% } %>
+    </div>
+  </div>
+</div>
+
+<%- contentFor('FooterJs') %>
+<script src="/assets/plugins/sparklines-chart/jquery.sparkline.min.js"></script>
+<script src="/assets/pages/directory.init.js"></script>
+
+<%- contentFor('BottomJs') %>

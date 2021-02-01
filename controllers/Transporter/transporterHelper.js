@@ -1,6 +1,6 @@
 // for checking empty string or not
 const isEmpty = (string) => {
-  if (string.trim() === "") {
+  if (string === "" || string === undefined) {
     return true;
   } else {
     return false;
@@ -21,57 +21,63 @@ const isNumeric = (string) => {
 exports.validateTransporterData = (data) => {
   let errors = [];
   if (isEmpty(data.firstname)) {
-    errors.push("First name is required");
+    errors.push({ msg: "First name is required" });
   }
   if (isEmpty(data.lastname)) {
-    errors.push("Last name is required");
+    errors.push({ msg: "Last name is required" });
   }
   if (isEmpty(data.phone)) {
-    errors.push("Phone is required");
+    errors.push({ msg: "Phone is required" });
   }
   if (isEmpty(data.email)) {
-    errors.push("Email is required");
+    errors.push({ msg: "Email is required" });
   }
 
   // Address Validation
   if (isEmpty(data.address)) {
-    errors.push("address is required");
+    errors.push({ msg: "address is required" });
   }
   if (isEmpty(data.area)) {
-    errors.push("area is required");
+    errors.push({ msg: "area is required" });
   }
   if (isEmpty(data.city)) {
-    errors.push("city is required");
+    errors.push({ msg: "city is required" });
   }
   if (isEmpty(data.pincode)) {
-    errors.push("pincode is required");
+    errors.push({ msg: "pincode is required" });
   }
   if (isEmpty(data.state)) {
-    errors.push("state is required");
+    errors.push({ msg: "state is required" });
   }
   if (isEmpty(data.country)) {
-    errors.push("country is required");
+    errors.push({ msg: "country is required" });
   }
   if (data.pincode.length !== 6) {
-    errors.push("Pincode should be exact 6 digits long");
+    errors.push({ msg: "Pincode should be exact 6 digits long" });
   }
   if (data.phone.length !== 10) {
-    errors.push("Phone number should be exact 10 digits long");
+    errors.push({ msg: "Phone number should be exact 10 digits long" });
   }
   if (!isNumeric(data.pincode)) {
-    errors.push("Pincode should be numbers only.");
+    errors.push({ msg: "Pincode should be numbers only." });
   }
   if (!isNumeric(data.phone)) {
-    errors.push("Phone number should be numbers only.");
+    errors.push({ msg: "Phone number should be numbers only." });
   }
   if (data.gstNo) {
     if (data.gstNo.length !== 15) {
-      errors.push("GST number should be 15 characters long");
+      errors.push({ msg: "GST number should be 15 characters long" });
     }
+  }
+  if (isEmpty(data.registered)) {
+    errors.push({ msg: "Please select an option of registered" });
+  }
+  if (isEmpty(data.status)) {
+    errors.push({ msg: "Please select an option of status" });
   }
 
   return {
     errors,
-    valid: errors.length === 0 ? true : false,
+    valid: errors.length == 0 ? true : false,
   };
 };

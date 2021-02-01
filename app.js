@@ -14,6 +14,7 @@ var Authrouter = require("./routes/Authrouter");
 var AdminRouter = require("./routes/adminRouter");
 var VehicleRouter = require("./routes/vehicleRouter");
 var customerRouter = require("./routes/customerRouter");
+var transporterRouter = require("./routes/transporterRouter");
 // var passwordRouter = require("./routes/passwordRouter");
 
 var app = express();
@@ -58,6 +59,7 @@ app.use("/", router);
 app.use("/admin", AdminRouter);
 app.use("/vehicle", VehicleRouter);
 app.use("/customer", customerRouter);
+app.use("/transporter", transporterRouter);
 // app.use("/password", passwordRouter);
 
 // catch 404 and forward to error handler

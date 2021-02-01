@@ -105,7 +105,7 @@
                     </button>
                   </td>
                 </tr>
-                <!-- Modal -->
+              <!-- Modal -->
               <div class="modal fade" id="removeModal_<%= customers[i].id %>" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                   <div class="modal-content">
@@ -213,29 +213,6 @@
         }
       });
     });
-
-    // $(this).on("click",".remove-customer",function(e){
-    //   e.preventDefault();
-    //   const id=$(".delete-customer").attr("id");
-    //   console.log("ID",id);
-    //   const split_id=id.split("_");
-    //   console.log("SPLIT ID",split_id[1]);
-    //   const data={
-    //     reason:$("#reasonForDelete").val(),
-    //   }
-    //   $.ajax({
-    //     url:`/customer/removeCustomer/${id}`,
-    //     type:"POST",
-    //     data:data,
-    //     success:function(){
-    //       // alert("The Record's been deleted...!!");
-    //       location.reload(true);
-    //     },
-    //     error:function(){
-    //       alert(`There is some issue with the delete.`);
-    //     }
-    //   });
-    // });
   });
 </script>
 
