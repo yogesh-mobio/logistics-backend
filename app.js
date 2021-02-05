@@ -15,6 +15,7 @@ var AdminRouter = require("./routes/adminRouter");
 var VehicleRouter = require("./routes/vehicleRouter");
 var customerRouter = require("./routes/customerRouter");
 var transporterRouter = require("./routes/transporterRouter");
+var driverRouter = require("./routes/driverRouter");
 // var passwordRouter = require("./routes/passwordRouter");
 
 var app = express();
@@ -47,9 +48,9 @@ app.use(flash());
 
 // error handler
 app.use(async (req, res, next) => {
-  // res.locals.success_msg = req.flash("success_msg");
+  res.locals.success_msg = req.flash("success_msg");
   res.locals.error_msg = req.flash("error_msg");
-  // res.locals.error = req.flash("error");
+  res.locals.error = req.flash("error");
   next();
 });
 
@@ -60,10 +61,33 @@ app.use("/admin", AdminRouter);
 app.use("/vehicle", VehicleRouter);
 app.use("/customer", customerRouter);
 app.use("/transporter", transporterRouter);
+app.use("/driver", driverRouter);
 // app.use("/password", passwordRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
+  // const hi = `<h1>HELLO</h1>`;
+  const error404 = `
+  <div style="align:center;">
+  <div class="card">
+  <div class="card-body">
+    <div class="ex-page-content text-center">
+      <h1 class="">404!</h1>
+      <h3 class="">Sorry, page not found</h3>
+      <br />
+
+      <a
+        class="btn btn-primary mb-5 waves-effect waves-light"
+        href="/dashboard"
+        >Back to Dashboard</a
+      >
+    </div>
+  </div>
+</div>
+</div>`;
+  // res.status(404).send("Page not found...!!");
+  // res.status(404).render("Pages/pages-404");
+  res.status(404).send(error404);
   next(createError(404));
 });
 

@@ -326,34 +326,6 @@
   </div>
 </div>
 
-<%- contentFor('FooterJs') %>
-<!-- <script>
-  $(function () {
-    $(this).on("click", ".driver-list", function (e) {
-      e.preventDefault();
-      const id = $(this).attr("id");
-      const split_id = id.split("_")[1];
+<script></script>
 
-      const data = {
-        transporter_id: split_id,
-      };
-      $.ajax({
-        url: `/driver/displayDrivers`,
-        type: "POST",
-        data: data,
-        success: function (response) {
-          console.log(response);
-          return response;
-          // window.location = "/driver/displayDrivers";
-          // location.history.forward();
-          // alert(`${split_id}`);
-        },
-        error: function () {
-          alert(`There is some issue to this ${split_id}`);
-        },
-      });
-    });
-  });
-</script> -->
-
-<%- contentFor('BottomJs') %>
+<%- contentFor('FooterJs') %> <%- contentFor('BottomJs') %>
