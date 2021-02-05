@@ -257,66 +257,61 @@ exports.removeTransporter = async (req, res) => {
 
 exports.transporterDetails = async (req, res) => {
   try {
-    const errors = [];
     const id = req.params.transporter_id;
 
     const data = await db.collection("users").doc(id).get();
-    if (!data) {
-      errors.push({ msg: "There is no data available" });
-      return res.render("User/Transporter/transporterDetails", {
-        errors: errors,
+    if (data.data() == undefined) {
+      req.flash("error_msg", "Transporter not found...!!");
+      return res.redirect("/transporter/displayTransporters");
+    } else {
+      let transporter = { id: data.id, transporterData: data.data() };
+      return res.render("Users/Transporter/transporterDetails", {
+        transporter: transporter,
       });
     }
-    const transporter = { id: data.id, transporterData: data.data() };
-
-    return res.render("Users/Transporter/transporterDetails", {
-      transporter: transporter,
-    });
   } catch (error) {
-    const errors = [];
-    errors.push({ msg: error.message });
-    return res.render("Users/Transporter/transporterDetails", {
-      errors: errors,
-    });
+    req.flash("error_msg", error.message);
+    return res.redirect("/transporter/displayTransporters");
   }
 };
 
-exports.transporterDriversList = async (req, res) => {
-  try {
-    const errors = [];
-    const drivers = [];
-    const id = req.params.transporter_id;
+// exports.transporterDriversList = async (req, res) => {
+//   try {
+//     const errors = [];
+//     const drivers = [];
+//     const id = req.params.transporter_id;
 
-    const data = await db.collection("users").doc(id);
-    const getDrivers = await data.collection("driver_details").get();
+//     const data = await db.collection("users").doc(id);
+//     const getDrivers = await data.collection("driver_details").get();
 
-    if (!data) {
-      errors.push({ msg: "There is no data available" });
-      return res.render("User/Transporter/displayTransporter", {
-        errors: errors,
-      });
-    }
+//     if (!data) {
+//       errors.push({ msg: "There is no data available" });
+//       return res.render("User/Transporter/displayTransporter", {
+//         errors: errors,
+//       });
+//     }
 
-    getDrivers.forEach(async (doc) => {
-      const driver = {
-        id: doc.id,
-        driverData: doc.data(),
-        transporter_id: id,
-      };
-      drivers.push(driver);
-    });
-    return res.render("Users/Transporter/transporterDrivers", {
-      drivers: drivers,
-    });
-  } catch (error) {
-    console.log(error);
-    const errors = [];
-    errors.push({ msg: error.message });
-    return res.render("Users/Transporter/displayTransporter", {
-      errors: errors,
-    });
-  }
-};
+//     getDrivers.forEach(async (doc) => {
+//       const driver = {
+//         id: doc.id,
+//         driverData: doc.data(),
+//         transporter_id: id,
+//       };
+//       drivers.push(driver);
+//     });
+//     // return res.render("Users/Transporter/transporterDrivers", {
+//     return res.render("Users/Driver/transporterDrivers", {
+//       drivers: drivers,
+//     });
+//   } catch (error) {
+//     console.log(error);
+//     const errors = [];
+//     errors.push({ msg: error.message });
+//     return res.render("Users/Transporter/displayTransporter", {
+//       errors: errors,
+//     });
+//   }
+// };
 
 exports.transporterVehiclesList = async (req, res) => {
   try {

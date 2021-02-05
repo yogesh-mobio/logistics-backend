@@ -32,19 +32,13 @@ transporterRouter.get(
 
 transporterRouter.post("/status/:transporter_id", changeTransporterStatus);
 
-transporterRouter.get("/:transporter_id/drivers", transporterDriversList);
-
 transporterRouter.get("/:transporter_id/vehicles", transporterVehiclesList);
 
-transporterRouter.get("/:transporter_id/drivers/:driver_id", (req, res) => {
-  // res.render("User/Transporter/transporterDrivers");
-  res.render("Dashboard/dashboard-copy");
-});
-
-transporterRouter.get("/:transporter_id/vehicles/:vehicle_id", (req, res) => {
-  // res.render("User/Transporter/transporterDrivers");
-  res.render("Dashboard/dashboard-copy");
-});
+// transporterRouter.get("/:transporter_id/vehicles/:vehicle_id", (req, res) => {
+//   // res.render("User/Transporter/transporterDrivers");
+//   // res.render("User/Driver/transporterDrivers");
+//   res.render("Dashboard/dashboard-copy");
+// });
 
 // Routes for transporter API
 // transporterRouter.post("/new-transporter-api", newTransporterApi);
