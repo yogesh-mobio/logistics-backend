@@ -37,7 +37,7 @@ const isNumeric = (string) => {
 // };
 
 // Validating vehicle data
-exports.validateVehicleData = (data) => {
+exports.validateVehicleTypeData = (data) => {
   let errors = [];
   if (isEmpty(data.name)) {
     errors.push({ msg: "Vehicle name is required" });

@@ -1,5 +1,5 @@
 const { db } = require("../../config/admin");
-const { validateVehicleData } = require("./vehicleHelper");
+const { validateVehicleTypeData } = require("./vehicleTypeHelper");
 
 const vehicleRates = (kmFrom, kmTo, price) => {
   let newAry = [];
@@ -41,17 +41,17 @@ const vehicleRates = (kmFrom, kmTo, price) => {
   return result;
 };
 
-exports.newVehicle = async (req, res) => {
+exports.newVehicleType = async (req, res) => {
   try {
     const data = req.body;
 
     console.log("*****DATA*****", data);
     console.log("FILE", req.files);
 
-    // const { valid, errors } = validateVehicleData(data);
+    // const { valid, errors } = validateVehicleTypeData(data);
 
     // if (!valid) {
-    //   res.render("Vehicle/addVehicle", { errors });
+    //   return res.render("VehicleType/addVehicleType", { errors });
     // }
 
     // const rates = await vehicleRates(data.kmFrom, data.kmTo, data.price);
@@ -71,19 +71,19 @@ exports.newVehicle = async (req, res) => {
 
     // const newVehicle = await db.collection("vehicles").doc();
     // await newVehicle.set(vehicleData);
-    // res.render("Vehicle/addVehicle", {
+    // return res.render("VehicleType/addVehicleType", {
     //   message: "Vehicle is Added...!!",
     // });
   } catch (error) {
     const errors = [];
     errors.push({ msg: error.message });
-    res.render("Vehicle/addVehicle", {
+    return res.render("VehicleType/addVehicleType", {
       errors,
     });
   }
 };
 
-exports.listVehicles = async (req, res) => {
+exports.listVehicleTypes = async (req, res) => {
   try {
     const vehicles = [];
     const data = await db.collection("vehicles").get();
@@ -91,69 +91,84 @@ exports.listVehicles = async (req, res) => {
       const vehicle = { id: doc.id, vehicleData: doc.data() };
       vehicles.push(vehicle);
     });
-    res.render("Vehicle/displayVehicles", { vehicles: vehicles });
+    return res.render("VehicleType/displayVehicleTypes", {
+      vehicles: vehicles,
+    });
   } catch (error) {
-    return res.render({ error: error.message });
+    const errors = [];
+    errors.push({ msg: error.message });
+    return res.render("Errors/errors", { errors: errors });
   }
 };
 
-exports.removeVehicle = async (req, res) => {
+exports.removeVehicleType = async (req, res) => {
   try {
-    const id = req.params.vehicle_id;
+    const id = req.params.vehicleType_id;
     // console.log("*****ID*****", id);
 
     await db.collection("vehicles").doc(id).delete();
 
-    res.redirect("/vehicle/displayVehicles");
+    return res.redirect("/vehicle-type/displayVehicleTypes");
   } catch (error) {
     return res.render({ error: error.message });
   }
 };
 
-exports.vehicleDetails = async (req, res) => {
+exports.vehicleTypeDetails = async (req, res) => {
   try {
     const errors = [];
-    const id = req.params.vehicle_id;
+    const id = req.params.vehicleType_id;
 
     const data = await db.collection("vehicles").doc(id).get();
-    if (!data) {
-      errors.push({ msg: "There are no data available" });
-      res.render("Vehicle/displayVehicles", { errors: errors });
+    if (data.data() === undefined) {
+      errors.push({ msg: "Vehicle-type not found...!!" });
+      return res.render("Errors/errors", { errors: errors });
     }
     const vehicleData = data.data();
 
-    res.render("Vehicle/vehicleDetails", { vehicle: vehicleData });
+    return res.render("VehicleType/vehicleTypeDetails", {
+      vehicle: vehicleData,
+    });
   } catch (error) {
-    return res.render({ error: error.message });
+    const errors = [];
+    errors.push({ msg: error.message });
+    return res.render("Errors/errors", { errors: errors });
   }
 };
 
-exports.updateVehicle = async (req, res) => {
+exports.updateVehicleType = async (req, res) => {
   try {
     const errors = [];
-    const id = req.params.vehicle_id;
+    const id = req.params.vehicleType_id;
     const data = await db.collection("vehicles").doc(id).get();
-    if (!data) {
-      errors.push({ msg: "There are no data available" });
-      res.render("Vehicle/editVehicle", { errors: errors });
+    if (data.data() === undefined) {
+      errors.push({ msg: "Vehicle-type not found...!!" });
+      return res.render("Errors/errors", { errors: errors });
     }
     const vehicleData = data.data();
-    res.render("Vehicle/editVehicle", { vehicle: vehicleData });
+    return res.render("VehicleType/editVehicleType", { vehicle: vehicleData });
   } catch (error) {
-    return res.render({ error: error.message });
+    const errors = [];
+    errors.push({ msg: error.message });
+    return res.render("Errors/errors", { errors: errors });
   }
 };
 
-exports.updatedVehicle = async (req, res) => {
+exports.updatedVehicleType = async (req, res) => {
   try {
-    const id = req.params.vehicle_id;
+    const id = req.params.vehicleType_id;
 
     const data = req.body;
     // console.log("*****DATA*****", data);
-    const { valid, errors } = validateVehicleData(data);
+    const { valid, errors } = validateVehicleTypeData(data);
 
     if (!valid) {
-      res.render(`Vehicle/editVehicle/${id}`, { errors });
+      if (errors.length > 0) {
+        for (var i = 0; i <= errors.length; i++) {
+          req.flash("error_msg", errors[i].msg);
+          return res.redirect(`/vehicle-type/editVehicleType/${id}`);
+        }
+      }
     }
 
     const rates = await vehicleRates(data.kmFrom, data.kmTo, data.price);
@@ -173,13 +188,13 @@ exports.updatedVehicle = async (req, res) => {
 
     const newVehicle = db.collection("vehicles").doc(id);
     await newVehicle.update(vehicleData);
-    res.redirect("/vehicle/displayVehicles");
-    // res.render("Vehicle/displayVehicles", {
+    return res.redirect("/vehicle-type/displayVehicleTypes");
+    // return res.render("VehicleType/displayVehicleTypes", {
     //   message: "Vehicle is Added...!!",
     // });
   } catch (error) {
     const errors = [];
     errors.push({ msg: error.code });
-    return res.render("Vehicle/editVehicles", { errors: errors });
+    return res.render("VehicleType/editVehicleType", { errors: errors });
   }
 };

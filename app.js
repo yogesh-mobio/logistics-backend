@@ -12,7 +12,7 @@ var flash = require("connect-flash"); //
 var router = require("./routes/router");
 var Authrouter = require("./routes/Authrouter");
 var AdminRouter = require("./routes/adminRouter");
-var VehicleRouter = require("./routes/vehicleRouter");
+var VehicleTypeRouter = require("./routes/vehicleTypeRouter");
 var customerRouter = require("./routes/customerRouter");
 var transporterRouter = require("./routes/transporterRouter");
 var driverRouter = require("./routes/driverRouter");
@@ -58,7 +58,7 @@ app.use(cors());
 
 app.use("/", router);
 app.use("/admin", AdminRouter);
-app.use("/vehicle", VehicleRouter);
+app.use("/vehicle-type", VehicleTypeRouter);
 app.use("/customer", customerRouter);
 app.use("/transporter", transporterRouter);
 app.use("/driver", driverRouter);
