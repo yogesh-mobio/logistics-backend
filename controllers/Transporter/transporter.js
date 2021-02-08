@@ -313,42 +313,42 @@ exports.transporterDetails = async (req, res) => {
 //   }
 // };
 
-exports.transporterVehiclesList = async (req, res) => {
-  try {
-    const errors = [];
-    const vehicles = [];
-    const id = req.params.transporter_id;
+// exports.transporterVehiclesList = async (req, res) => {
+//   try {
+//     const errors = [];
+//     const vehicles = [];
+//     const id = req.params.transporter_id;
 
-    const data = await db.collection("users").doc(id);
-    const getVehicles = await data.collection("vehicle_details").get();
+//     const data = await db.collection("users").doc(id);
+//     const getVehicles = await data.collection("vehicle_details").get();
 
-    if (!data) {
-      errors.push({ msg: "There is no data available" });
-      return res.render("User/Transporter/displayTransporter", {
-        errors: errors,
-      });
-    }
+//     if (!data) {
+//       errors.push({ msg: "There is no data available" });
+//       return res.render("User/Transporter/displayTransporter", {
+//         errors: errors,
+//       });
+//     }
 
-    getVehicles.forEach(async (doc) => {
-      const vehicle = {
-        id: doc.id,
-        vehicleData: doc.data(),
-        transporter_id: id,
-      };
-      vehicles.push(vehicle);
-    });
-    return res.render("Users/Transporter/transporterVehicles", {
-      vehicles: vehicles,
-    });
-  } catch (error) {
-    console.log(error);
-    const errors = [];
-    errors.push({ msg: error.message });
-    return res.render("Users/Transporter/displayTransporter", {
-      errors: errors,
-    });
-  }
-};
+//     getVehicles.forEach(async (doc) => {
+//       const vehicle = {
+//         id: doc.id,
+//         vehicleData: doc.data(),
+//         transporter_id: id,
+//       };
+//       vehicles.push(vehicle);
+//     });
+//     return res.render("Users/Transporter/transporterVehicles", {
+//       vehicles: vehicles,
+//     });
+//   } catch (error) {
+//     console.log(error);
+//     const errors = [];
+//     errors.push({ msg: error.message });
+//     return res.render("Users/Transporter/displayTransporter", {
+//       errors: errors,
+//     });
+//   }
+// };
 
 // FIELDS
 // 1. reg_no 2. gst_no 3. is_register
