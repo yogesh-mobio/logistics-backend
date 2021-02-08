@@ -205,8 +205,61 @@ exports.removeDriver = async (req, res) => {
 
     await db.collection("deletion_logs").add(deletedData);
 
-    req.flash("success_msg", "Status Changed...!!");
     res.redirect("back");
+  } catch (error) {
+    const errors = [];
+    console.log(error);
+    errors.push({ msg: error.message });
+    return res.render("Errors/errors", {
+      errors: errors,
+    });
+  }
+};
+
+// Vrify Driver API
+exports.verifyDriver = async (req, res) => {
+  const transporter_id = req.params.transporter_id;
+  const driver_id = req.params.driver_id;
+  const errors = [];
+
+  try {
+    // console.log("HELLO YOU ARE IN Verify API OF Driver");
+    // console.log("TID", transporter_id);
+    // console.log("DID", driver_id);
+
+    const user = await db.collection("users").doc(driver_id);
+    const data = await user.get();
+    const driverData = await data.data();
+
+    if (driverData === undefined) {
+      errors.push({ msg: "Driver not found...!!" });
+      res.render("Errors/errors", { errors: errors });
+    } else {
+      let updateData = {};
+      if (driverData.is_verified === "pending") {
+        updateData = {
+          is_verified: "verified",
+        };
+      }
+
+      await user.update(updateData);
+
+      const transporter = await db.collection("users").doc(transporter_id);
+      const getDrivers = await transporter.collection("driver_details").get();
+
+      let id = null;
+      getDrivers.forEach((doc) => {
+        if (driver_id == doc.data().user_uid) {
+          id = doc.id;
+        }
+      });
+      const getDriverId = await transporter
+        .collection("driver_details")
+        .doc(id);
+      await getDriverId.update(updateData);
+
+      res.redirect("back");
+    }
   } catch (error) {
     const errors = [];
     console.log(error);

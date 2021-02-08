@@ -2,14 +2,14 @@ var express = require("express");
 var transporterRouter = express.Router();
 
 const {
-  newTransporterApi,
+  // newTransporterApi,
   newTransporter,
   listTransporters,
   changeTransporterStatus,
   removeTransporter,
   transporterDetails,
-  transporterDriversList,
-  transporterVehiclesList,
+  // transporterDriversList,
+  // transporterVehiclesList,
 } = require("../controllers/Transporter/transporter");
 const { isAuthenticated } = require("../middleware/authGaurd");
 // const { changeUserStatus } = require("../controllers/changeStatus");
@@ -32,11 +32,19 @@ transporterRouter.get(
 
 transporterRouter.post("/status/:transporter_id", changeTransporterStatus);
 
-transporterRouter.get("/:transporter_id/vehicles", transporterVehiclesList);
+// transporterRouter.get("/:transporter_id/drivers", transporterDriversList);
 
-// transporterRouter.get("/:transporter_id/vehicles/:vehicle_id", (req, res) => {
+// transporterRouter.get("/:transporter_id/vehicles", transporterVehiclesList);
+
+// transporterRouter.get("/:transporter_id/drivers/:driver_id", (req, res) => {
 //   // res.render("User/Transporter/transporterDrivers");
 //   // res.render("User/Driver/transporterDrivers");
+//   res.render("Dashboard/dashboard-copy");
+// });
+
+// transporterRouter.get("/:transporter_id/vehicles/:vehicle_id", (req, res) => {
+//   // res.render("User/Transporter/transporterVehicles");
+//   // res.render("Vehicle/displayTransporterVehicles");
 //   res.render("Dashboard/dashboard-copy");
 // });
 
