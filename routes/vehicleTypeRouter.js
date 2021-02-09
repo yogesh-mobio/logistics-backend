@@ -12,29 +12,26 @@ const {
 } = require("../controllers/VehicleType/vehicleType");
 const { isAuthenticated } = require("../middleware/authGaurd");
 
-var storage = multer.diskStorage({
-  destination: async function (req, file, cb) {
-    await cb(null, "./public/uploads/");
-  },
-  filename: async function (req, file, cb) {
-    await cb(null, Date.now() + "-" + file.originalname);
-  },
-});
+var storage = multer.memoryStorage();
 
-const fileFilter = async function (req, file, cb) {
-  if (file.mimetype === "image/jpeg" || file.mimetype === "image/png") {
-    await cb(null, true);
-  } else {
-    await cb(null, false);
-  }
-};
+// const fileFilter = async function (req, file, cb) {
+//   if (
+//     file.mimetype === "image/jpeg" ||
+//     file.mimetype === "image/png" ||
+//     file.mimetype === "image/jpg"
+//   ) {
+//     await cb(null, true);
+//   } else {
+//     await cb(null, false);
+//   }
+// };
 
 var upload = multer({
   storage: storage,
-  limits: {
-    fileSize: 1024 * 1024 * 5,
-  },
-  fileFilter: fileFilter,
+  // limits: {
+  //   fileSize: 1024 * 1024 * 5,
+  // },
+  // fileFilter: fileFilter,
 });
 
 // Routes for Admin
@@ -45,6 +42,7 @@ vehicleTypeRouter.get("/createVehicleType", (req, res) => {
 vehicleTypeRouter.post(
   "/createVehicleType",
   upload.array("icons", 5),
+  // upload.single("icons"),
   newVehicleType
 );
 
