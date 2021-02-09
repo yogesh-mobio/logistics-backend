@@ -45,35 +45,45 @@ exports.newVehicleType = async (req, res) => {
   try {
     const data = req.body;
 
-    console.log("*****DATA*****", data);
-    console.log("FILE", req.files);
+    // console.log("*****DATA*****", data);
+    // console.log("FILE", req.files);
 
-    // const { valid, errors } = validateVehicleTypeData(data);
+    const { valid, errors } = validateVehicleTypeData(data);
 
-    // if (!valid) {
-    //   return res.render("VehicleType/addVehicleType", { errors });
-    // }
+    if (!valid) {
+      return res.render("VehicleType/addVehicleType", { errors });
+    }
 
-    // const rates = await vehicleRates(data.kmFrom, data.kmTo, data.price);
+    const rates = await vehicleRates(data.kmFrom, data.kmTo, data.price);
 
-    // const vehicleData = {
-    //   vehicle_type: data.name,
-    //   vahicle_capacity: data.capacity,
-    //   dimensions: {
-    //     v_length: data.vehicleLength,
-    //     v_width: data.vehicleWidth,
-    //     v_height: data.vehicleHeight,
-    //   },
-    //   rates: rates,
-    // };
+    let icons = [];
+    for (var i = 0; i < req.files.length; i++) {
+      let base64 = req.files[i].buffer.toString("base64");
+      let mimetype = req.files[i].mimetype;
+      const icon = {
+        base64: base64,
+        type: mimetype,
+      };
+      icons.push(icon);
+    }
+
+    const vehicleData = {
+      vehicle_type: data.name,
+      vahicle_capacity: data.capacity,
+      dimensions: {
+        v_length: data.vehicleLength,
+        v_width: data.vehicleWidth,
+        v_height: data.vehicleHeight,
+      },
+      rates: rates,
+      icons: icons,
+    };
 
     // console.log("*****VEHICLE DATA*****", vehicleData);
 
-    // const newVehicle = await db.collection("vehicles").doc();
-    // await newVehicle.set(vehicleData);
-    // return res.render("VehicleType/addVehicleType", {
-    //   message: "Vehicle is Added...!!",
-    // });
+    const newVehicle = await db.collection("vehicles").doc();
+    await newVehicle.set(vehicleData);
+    res.render("VehicleType/addVehicleType");
   } catch (error) {
     const errors = [];
     errors.push({ msg: error.message });
