@@ -9,10 +9,9 @@ const {
   verifyDriver,
 } = require("../controllers/Driver/driver");
 const { isAuthenticated } = require("../middleware/authGaurd");
-// const { changeUserStatus } = require("../controllers/changeStatus");
 
 // Routes for Drivers
-driverRouter.get("/:transporter_id/displayDrivers", transporterDriversList);
+// driverRouter.get("/:transporter_id/displayDrivers", transporterDriversList);
 
 driverRouter.get("/driverDetails/:driver_id", driverDetails);
 

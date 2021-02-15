@@ -8,7 +8,6 @@ const {
   removeCustomer,
 } = require("../controllers/Customer/customer");
 const { isAuthenticated } = require("../middleware/authGaurd");
-// const { changeUserStatus } = require("../controllers/changeStatus");
 
 // Routes for Customers
 customerRouter.get("/displayCustomers", listCustomers);

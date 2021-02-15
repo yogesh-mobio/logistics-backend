@@ -18,298 +18,633 @@
         <div class="card m-b-20">
           <div class="card-body">
             <h4 class="mt-0 header-title">
-              Add a new transporter to the system.
+              Transporter Details
             </h4>
             <br />
-            <% include ../../Partials/errorMessages %>
-            <form method="POST" class="form-horizontal">
-              <div class="form-group row">
-                <label
-                  for="transporterFirstName"
-                  class="col-sm-2 col-form-label"
-                  >First Name</label
-                >
-                <div class="col-sm-10">
-                  <input
-                    class="form-control"
-                    type="text"
-                    id="transporterFirstName"
-                    name="firstname"
-                    placeholder="Enter your First Name"
-                    value="Yesha"
-                  />
-                </div>
-              </div>
-
-              <div class="form-group row">
-                <label for="transporterLastName" class="col-sm-2 col-form-label"
-                  >Last Name</label
-                >
-                <div class="col-sm-10">
-                  <input
-                    class="form-control"
-                    type="text"
-                    id="transporterLastName"
-                    name="lastname"
-                    placeholder="Enter your Last Name"
-                    value="limited"
-                  />
-                </div>
-              </div>
-
-              <div class="form-group row">
-                <label
-                  for="transporterPhoneNumber"
-                  class="col-sm-2 col-form-label"
-                  >Phone Number</label
-                >
-                <div class="col-sm-10">
-                  <div
-                    class="input-group bootstrap-touchspin bootstrap-touchspin-injected"
-                  >
-                    <span
-                      class="input-group-addon bootstrap-touchspin-prefix input-group-prepend"
-                      ><span class="input-group-text">+91</span></span
+            <div class="row">
+              <div class="col-12">
+                <div class="card m-b-20">
+                  <div class="card-body">
+                    <% include ../../Partials/errorMessages %>
+                    <form
+                      method="POST"
+                      class="form-horizontal"
+                      enctype="multipart/form-data"
                     >
-                    <input
-                      class="form-control"
-                      type="text"
-                      id="transporterPhoneNumber"
-                      name="phone"
-                      placeholder="Enter your Phone Number"
-                      value="9876543210"
-                    />
+                      <div class="form-group row">
+                        <label
+                          for="transporterFirstName"
+                          class="col-sm-2 col-form-label"
+                          >First Name</label
+                        >
+                        <div class="col-sm-10">
+                          <input
+                            class="form-control"
+                            type="text"
+                            id="transporterFirstName"
+                            name="firstname"
+                            placeholder="Enter your First Name"
+                            value="Yana"
+                          />
+                        </div>
+                      </div>
+
+                      <div class="form-group row">
+                        <label for="transporterLastName" class="col-sm-2 col-form-label"
+                          >Last Name</label
+                        >
+                        <div class="col-sm-10">
+                          <input
+                            class="form-control"
+                            type="text"
+                            id="transporterLastName"
+                            name="lastname"
+                            placeholder="Enter your Last Name"
+                            value="limited"
+                          />
+                        </div>
+                      </div>
+
+                      <div class="form-group row">
+                        <label
+                          for="transporterPhoneNumber"
+                          class="col-sm-2 col-form-label"
+                          >Phone Number</label
+                        >
+                        <div class="col-sm-10">
+                          <div
+                            class="input-group bootstrap-touchspin bootstrap-touchspin-injected"
+                          >
+                            <span
+                              class="input-group-addon bootstrap-touchspin-prefix input-group-prepend"
+                              ><span class="input-group-text">+91</span></span
+                            >
+                            <input
+                              class="form-control"
+                              type="text"
+                              id="transporterPhoneNumber"
+                              name="phone"
+                              placeholder="Enter your Phone Number"
+                              value="9876543210"
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="form-group row">
+                        <label for="transporterEmail" class="col-sm-2 col-form-label"
+                          >Email</label
+                        >
+                        <div class="col-sm-10">
+                          <input
+                            class="form-control"
+                            type="email"
+                            id="transporterEmail"
+                            name="email"
+                            placeholder="Enter your Email ID"
+                            value="yana@test.com"
+                          />
+                        </div>
+                      </div>
+
+                      <div class="form-group row">
+                        <label for="transporterPassword" class="col-sm-2 col-form-label"
+                          >Password</label
+                        >
+                        <div class="col-sm-10">
+                          <input
+                            class="form-control"
+                            type="password"
+                            id="transporterPassword"
+                            name="password"
+                            placeholder="Enter your password"
+                            value="yesha123456"
+                          />
+                        </div>
+                      </div>
+
+                      <div class="form-group row">
+                        <label for="transporterAddress" class="col-sm-2 col-form-label"
+                          >Address</label
+                        >
+                        <div class="col-sm-10">
+                          <input
+                            class="form-control"
+                            type="text"
+                            id="transporterAddress"
+                            name="address"
+                            placeholder="Please enter your address"
+                            value="11, Vardhman Nagar Society,"
+                          />
+                          <br />
+                          <div
+                            class="input-group bootstrap-touchspin bootstrap-touchspin-injected"
+                          >
+                            <span
+                              class="input-group-addon bootstrap-touchspin-prefix input-group-prepend"
+                              ><span class="input-group-text">Area</span></span
+                            >
+                            <input
+                              class="form-control"
+                              type="text"
+                              id="area"
+                              name="area"
+                              placeholder="Enter the area"
+                              value="gurukul"
+                            />
+                            &nbsp;
+                            <span
+                              class="input-group-addon bootstrap-touchspin-prefix input-group-prepend"
+                              ><span class="input-group-text">City</span></span
+                            >
+                            <input
+                              class="form-control"
+                              type="text"
+                              id="city"
+                              name="city"
+                              placeholder="Enter the city"
+                              value="Ahmedabad"
+                            />
+                            &nbsp;
+                            <span
+                              class="input-group-addon bootstrap-touchspin-prefix input-group-prepend"
+                              ><span class="input-group-text">Pincode</span></span
+                            >
+                            <input
+                              class="form-control"
+                              type="text"
+                              id="pincode"
+                              name="pincode"
+                              placeholder="Enter your pincode"
+                              value="380052"
+                            />
+                          </div>
+                          <br />
+                          <div
+                            class="input-group bootstrap-touchspin bootstrap-touchspin-injected"
+                          >
+                            <span
+                              class="input-group-addon bootstrap-touchspin-prefix input-group-prepend"
+                              ><span class="input-group-text">State</span></span
+                            >
+                            <input
+                              class="form-control"
+                              type="text"
+                              id="state"
+                              name="state"
+                              placeholder="Enter the State"
+                              value="Gujarat"
+                            />
+                            &nbsp;
+                            <span
+                              class="input-group-addon bootstrap-touchspin-prefix input-group-prepend"
+                              ><span class="input-group-text">Country</span></span
+                            >
+                            <input
+                              class="form-control"
+                              type="text"
+                              id="country"
+                              name="country"
+                              placeholder="Enter the Country"
+                              value="India"
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="form-group row">
+                        <label for="transporterStatus" class="col-sm-2 col-form-label"
+                          >Status</label
+                        >
+                        <div class="col-sm-10">
+                          <select
+                            id="transporterStatus"
+                            name="status"
+                            class="form-control"
+                          >
+                            <option disabled>Select</option>
+                            <option value="true">Active</option>
+                            <option value="false" selected>In-Active</option>
+                          </select>
+                        </div>
+                      </div>
+
+                      <div class="form-group row">
+                        <label
+                          for="transporterRegisterNumber"
+                          class="col-sm-2 col-form-label"
+                          >Register Number</label
+                        >
+                        <div class="col-sm-10">
+                          <input
+                            class="form-control"
+                            type="text"
+                            id="transporterRegisterNumber"
+                            name="registerNo"
+                            placeholder="Enter your Register Number"
+                          />
+                        </div>
+                      </div>
+
+                      <div class="form-group row">
+                        <label
+                          for="transporterGstNumber"
+                          class="col-sm-2 col-form-label"
+                          >GST Number</label
+                        >
+                        <div class="col-sm-10">
+                          <input
+                            class="form-control"
+                            type="text"
+                            id="transporterGstNumber"
+                            name="gstNo"
+                            placeholder="Enter your GST Number"
+                          />
+                        </div>
+                      </div>
+
+                      <div class="form-group row">
+                        <label
+                          for="transporterRegistered"
+                          class="col-sm-2 col-form-label"
+                          >Registered</label
+                        >
+                        <div class="col-sm-10">
+                          <select
+                            id="transporterRegistered"
+                            name="registered"
+                            class="form-control"
+                          >
+                            <option disabled selected>Select</option>
+                            <option value="true">Registered</option>
+                            <option value="false">Non-Registered</option>
+                          </select>
+                        </div>
+                      </div>
+
+                      <!-- <div class="form-group row">
+                        <label
+                          for="transporterDocumentType"
+                          class="col-sm-2 col-form-label"
+                          >Identity Document</label
+                        >
+                        <div class="col-sm-10">
+                          <select
+                            id="transporterDocumentType"
+                            name="documentType"
+                            class="form-control"
+                          >
+                            <option disabled>Select the Document Type</option>
+                            <option>PAN</option>
+                            <option>Aadhar Card</option>
+                            <option selected>Passport</option>
+                            <option>Election Card</option>
+                          </select>
+                        </div>
+                      </div> -->
+
+                      <!-- <div class="form-group row">
+                        <ul class="nav nav-tabs" role="tablist">
+                          <li class="nav-item">
+                            <a
+                              class="nav-link active"
+                              data-toggle="tab"
+                              href="#addDriver"
+                              role="tab"
+                            >
+                              <span>Add Driver</span>
+                            </a>
+                          </li>
+                          <li class="nav-item">
+                            <a
+                              class="nav-link"
+                              data-toggle="tab"
+                              href="#addVehicle"
+                              role="tab"
+                            >
+                              <span>Add Vehicle</span>
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+
+                      <div class="tab-content">
+                        <div class="tab-pane active p-3" id="addDriver" role="tabpanel"> -->
+                          <!-- <p>I am in Driver Tab</p> -->
+                          <br/>
+                          <h4 class="mt-0 header-title">Driver Details</h4>
+                          <div class="row">
+                            <div class="col-12">
+                              <div class="card m-b-20">
+                                <div class="card-body">
+                                  <!-- <h4 class="mt-0 header-title">Driver Details</h4>
+                                  <br /> -->
+                                  <div class="form-group row">
+                                    <label
+                                      for="driverFirstName"
+                                      class="col-sm-2 col-form-label"
+                                      >First Name</label
+                                    >
+                                    <div class="col-sm-10">
+                                      <input
+                                        class="form-control"
+                                        type="text"
+                                        id="driverFirstName"
+                                        name="FirstName"
+                                        placeholder="Enter your First Name"
+                                        value="Manu"
+                                      />
+                                    </div>
+                                  </div>
+
+                                  <div class="form-group row">
+                                    <label
+                                      for="driverLastName"
+                                      class="col-sm-2 col-form-label"
+                                      >Last Name</label
+                                    >
+                                    <div class="col-sm-10">
+                                      <input
+                                        class="form-control"
+                                        type="text"
+                                        id="driverLastName"
+                                        name="LastName"
+                                        placeholder="Enter your Last Name"
+                                        value="Patel"
+                                      />
+                                    </div>
+                                  </div>
+
+                                  <div class="form-group row">
+                                    <label
+                                      for="driverEmail"
+                                      class="col-sm-2 col-form-label"
+                                      >Email</label
+                                    >
+                                    <div class="col-sm-10">
+                                      <input
+                                        class="form-control"
+                                        type="text"
+                                        id="driverEmail"
+                                        name="Email"
+                                        placeholder="Enter your email"
+                                        value="manupatel@test.com"
+                                      />
+                                    </div>
+                                  </div>
+
+                                  <div class="form-group row">
+                                    <label
+                                      for="driverPhone"
+                                      class="col-sm-2 col-form-label"
+                                      >Phone Number</label
+                                    >
+                                    <div class="col-sm-10">
+                                      <input
+                                        class="form-control"
+                                        type="text"
+                                        id="driverPhone"
+                                        name="Phone"
+                                        placeholder="Enter your phone number"
+                                        value="1597532584"
+                                      />
+                                    </div>
+                                  </div>
+
+                                  <div class="form-group row">
+                                    <label
+                                      for="driverAge"
+                                      class="col-sm-2 col-form-label"
+                                      >Age</label
+                                    >
+                                    <div class="col-sm-10">
+                                      <input
+                                        class="form-control"
+                                        type="text"
+                                        id="driverAge"
+                                        name="Age"
+                                        placeholder="Enter your age"
+                                        value="25"
+                                      />
+                                    </div>
+                                  </div>
+
+                                  <div class="form-group row">
+                                    <label
+                                      for="driverProfilePhoto"
+                                      class="col-sm-2 col-form-label"
+                                      >Profile Image</label
+                                    >
+                                    <div class="col-sm-10">
+                                      <input
+                                        type="file"
+                                        id="driverProfilePhoto"
+                                        name="profile"
+                                      />
+                                    </div>
+                                  </div>
+
+                                  <div class="form-group row">
+                                    <label
+                                      for="driverAddressProof"
+                                      class="col-sm-2 col-form-label"
+                                      >Address Proof</label
+                                    >
+                                    <div class="col-sm-10">
+                                      <input
+                                        type="file"
+                                        id="driverAddressProof"
+                                        name="AddressProof"
+                                      />
+                                      <div>
+                                        <small class="form-text text-muted"
+                                          >Please upload any of this
+                                          <b>PAN Card, Aadhar Card, Voter ID</b>
+                                        </small>
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  <div class="form-group row">
+                                    <label
+                                      for="driverIdentityProof"
+                                      class="col-sm-2 col-form-label"
+                                      >Identity Proof</label
+                                    >
+                                    <div class="col-sm-10">
+                                      <input
+                                        type="file"
+                                        id="driverIdentityProof"
+                                        name="IdentityProof"
+                                      />
+                                      <div>
+                                        <small class="form-text text-muted"
+                                          >Please upload your <b>Driving License</b>
+                                        </small>
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  <div class="form-group row">
+                                    <label
+                                      class="col-sm-2 col-form-label"
+                                      >Transporter As Driver</label
+                                    >
+                                    <div class="col-sm-10">
+                                      <input
+                                        style="width: 30px;height: 30px;"
+                                        type="hidden"
+                                        id="chbTransporterAsDriverHidden"
+                                        value="unchecked"
+                                        class="chb_transporterAsDriver"
+                                      />
+                                      <input
+                                        style="width: 30px;height: 30px;"
+                                        type="checkbox"
+                                        id="chbTransporterAsDriver"
+                                        value="checked"
+                                        class="chb_transporterAsDriver"
+                                        name="TransporterAsDriver"
+                                      />
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <br/>
+                        <!-- </div>
+                        <div class="tab-pane p-3" id="addVehicle" role="tabpanel"> -->
+                          <!-- <p>I am in Vehicle Tab</p> -->
+                          <h4 class="mt-0 header-title">Vehicle Details</h4>
+                          <div class="row">
+                            <div class="col-12">
+                              <div class="card m-b-20">
+                                <div class="card-body">
+                                  <!-- <h4 class="mt-0 header-title">Vehicle Details</h4>
+                                  <br /> -->
+                                  <div class="form-group row">
+                                    <label
+                                      for="vehicleType"
+                                      class="col-sm-2 col-form-label"
+                                      >Vehicle Type</label
+                                    >
+                                    <div class="col-sm-10">
+                                      <select
+                                        id="vehicleType"
+                                        name="vehicleTypeName"
+                                        class="form-control"
+                                      >
+                                        <option disabled selected>Select</option>
+                                        <% for(var i=0;i<vehicleTypes.length;i++) { %>
+                                          <option value="<%= vehicleTypes[i] %>">
+                                            <%= vehicleTypes[i] %>
+                                          </option>
+                                        <% } %>
+                                      </select>
+                                    </div>
+                                  </div>
+
+                                  <div class="form-group row">
+                                    <label
+                                      for="vehicleNumber"
+                                      class="col-sm-2 col-form-label"
+                                      >Vehicle Number</label
+                                    >
+                                    <div class="col-sm-10">
+                                      <input
+                                        class="form-control"
+                                        type="text"
+                                        id="vehicleNumber"
+                                        name="VehicleNumber"
+                                        placeholder="Enter your Vehicle Number"
+                                        value="GJ-01-EL-0000"
+                                      />
+                                      <div>
+                                        <small class="form-text text-muted"
+                                          >Please Enter your vehicle number in this
+                                          format <b>GJ-01-AA-0000</b>
+                                        </small>
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  <div class="form-group row">
+                                    <label
+                                      for="vehicleChassisNumber"
+                                      class="col-sm-2 col-form-label"
+                                      >Chassis Number</label
+                                    >
+                                    <div class="col-sm-10">
+                                      <input
+                                        class="form-control"
+                                        type="text"
+                                        id="vehicleChassisNumber"
+                                        name="ChassisNumber"
+                                        placeholder="Enter your Chassis Number"
+                                        value="1ASDFGHJKLPOIUYTR"
+                                      />
+                                    </div>
+                                  </div>
+
+                                  <div class="form-group row">
+                                    <label
+                                      for="vehicleComments"
+                                      class="col-sm-2 col-form-label"
+                                      >Comments</label
+                                    >
+                                    <div class="col-sm-10">
+                                      <input
+                                        class="form-control"
+                                        type="text"
+                                        id="vehicleComments"
+                                        name="Comments"
+                                        placeholder="Enter comments about vehicle"
+                                      />
+                                    </div>
+                                  </div>
+
+                                  <div class="form-group row">
+                                    <label
+                                      for="vehicleIcons"
+                                      class="col-sm-2 col-form-label"
+                                      >Images</label
+                                    >
+                                    <div class="col-sm-10">
+                                      <input
+                                        type="file"
+                                        id="vehicleIcons"
+                                        name="icons"
+                                        multiple
+                                      />
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        <!-- </div>
+                      </div> -->
+
+                      <button
+                        type="submit"
+                        class="btn btn-group btn-primary waves-effect"
+                      >
+                        Add Transporter
+                      </button>
+
+                      <button
+                        type="button"
+                        class="btn btn-group btn-danger waves-effect"
+                        onclick="location.href='/dashboard'"
+                      >
+                        Cancel
+                      </button>
+                    </form>
                   </div>
                 </div>
               </div>
-
-              <div class="form-group row">
-                <label for="transporterEmail" class="col-sm-2 col-form-label"
-                  >Email</label
-                >
-                <div class="col-sm-10">
-                  <input
-                    class="form-control"
-                    type="email"
-                    id="transporterEmail"
-                    name="email"
-                    placeholder="Enter your Email ID"
-                    value="yesha@test.com"
-                  />
-                </div>
-              </div>
-
-              <div class="form-group row">
-                <label for="transporterPassword" class="col-sm-2 col-form-label"
-                  >Password</label
-                >
-                <div class="col-sm-10">
-                  <input
-                    class="form-control"
-                    type="password"
-                    id="transporterPassword"
-                    name="password"
-                    placeholder="Enter your password"
-                    value="yesha123456"
-                  />
-                </div>
-              </div>
-
-              <div class="form-group row">
-                <label for="transporterAddress" class="col-sm-2 col-form-label"
-                  >Address</label
-                >
-                <div class="col-sm-10">
-                  <input
-                    class="form-control"
-                    type="text"
-                    id="transporterAddress"
-                    name="address"
-                    placeholder="Please enter your address"
-                    value="11, Vardhman Nagar Society,"
-                  />
-                  <br />
-                  <div
-                    class="input-group bootstrap-touchspin bootstrap-touchspin-injected"
-                  >
-                    <span
-                      class="input-group-addon bootstrap-touchspin-prefix input-group-prepend"
-                      ><span class="input-group-text">Area</span></span
-                    >
-                    <input
-                      class="form-control"
-                      type="text"
-                      id="area"
-                      name="area"
-                      placeholder="Enter the area"
-                      value="gurukul"
-                    />
-                    &nbsp;
-                    <span
-                      class="input-group-addon bootstrap-touchspin-prefix input-group-prepend"
-                      ><span class="input-group-text">City</span></span
-                    >
-                    <input
-                      class="form-control"
-                      type="text"
-                      id="city"
-                      name="city"
-                      placeholder="Enter the city"
-                      value="Ahmedabad"
-                    />
-                    &nbsp;
-                    <span
-                      class="input-group-addon bootstrap-touchspin-prefix input-group-prepend"
-                      ><span class="input-group-text">Pincode</span></span
-                    >
-                    <input
-                      class="form-control"
-                      type="text"
-                      id="pincode"
-                      name="pincode"
-                      placeholder="Enter your pincode"
-                      value="380052"
-                    />
-                  </div>
-                  <br />
-                  <div
-                    class="input-group bootstrap-touchspin bootstrap-touchspin-injected"
-                  >
-                    <span
-                      class="input-group-addon bootstrap-touchspin-prefix input-group-prepend"
-                      ><span class="input-group-text">State</span></span
-                    >
-                    <input
-                      class="form-control"
-                      type="text"
-                      id="state"
-                      name="state"
-                      placeholder="Enter the State"
-                      value="Gujarat"
-                    />
-                    &nbsp;
-                    <span
-                      class="input-group-addon bootstrap-touchspin-prefix input-group-prepend"
-                      ><span class="input-group-text">Country</span></span
-                    >
-                    <input
-                      class="form-control"
-                      type="text"
-                      id="country"
-                      name="country"
-                      placeholder="Enter the Country"
-                      value="India"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <div class="form-group row">
-                <label for="transporterStatus" class="col-sm-2 col-form-label"
-                  >Status</label
-                >
-                <div class="col-sm-10">
-                  <select
-                    id="transporterStatus"
-                    name="status"
-                    class="form-control"
-                  >
-                    <option disabled>Select</option>
-                    <option value="true">Active</option>
-                    <option value="false" selected>In-Active</option>
-                  </select>
-                </div>
-              </div>
-
-              <div class="form-group row">
-                <label
-                  for="transporterRegisterNumber"
-                  class="col-sm-2 col-form-label"
-                  >Register Number</label
-                >
-                <div class="col-sm-10">
-                  <input
-                    class="form-control"
-                    type="text"
-                    id="transporterRegisterNumber"
-                    name="registerNo"
-                    placeholder="Enter your Register Number"
-                  />
-                </div>
-              </div>
-
-              <div class="form-group row">
-                <label
-                  for="transporterGstNumber"
-                  class="col-sm-2 col-form-label"
-                  >GST Number</label
-                >
-                <div class="col-sm-10">
-                  <input
-                    class="form-control"
-                    type="text"
-                    id="transporterGstNumber"
-                    name="gstNo"
-                    placeholder="Enter your GST Number"
-                  />
-                </div>
-              </div>
-
-              <div class="form-group row">
-                <label
-                  for="transporterRegistered"
-                  class="col-sm-2 col-form-label"
-                  >Registered</label
-                >
-                <div class="col-sm-10">
-                  <select
-                    id="transporterRegistered"
-                    name="registered"
-                    class="form-control"
-                  >
-                    <option disabled selected>Select</option>
-                    <option value="true">Registered</option>
-                    <option value="false">Non-Registered</option>
-                  </select>
-                </div>
-              </div>
-
-              <!-- <div class="form-group row">
-                <label
-                  for="transporterDocumentType"
-                  class="col-sm-2 col-form-label"
-                  >Identity Document</label
-                >
-                <div class="col-sm-10">
-                  <select
-                    id="transporterDocumentType"
-                    name="documentType"
-                    class="form-control"
-                  >
-                    <option disabled>Select the Document Type</option>
-                    <option>PAN</option>
-                    <option>Aadhar Card</option>
-                    <option selected>Passport</option>
-                    <option>Election Card</option>
-                  </select>
-                </div>
-              </div> -->
-
-              <button
-                type="submit"
-                class="btn btn-primary btn-sm btn-block waves-effect"
-              >
-                Add Transporter
-              </button>
-
-              <button
-                type="button"
-                class="btn btn-danger btn-sm btn-block waves-effect"
-                onclick="location.href='/dashboard'"
-              >
-                Cancel
-              </button>
-            </form>
+            </div>
           </div>
         </div>
       </div>
@@ -317,4 +652,26 @@
   </div>
 </div>
 
-<%- contentFor('FooterJs') %> <%- contentFor('BottomJs') %>
+<%- contentFor('FooterJs') %>
+<script>
+  $(function(){
+    $(document).on("click", ".chb_transporterAsDriver", function () {
+      if ($(this).is(":checked") == true) {
+        const transporterEmail = $("#transporterEmail").val();
+        const transporterPhone = $("#transporterPhoneNumber").val();
+        $("#driverEmail").val(transporterEmail);
+        $("#driverEmail").attr("readonly", true);
+
+        $("#driverPhone").val(transporterPhone);
+        $("#driverPhone").attr("readonly", true);
+      } else {
+        $("#driverEmail").val("");
+        $("#driverEmail").attr("readonly", false);
+
+        $("#driverPhone").val("");
+        $("#driverPhone").attr("readonly", false);
+      }
+    });
+  });
+</script>
+<%- contentFor('BottomJs') %>

@@ -1,25 +1,58 @@
 var express = require("express");
 var transporterRouter = express.Router();
+var multer = require("multer");
+
+var storage = multer.memoryStorage();
+
+// const fileFilter = async function (req, file, cb) {
+//   if (
+//     file.mimetype === "image/jpeg" ||
+//     file.mimetype === "image/png" ||
+//     file.mimetype === "image/jpg"
+//   ) {
+//     await cb(null, true);
+//   } else {
+//     await cb(null, false);
+//   }
+// };
+
+var upload = multer({
+  storage: storage,
+  // limits: {
+  //   fileSize: 1024 * 1024 * 5,
+  // },
+  // fileFilter: fileFilter,
+});
 
 const {
   // newTransporterApi,
+  getNewTransporter,
   newTransporter,
   listTransporters,
   changeTransporterStatus,
   removeTransporter,
   transporterDetails,
+  verifyTransporter,
+  verifiedTransporter,
   // transporterDriversList,
   // transporterVehiclesList,
 } = require("../controllers/Transporter/transporter");
 const { isAuthenticated } = require("../middleware/authGaurd");
-// const { changeUserStatus } = require("../controllers/changeStatus");
 
 // Routes for Transporters
-transporterRouter.get("/createTransporter", (req, res) => {
-  res.render("Users/Transporter/addTransporter");
-});
+transporterRouter.get("/createTransporter", isAuthenticated, getNewTransporter);
 
-transporterRouter.post("/createTransporter", newTransporter);
+transporterRouter.post(
+  "/createTransporter",
+  isAuthenticated,
+  upload.fields([
+    { name: "profile" },
+    { name: "AddressProof" },
+    { name: "IdentityProof" },
+    { name: "icons" },
+  ]),
+  newTransporter
+);
 
 transporterRouter.get("/displayTransporters", listTransporters);
 
@@ -32,21 +65,9 @@ transporterRouter.get(
 
 transporterRouter.post("/status/:transporter_id", changeTransporterStatus);
 
-// transporterRouter.get("/:transporter_id/drivers", transporterDriversList);
+transporterRouter.get("/verify/:transporter_id", verifyTransporter);
 
-// transporterRouter.get("/:transporter_id/vehicles", transporterVehiclesList);
-
-// transporterRouter.get("/:transporter_id/drivers/:driver_id", (req, res) => {
-//   // res.render("User/Transporter/transporterDrivers");
-//   // res.render("User/Driver/transporterDrivers");
-//   res.render("Dashboard/dashboard-copy");
-// });
-
-// transporterRouter.get("/:transporter_id/vehicles/:vehicle_id", (req, res) => {
-//   // res.render("User/Transporter/transporterVehicles");
-//   // res.render("Vehicle/displayTransporterVehicles");
-//   res.render("Dashboard/dashboard-copy");
-// });
+transporterRouter.post("/verify/:transporter_id", verifiedTransporter);
 
 // Routes for transporter API
 // transporterRouter.post("/new-transporter-api", newTransporterApi);

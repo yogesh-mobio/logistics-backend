@@ -76,6 +76,60 @@ exports.validateTransporterData = (data) => {
     errors.push({ msg: "Please select an option of status" });
   }
 
+  // Driver's Validation
+  if (isEmpty(data.FirstName)) {
+    errors.push({ msg: "Drivers's First Name is required" });
+  }
+  if (isEmpty(data.LastName)) {
+    errors.push({ msg: "Drivers's Last Name is required" });
+  }
+  if (isEmpty(data.Email)) {
+    errors.push({ msg: "Drivers's Email is required" });
+  }
+  if (isEmpty(data.Phone)) {
+    errors.push({ msg: "Drivers's Phone is required" });
+  }
+  if (isEmpty(data.Age)) {
+    errors.push({ msg: "Drivers's Age is required" });
+  }
+  if (data.Phone.length !== 10) {
+    errors.push({
+      msg: "Driver's Phone number should be exact 10 digits long",
+    });
+  }
+  if (!isNumeric(data.Phone)) {
+    errors.push({ msg: "Driver's Phone number should be numbers only." });
+  }
+  if (!isNumeric(data.Age)) {
+    errors.push({ msg: "Driver's age should be numbers only." });
+  }
+
+  // Vehicle's Validation
+  if (isEmpty(data.vehicleTypeName)) {
+    errors.push({ msg: "Please select an option of Vehicle-Type" });
+  }
+  if (isEmpty(data.VehicleNumber)) {
+    errors.push({ msg: "Please enter Vehicle Number" });
+  }
+  if (isEmpty(data.ChassisNumber)) {
+    errors.push({ msg: "Please enter Vehicle's Chassis Number" });
+  }
+  if (data.ChassisNumber.length !== 17) {
+    errors.push({
+      msg: "Vehicle's chassis number should be exact 17 digits long",
+    });
+  }
+  if (data.VehicleNumber !== data.VehicleNumber.toUpperCase()) {
+    errors.push({
+      msg: "Vehicle number should be in uppercase.",
+    });
+  }
+  if (data.ChassisNumber !== data.ChassisNumber.toUpperCase()) {
+    errors.push({
+      msg: "Vehicle's chassis number should be in uppercase.",
+    });
+  }
+
   return {
     errors,
     valid: errors.length == 0 ? true : false,
