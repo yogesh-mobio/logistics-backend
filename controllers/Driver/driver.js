@@ -2,41 +2,42 @@ const { db, firebase } = require("../../config/admin");
 // const { validateDriverData } = require("./driverHelper");
 
 // Get Driver's list of a perticular Transporter
-exports.transporterDriversList = async (req, res) => {
-  try {
-    const drivers = [];
-    const id = req.params.transporter_id;
+// exports.transporterDriversList = async (req, res) => {
+//   try {
+//     const drivers = [];
+//     const id = req.params.transporter_id;
 
-    const data = await db.collection("users").doc(id);
-    const getDrivers = await data.collection("driver_details").get();
+//     const data = await db.collection("users").doc(id);
+//     const getDrivers = await data.collection("driver_details").get();
 
-    getDrivers.forEach(async (doc) => {
-      if (doc.data().is_deleted === false) {
-        const driver = {
-          id: doc.id,
-          driverData: doc.data(),
-          transporter_id: id,
-        };
-        drivers.push(driver);
-      }
-    });
-    return res.render("Users/Driver/transporterDrivers", {
-      drivers: drivers,
-    });
-  } catch (error) {
-    const errors = [];
-    errors.push({ msg: error.message });
-    return res.render("Users/Transporter/displayTransporter", {
-      errors: errors,
-    });
-  }
-};
+//     getDrivers.forEach(async (doc) => {
+//       if (doc.data().is_deleted === false) {
+//         const driver = {
+//           id: doc.id,
+//           driverData: doc.data(),
+//           transporter_id: id,
+//         };
+//         drivers.push(driver);
+//       }
+//     });
+//     return res.render("Users/Driver/transporterDrivers", {
+//       drivers: drivers,
+//     });
+//   } catch (error) {
+//     const errors = [];
+//     errors.push({ msg: error.message });
+//     return res.render("Users/Transporter/displayTransporter", {
+//       errors: errors,
+//     });
+//   }
+// };
 
 // Get driver details
 exports.driverDetails = async (req, res) => {
   try {
     const errors = [];
     const id = req.params.driver_id;
+    console.log("ID******", id);
 
     const user = await db.collection("users").doc(id);
     const driverData = await user.get();
@@ -57,7 +58,8 @@ exports.driverDetails = async (req, res) => {
       // return res.send(errors);
     }
 
-    const driver = { id: data.id, driverData: data };
+    const driver = { id: id, driverData: data };
+    console.log("DRIVER DETAILS*************", driver);
 
     return res.render("Users/Driver/driverDetails", {
       driver: driver,
@@ -135,7 +137,8 @@ exports.changeDriverStatus = async (req, res) => {
 
     await db.collection("status_logs").add(updateData);
 
-    res.redirect("back");
+    return res.redirect("back");
+    // res.redirect(`/transporter/transporterDetails/${transporter_id}`);
     // return true;
     // return res.redirect(`driver/${transporter_id}/displayDrivers`);
   } catch (error) {
@@ -153,8 +156,9 @@ exports.removeDriver = async (req, res) => {
     // const transporter_id = req.params.transporter_id;
     // const driver_id = req.params.driver_id;
     // console.log("HELLO YOU ARE IN DELETE API OF TRANSPORTER");
-    // console.log("DATA", data);
-    // console.log("ID", id);
+    // console.log("DATA", req.body);
+    // console.log("ID", driver_id);
+    // console.log("ID", transporter_id);
 
     const user = await db.collection("users").doc(driver_id);
     const data = await user.get();
@@ -205,14 +209,15 @@ exports.removeDriver = async (req, res) => {
 
     await db.collection("deletion_logs").add(deletedData);
 
-    res.redirect("back");
+    return res.redirect("back");
+    // res.redirect(`/transporter/transporterDetails/${transporter_id}`);
   } catch (error) {
-    const errors = [];
     console.log(error);
-    errors.push({ msg: error.message });
-    return res.render("Errors/errors", {
-      errors: errors,
-    });
+    // const errors = [];
+    // errors.push({ msg: error.message });
+    // return res.render("Errors/errors", {
+    //   errors: errors,
+    // });
   }
 };
 
@@ -227,39 +232,46 @@ exports.verifyDriver = async (req, res) => {
     // console.log("TID", transporter_id);
     // console.log("DID", driver_id);
 
-    const user = await db.collection("users").doc(driver_id);
-    const data = await user.get();
-    const driverData = await data.data();
+    const transporter = await db.collection("users").doc(transporter_id);
 
-    if (driverData === undefined) {
-      errors.push({ msg: "Driver not found...!!" });
-      res.render("Errors/errors", { errors: errors });
-    } else {
-      let updateData = {};
-      if (driverData.is_verified === "pending") {
-        updateData = {
-          is_verified: "verified",
-        };
+    const getDrivers = await transporter.collection("driver_details").get();
+
+    let id = null;
+    getDrivers.forEach((doc) => {
+      if (driver_id == doc.data().user_uid) {
+        id = doc.id;
       }
+    });
+    const getDriverId = await transporter.collection("driver_details").doc(id);
 
-      await user.update(updateData);
-
-      const transporter = await db.collection("users").doc(transporter_id);
-      const getDrivers = await transporter.collection("driver_details").get();
-
-      let id = null;
-      getDrivers.forEach((doc) => {
-        if (driver_id == doc.data().user_uid) {
-          id = doc.id;
-        }
+    if (transporter_id === driver_id) {
+      await getDriverId.update({
+        is_verified: "verified",
       });
-      const getDriverId = await transporter
-        .collection("driver_details")
-        .doc(id);
-      await getDriverId.update(updateData);
+    } else {
+      const user = await db.collection("users").doc(driver_id);
+      const data = await user.get();
+      const driverData = await data.data();
 
-      res.redirect("back");
+      if (driverData === undefined) {
+        errors.push({ msg: "Driver not found...!!" });
+        res.render("Errors/errors", { errors: errors });
+      } else {
+        let updateData = {};
+        if (driverData.is_verified === "pending") {
+          updateData = {
+            is_verified: "verified",
+          };
+        }
+
+        await user.update(updateData);
+
+        await getDriverId.update(updateData);
+      }
     }
+    await transporter.update({ is_request: true });
+    return res.redirect("back");
+    // return res.redirect(`/transporter/transporterDetails/${transporter_id}`);
   } catch (error) {
     const errors = [];
     console.log(error);

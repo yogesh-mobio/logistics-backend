@@ -2,37 +2,37 @@ const { db, firebase } = require("../../config/admin");
 // const { validateDriverData } = require("./driverHelper");
 
 // Get Vehicle's list of a perticular Transporter
-exports.transporterVehiclesList = async (req, res) => {
-  try {
-    const vehicles = [];
-    const id = req.params.transporter_id;
+// exports.transporterVehiclesList = async (req, res) => {
+//   try {
+//     const vehicles = [];
+//     const id = req.params.transporter_id;
 
-    // console.log("************ID", id);
+//     // console.log("************ID", id);
 
-    const data = await db.collection("users").doc(id);
-    const getVehicles = await data.collection("vehicle_details").get();
+//     const data = await db.collection("users").doc(id);
+//     const getVehicles = await data.collection("vehicle_details").get();
 
-    getVehicles.forEach(async (doc) => {
-      if (doc.data().is_deleted === false) {
-        const vehicle = {
-          id: doc.id,
-          vehicleData: doc.data(),
-          transporter_id: id,
-        };
-        vehicles.push(vehicle);
-      }
-    });
-    return res.render("Vehicle/displayTransporterVehicles", {
-      vehicles: vehicles,
-    });
-  } catch (error) {
-    const errors = [];
-    errors.push({ msg: error.message });
-    return res.render("Users/Transporter/displayTransporter", {
-      errors: errors,
-    });
-  }
-};
+//     getVehicles.forEach(async (doc) => {
+//       if (doc.data().is_deleted === false) {
+//         const vehicle = {
+//           id: doc.id,
+//           vehicleData: doc.data(),
+//           transporter_id: id,
+//         };
+//         vehicles.push(vehicle);
+//       }
+//     });
+//     return res.render("Vehicle/displayTransporterVehicles", {
+//       vehicles: vehicles,
+//     });
+//   } catch (error) {
+//     const errors = [];
+//     errors.push({ msg: error.message });
+//     return res.render("Users/Transporter/displayTransporter", {
+//       errors: errors,
+//     });
+//   }
+// };
 
 // Get Vehicle details
 exports.vehicleDetails = async (req, res) => {
