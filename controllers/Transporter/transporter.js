@@ -365,17 +365,29 @@ exports.changeTransporterStatus = async (req, res) => {
     const getTransporterData = await transporterData.get();
     const data = await getTransporterData.data();
 
-    if (!transporterData) {
+    if (!data) {
       errors.push({ msg: "There is no data available" });
-      return res.render("User/Transporter/Transporters", { errors: errors });
+      return res.render("Users/Transporter/displayTransporter", {
+        errors: errors,
+      });
     }
 
-    const updateStatus = {
+    const Status = {
       status: !data.status,
-      reason: req.body.reason,
     };
 
-    await transporterData.update(updateStatus);
+    const updateData = {
+      reason: req.body.reason,
+      type: "users",
+      id: await db.doc("users/" + id),
+      user_id: await firebase.auth().currentUser.uid,
+      updated_at: new Date(),
+      status: Status.status,
+    };
+
+    await transporterData.update(Status);
+    await db.collection("status_logs").add(updateData);
+
     return res.redirect("/transporter/displayTransporters");
   } catch (error) {
     console.log(error);
