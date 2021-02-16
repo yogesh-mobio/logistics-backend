@@ -13,7 +13,7 @@ const { isAuthenticated } = require("../middleware/authGaurd");
 // Routes for Drivers
 // driverRouter.get("/:transporter_id/displayDrivers", transporterDriversList);
 
-driverRouter.get("/driverDetails/:driver_id", driverDetails);
+driverRouter.get("/:transporter_id/driverDetails/:driver_id", driverDetails);
 
 driverRouter.post("/:transporter_id/removeDriver/:driver_id", removeDriver);
 
