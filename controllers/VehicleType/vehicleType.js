@@ -1,4 +1,4 @@
-const { db } = require("../../config/admin");
+const { db, firebase } = require("../../config/admin");
 const { validateVehicleTypeData } = require("./vehicleTypeHelper");
 
 const vehicleRates = (kmFrom, kmTo, price) => {
@@ -77,6 +77,7 @@ exports.newVehicleType = async (req, res) => {
       },
       rates: rates,
       icons: icons,
+      is_deleted: false,
     };
 
     // console.log("*****VEHICLE DATA*****", vehicleData);
@@ -98,8 +99,10 @@ exports.listVehicleTypes = async (req, res) => {
     const vehicles = [];
     const data = await db.collection("vehicles").get();
     data.forEach((doc) => {
-      const vehicle = { id: doc.id, vehicleData: doc.data() };
-      vehicles.push(vehicle);
+      if (doc.data().is_deleted === false) {
+        const vehicle = { id: doc.id, vehicleData: doc.data() };
+        vehicles.push(vehicle);
+      }
     });
     return res.render("VehicleType/displayVehicleTypes", {
       vehicles: vehicles,
@@ -116,11 +119,42 @@ exports.removeVehicleType = async (req, res) => {
     const id = req.params.vehicleType_id;
     // console.log("*****ID*****", id);
 
-    await db.collection("vehicles").doc(id).delete();
+    const getVehicleTypeById = await db.collection("vehicles").doc(id);
+    const vehicleTypeData = await getVehicleTypeById.get();
+    const vehicleType = await vehicleTypeData.data();
+    // console.log("*****VEHICLE TYPE DATA*****", vehicleType);
 
-    return res.redirect("/vehicle-type/displayVehicleTypes");
+    if (vehicleType === undefined) {
+      errors.push({ msg: "Vehicle-Type not found...!!" });
+      res.render("Errors/errors", { errors: errors });
+    }
+
+    const updateData = {
+      reason: req.body.reason,
+      is_deleted: true,
+    };
+
+    const deletedData = {
+      type: "vehicle-type",
+      id: await db.doc("vehicles/" + id),
+      user_id: await firebase.auth().currentUser.uid,
+      deleted_at: new Date(),
+    };
+
+    // console.log("*******", updateData);
+
+    await getVehicleTypeById.update(updateData);
+    await db.collection("deletion_logs").add(deletedData);
+
+    return res.redirect("back");
+    // return res.redirect("/vehicle-type/displayVehicleTypes");
   } catch (error) {
-    return res.render({ error: error.message });
+    const errors = [];
+    console.log(error);
+    errors.push({ msg: error.message });
+    return res.render("Errors/errors", {
+      errors: errors,
+    });
   }
 };
 

@@ -1,4 +1,4 @@
-const { db, firebaseSecondaryApp } = require("../../config/admin");
+const { db, firebaseSecondaryApp, firebase } = require("../../config/admin");
 const { validateAdminData } = require("./adminHelper");
 
 exports.newAdmin = async (req, res) => {
@@ -73,7 +73,10 @@ exports.listAdmins = async (req, res) => {
     const admins = [];
     const data = await db.collection("users").get();
     data.forEach((doc) => {
-      if (doc.data().user_type == "Admin" || doc.data().user_type == "admin") {
+      if (
+        (doc.data().user_type == "Admin" || doc.data().user_type == "admin") &&
+        doc.data().is_deleted === false
+      ) {
         const admin = { id: doc.id, adminData: doc.data() };
         admins.push(admin);
       }
@@ -104,7 +107,7 @@ exports.removeAdmin = async (req, res) => {
 
     // await firebase.auth().deleteUser(uid);
     // console.log("USER IS DELETED");
-    res.redirect("/displayAdmins");
+    res.redirect("/admin/displayAdmins");
   } catch (error) {
     res.status(400).json({ error: error.code });
   }

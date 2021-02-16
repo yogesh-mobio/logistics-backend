@@ -34,32 +34,39 @@ const { db, firebase } = require("../../config/admin");
 
 // Get driver details
 exports.driverDetails = async (req, res) => {
+  const transporter_id = req.params.transporter_id;
+  const driver_id = req.params.driver_id;
+  const errors = [];
+  let driver = {};
   try {
-    const errors = [];
-    const id = req.params.driver_id;
-    console.log("ID******", id);
+    if (transporter_id !== driver_id) {
+      const user = await db.collection("users").doc(driver_id);
+      const driverData = await user.get();
+      const data = await driverData.data();
 
-    const user = await db.collection("users").doc(id);
-    const driverData = await user.get();
-    const data = await driverData.data();
+      if (data === undefined) {
+        errors.push({ msg: "Driver not found...!!" });
+        return res.render("Errors/errors", {
+          errors: errors,
+        });
+      }
 
-    if (data === undefined) {
-      errors.push({ msg: "Driver not found...!!" });
-      return res.render("Errors/errors", {
-        errors: errors,
+      driver = { id: driver_id, driverData: data };
+      // console.log("DRIVER DETAILS*************", driver);
+    } else {
+      const transporter = await db.collection("users").doc(transporter_id);
+      const drivers = await transporter.collection("driver_details");
+      const driversData = await drivers.get();
+      let id = null;
+      driversData.forEach((doc) => {
+        if (driver_id == doc.data().user_uid) {
+          id = doc.id;
+        }
       });
-
-      // req.flash("error_msg", "Driver not found...!!");
-      // res.redirect(window.history.back());
-      // res.redirect(`/driver/${data.transporter_uid}/drivers`);
-      // res.redirect(`/transporter/displayTransporters`);
-      // res.redirect(location.history.back());
-      // return res.render("Users/Transporter/transporterDrivers", {
-      // return res.send(errors);
+      const getDriver = await drivers.doc(id).get();
+      const data = await getDriver.data();
+      driver = { id: driver_id, driverData: data };
     }
-
-    const driver = { id: id, driverData: data };
-    console.log("DRIVER DETAILS*************", driver);
 
     return res.render("Users/Driver/driverDetails", {
       driver: driver,
@@ -137,14 +144,107 @@ exports.changeDriverStatus = async (req, res) => {
 
     await db.collection("status_logs").add(updateData);
 
-    return res.redirect("back");
-    // res.redirect(`/transporter/transporterDetails/${transporter_id}`);
+    res.redirect("back");
     // return true;
     // return res.redirect(`driver/${transporter_id}/displayDrivers`);
   } catch (error) {
     console.log(error);
   }
 };
+
+// Change Driver Status API
+// exports.changeDriverStatus = async (req, res) => {
+//   const errors = [];
+//   const transporter_id = req.params.transporter_id;
+//   const driver_id = req.params.driver_id;
+//   let updateData = {};
+//   try {
+//     // console.log("HELLO YOU ARE IN CHANGE STATUS API OF DRIVER");
+//     // console.log("DATA", req.body.reason);
+//     // console.log("Driver_id", driver_id);
+//     // console.log("Transporter_id", transporter_id);
+
+//     const transporter = await db.collection("users").doc(transporter_id);
+//     const getDrivers = await transporter.collection("driver_details").get();
+
+//     let id = null;
+//     getDrivers.forEach((doc) => {
+//       if (driver_id == doc.data().user_uid) {
+//         id = doc.id;
+//       }
+//     });
+//     const getDriverId = await transporter.collection("driver_details").doc(id);
+
+//     if (transporter_id !== driver_id) {
+//       const user = await db.collection("users").doc(driver_id);
+//       const data = await user.get();
+//       const driverData = await data.data();
+
+//       if (driverData === undefined) {
+//         errors.push({ msg: "Driver not found...!!" });
+//         res.render("Errors/errors", { errors: errors });
+//       }
+
+//       const Status = {
+//         status: !driverData.status,
+//       };
+//       // console.log("Status", Status);
+
+//       updateData = {
+//         type: "users",
+//         id: await db.doc("users/" + driver_id),
+//         user_id: await firebase.auth().currentUser.uid,
+//         updated_at: new Date(),
+//         status: Status.status,
+//         reason: req.body.reason,
+//       };
+
+//       // console.log("UPDATED DATA", updateData);
+//       // await firebase.auth().updateUser(id, { disabled: true });
+//       // await firebaseAdmin
+//       //   .auth()
+//       //   .updateUser(id, { disabled: true })
+//       //   .then((userRecord) => {
+//       //     // See the UserRecord reference doc for the contents of userRecord.
+//       //     console.log("Successfully updated user", userRecord.toJSON());
+//       //   })
+//       //   .catch((error) => {
+//       //     console.log("Error updating user:", error);
+//       //   });
+
+//       await user.update(Status);
+
+//       await getDriverId.update(Status);
+//     } else {
+//       const getDriverData = await getDriverId.get();
+//       const data = await getDriverData.data();
+//       const Status = {
+//         status: !data.status,
+//       };
+//       // console.log("Status", Status);
+
+//       updateData = {
+//         type: "users",
+//         id: await db.doc("users/" + transporter_id + "/driver_details/" + id),
+//         user_id: await firebase.auth().currentUser.uid,
+//         updated_at: new Date(),
+//         status: Status.status,
+//         reason: req.body.reason,
+//       };
+
+//       await getDriverId.update(Status);
+//     }
+
+//     await db.collection("status_logs").add(updateData);
+
+//     return res.redirect("back");
+//     // res.redirect(`/transporter/transporterDetails/${transporter_id}`);
+//     // return true;
+//     // return res.redirect(`driver/${transporter_id}/displayDrivers`);
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
 
 // Delete Driver API
 exports.removeDriver = async (req, res) => {
