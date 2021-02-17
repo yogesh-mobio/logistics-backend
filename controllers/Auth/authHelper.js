@@ -7,7 +7,7 @@ const isEmpty = (string) => {
   }
 };
 
-// for validating signin data
+// validating signin data
 exports.validateSignInData = (data) => {
   let errors = [];
   if (isEmpty(data.email)) {
@@ -23,7 +23,7 @@ exports.validateSignInData = (data) => {
   };
 };
 
-// for validating Forget Password data
+// validating Forget Password data
 exports.validateForgetPasswordData = (data) => {
   let errors = [];
   if (isEmpty(data.email)) {
@@ -35,7 +35,7 @@ exports.validateForgetPasswordData = (data) => {
   };
 };
 
-// for validating Change Password data
+// validating Change Password data
 exports.validateChangePasswordData = (data) => {
   let errors = [];
   if (isEmpty(data.password)) {

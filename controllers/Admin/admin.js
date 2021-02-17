@@ -1,6 +1,7 @@
 const { db, firebaseSecondaryApp, firebase } = require("../../config/admin");
 const { validateAdminData } = require("./adminHelper");
 
+/* Create a new Admin Controller */
 exports.newAdmin = async (req, res) => {
   try {
     const adminData = {
@@ -40,6 +41,7 @@ exports.newAdmin = async (req, res) => {
         photo: "",
         status: status,
         created_at: new Date(),
+        is_deleted: false,
       };
 
       await db.collection("users").doc(newAdmin.user.uid).set(data);
@@ -68,6 +70,7 @@ exports.newAdmin = async (req, res) => {
   }
 };
 
+/* Get All the Admins Controller */
 exports.listAdmins = async (req, res) => {
   try {
     const admins = [];
@@ -87,28 +90,129 @@ exports.listAdmins = async (req, res) => {
   }
 };
 
+/* Remove an Admin Controller */
 exports.removeAdmin = async (req, res) => {
   try {
-    const uid = req.params.id;
+    const id = req.params.admin_id;
+    // console.log("*****ID*****", id);
 
-    const batch = db.batch();
-    const data = await db
-      .collection("users")
-      .doc(uid)
-      .collection("documents")
-      .get();
+    const getAdminById = await db.collection("users").doc(id);
+    const adminData = await getAdminById.get();
+    const admin = await adminData.data();
+    // console.log("*****ADMIN DATA*****", admin);
 
-    data.forEach((doc) => {
-      batch.delete(doc.ref);
-    });
-    await batch.commit();
+    if (admin === undefined) {
+      errors.push({ msg: "Admin not found...!!" });
+      res.render("Errors/errors", { errors: errors });
+    }
 
-    await db.collection("users").doc(uid).delete();
+    const updateData = {
+      reason: req.body.reason,
+      is_deleted: true,
+    };
+
+    const deletedData = {
+      type: "users",
+      id: await db.doc("users/" + id),
+      user_id: await firebase.auth().currentUser.uid,
+      deleted_at: new Date(),
+    };
+
+    await getAdminById.update(updateData);
+    await db.collection("deletion_logs").add(deletedData);
+
+    return res.redirect("back");
+
+    // const batch = db.batch();
+    // const data = await db
+    //   .collection("users")
+    //   .doc(id)
+    //   .collection("documents")
+    //   .get();
+
+    // data.forEach((doc) => {
+    //   batch.delete(doc.ref);
+    // });
+    // await batch.commit();
+
+    // await db.collection("users").doc(id).delete();
 
     // await firebase.auth().deleteUser(uid);
     // console.log("USER IS DELETED");
-    res.redirect("/admin/displayAdmins");
+    // res.redirect("/admin/displayAdmins");
   } catch (error) {
-    res.status(400).json({ error: error.code });
+    const errors = [];
+    console.log(error);
+    errors.push({ msg: error.message });
+    return res.render("Errors/errors", {
+      errors: errors,
+    });
+    // res.status(400).json({ error: error.code });
+  }
+};
+
+/* Get Admin details Controller */
+exports.adminDetails = async (req, res) => {
+  try {
+    const errors = [];
+    const id = req.params.admin_id;
+
+    const data = await db.collection("users").doc(id).get();
+    if (data.data() === undefined) {
+      errors.push({ msg: "Admin not found...!!" });
+      return res.render("Errors/errors", { errors: errors });
+    }
+    const adminData = data.data();
+
+    return res.render("Users/Admin/adminDetails", {
+      admin: adminData,
+    });
+  } catch (error) {
+    const errors = [];
+    errors.push({ msg: error.message });
+    return res.render("Errors/errors", { errors: errors });
+  }
+};
+
+/* Change Admin's Status Controller */
+exports.changeAdminStatus = async (req, res) => {
+  const errors = [];
+  const id = req.params.admin_id;
+
+  try {
+    const getAdminById = await db.collection("users").doc(id);
+    const adminData = await getAdminById.get();
+    const admin = await adminData.data();
+
+    if (admin == undefined) {
+      errors.push({ msg: "There is no data available" });
+      return res.render("Users/Admin/displayAdmins", {
+        errors: errors,
+      });
+    }
+
+    const Status = {
+      status: !admin.status,
+    };
+
+    const updateData = {
+      reason: req.body.reason,
+      type: "users",
+      id: await db.doc("users/" + id),
+      user_id: await firebase.auth().currentUser.uid,
+      updated_at: new Date(),
+      status: Status.status,
+    };
+
+    await getAdminById.update(Status);
+    await db.collection("status_logs").add(updateData);
+
+    return res.redirect("/transporter/displayTransporters");
+  } catch (error) {
+    console.log(error);
+    errors.push({ msg: error.message });
+    return res.render("Errors/errors", {
+      errors: errors,
+    });
   }
 };

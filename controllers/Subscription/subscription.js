@@ -1,6 +1,7 @@
 const { db, firebase } = require("../../config/admin");
 const { validateSubscriptionData } = require("./subscriptionHelper");
 
+// Create subsctiption controller --> GET
 exports.addSubscription = async (req, res) => {
   const vehicleTypes = [];
   const data = await db.collection("vehicles").get();
@@ -23,6 +24,7 @@ exports.addSubscription = async (req, res) => {
   }
 };
 
+// Create subsctiption controller --> POST
 exports.addedSubscription = async (req, res) => {
   const vehicleTypes = [];
   const vehicleTypeData = await db.collection("vehicles").get();
@@ -69,6 +71,7 @@ exports.addedSubscription = async (req, res) => {
   }
 };
 
+// Get all subsctiptions controller
 exports.listSubscriptions = async (req, res) => {
   try {
     const subscriptions = [];
@@ -91,6 +94,7 @@ exports.listSubscriptions = async (req, res) => {
   }
 };
 
+// Remove subscription plan controller
 exports.removeSubscription = async (req, res) => {
   try {
     const id = req.params.subscription_id;
@@ -131,6 +135,7 @@ exports.removeSubscription = async (req, res) => {
   }
 };
 
+// Get subscription plan details controller
 exports.subscriptionDetails = async (req, res) => {
   try {
     const id = req.params.subscription_id;
@@ -154,6 +159,7 @@ exports.subscriptionDetails = async (req, res) => {
   }
 };
 
+// Update subscription plan controller --> GET
 exports.updateSubscription = async (req, res) => {
   try {
     const errors = [];
@@ -174,6 +180,7 @@ exports.updateSubscription = async (req, res) => {
   }
 };
 
+// Update subscription plan controller --> POST
 exports.updatedSubscription = async (req, res) => {
   try {
     const id = req.params.subscription_id;

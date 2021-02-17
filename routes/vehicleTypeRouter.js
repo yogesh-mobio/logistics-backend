@@ -34,7 +34,7 @@ var upload = multer({
   // fileFilter: fileFilter,
 });
 
-// Routes for Admin
+// Routes for Vehicle-Type
 vehicleTypeRouter.get("/createVehicleType", (req, res) => {
   res.render("VehicleType/addVehicleType");
 });

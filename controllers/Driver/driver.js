@@ -26,7 +26,7 @@ const { db, firebase } = require("../../config/admin");
 //   } catch (error) {
 //     const errors = [];
 //     errors.push({ msg: error.message });
-//     return res.render("Users/Transporter/displayTransporter", {
+//     return res.render("Users/Transporter/displayTransporters", {
 //       errors: errors,
 //     });
 //   }
@@ -81,7 +81,7 @@ exports.driverDetails = async (req, res) => {
   }
 };
 
-// Change Driver Status API
+// Change Driver Status Controller
 exports.changeDriverStatus = async (req, res) => {
   const errors = [];
   const transporter_id = req.params.transporter_id;
@@ -246,7 +246,7 @@ exports.changeDriverStatus = async (req, res) => {
 //   }
 // };
 
-// Delete Driver API
+/*  Delete Driver Controller */
 exports.removeDriver = async (req, res) => {
   const transporter_id = req.params.transporter_id;
   const driver_id = req.params.driver_id;
@@ -321,7 +321,7 @@ exports.removeDriver = async (req, res) => {
   }
 };
 
-// Vrify Driver API
+// Vrify Driver Controller
 exports.verifyDriver = async (req, res) => {
   const transporter_id = req.params.transporter_id;
   const driver_id = req.params.driver_id;

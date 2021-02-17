@@ -1,6 +1,7 @@
 const { db, firebase } = require("../../config/admin");
 const { validateVehicleTypeData } = require("./vehicleTypeHelper");
 
+/* Function to get rates */
 const vehicleRates = (kmFrom, kmTo, price) => {
   let newAry = [];
   let result = [];
@@ -41,6 +42,7 @@ const vehicleRates = (kmFrom, kmTo, price) => {
   return result;
 };
 
+/* Create new Vehicle Type Controller */
 exports.newVehicleType = async (req, res) => {
   try {
     const data = req.body;
@@ -94,6 +96,7 @@ exports.newVehicleType = async (req, res) => {
   }
 };
 
+/* Get List of all the Vehicle Types Controller */
 exports.listVehicleTypes = async (req, res) => {
   try {
     const vehicles = [];
@@ -114,6 +117,7 @@ exports.listVehicleTypes = async (req, res) => {
   }
 };
 
+/* Remove Vehicle Type Controller */
 exports.removeVehicleType = async (req, res) => {
   try {
     const id = req.params.vehicleType_id;
@@ -158,6 +162,7 @@ exports.removeVehicleType = async (req, res) => {
   }
 };
 
+/* Get a Details of a Vehicle Type Controller */
 exports.vehicleTypeDetails = async (req, res) => {
   try {
     const errors = [];
@@ -180,6 +185,7 @@ exports.vehicleTypeDetails = async (req, res) => {
   }
 };
 
+/* Update Vehicle Type Controller --> GET */
 exports.updateVehicleType = async (req, res) => {
   try {
     const errors = [];
@@ -198,6 +204,7 @@ exports.updateVehicleType = async (req, res) => {
   }
 };
 
+/* Update Vehicle Type Controller --> POST */
 exports.updatedVehicleType = async (req, res) => {
   try {
     const id = req.params.vehicleType_id;

@@ -6,6 +6,7 @@ const {
 } = require("./authHelper");
 // const User = require("../../models/auth");
 
+/* SignIn Controller */
 exports.signIn = async (req, res) => {
   try {
     const user = {
@@ -65,6 +66,7 @@ exports.signIn = async (req, res) => {
   }
 };
 
+/* SignOut Controller */
 exports.signOut = async (req, res) => {
   try {
     await firebase.auth().signOut();
@@ -74,6 +76,7 @@ exports.signOut = async (req, res) => {
   }
 };
 
+/* Forget Password Controller */
 exports.forgetPassword = async (req, res) => {
   try {
     const userEmail = { email: req.body.email };
@@ -92,6 +95,7 @@ exports.forgetPassword = async (req, res) => {
   }
 };
 
+/* Get Current signed in User Function */
 const getCurrentUser = () => {
   try {
     let currentUser = null;
@@ -102,6 +106,7 @@ const getCurrentUser = () => {
   }
 };
 
+/* Change Password Controller */
 exports.changePassword = async (req, res) => {
   try {
     const passwords = {
@@ -130,6 +135,7 @@ exports.changePassword = async (req, res) => {
   }
 };
 
+/* Get Profile of Signed In User Controller */
 exports.profile = async (req, res) => {
   try {
     const currentUser = getCurrentUser();
@@ -160,41 +166,3 @@ exports.profile = async (req, res) => {
     res.render("Pages/pages-error", { errors });
   }
 };
-//   const data = await db.collection("users").get();
-//   let authData;
-
-// data.docs.map((doc) => {
-//   users.push(doc.data());
-//   res.redirect("/dashboard");
-// });
-
-//   data.forEach((doc) => {
-//     if (doc.data().email == email) {
-//       const user = new User(
-//         doc.id,
-//         doc.data().email,
-//         doc.data().password,
-//         doc.data().user_type
-//       );
-//       authData = user;
-// if (authData.email == email && authData.password == password) {
-//   console.log("Hello");
-// }
-//       req.session.authUser = authData;
-//     }
-//   });
-
-//   console.log("USER", authData);
-// const vehicles = [];
-// const data = await db.collection("vehicles").get();
-// data.forEach((doc) => {
-//   const vehicle = (doc.id, doc.data().vehicle_type);
-//   vehicles.push(vehicle);
-// });
-// return vehicles;
-
-// firebase.auth().onAuthStateChanged((user) => {
-//   if (user) {
-//     return user;
-//   }
-// });

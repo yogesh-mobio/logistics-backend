@@ -1,5 +1,6 @@
 const { db } = require("../../config/admin");
 
+/* Function to count every user-type */
 const userCounter = async () => {
   try {
     let cntTransporter = {};
@@ -67,6 +68,7 @@ const userCounter = async () => {
   }
 };
 
+/*  Function to count Order */
 const orderCounter = async () => {
   try {
     let cntPendingOrder = {};
@@ -116,6 +118,7 @@ const orderCounter = async () => {
   }
 };
 
+/* Dashboard Controller */
 exports.dashboard = async (req, res) => {
   try {
     let data = [];
