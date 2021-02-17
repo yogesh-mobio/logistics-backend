@@ -1,5 +1,6 @@
 const { db, firebase } = require("../../config/admin");
 
+/* Get All the Customers Controller */
 exports.listCustomers = async (req, res) => {
   try {
     const customers = [];
@@ -24,6 +25,7 @@ exports.listCustomers = async (req, res) => {
   }
 };
 
+/* Get Customer's Details Controller */
 exports.customerDetails = async (req, res) => {
   try {
     const errors = [];
@@ -47,6 +49,7 @@ exports.customerDetails = async (req, res) => {
   }
 };
 
+/* Change Customer's Status Controller */
 exports.changeCustomerStatus = async (req, res) => {
   try {
     const id = req.params.customer_id;
@@ -65,6 +68,7 @@ exports.changeCustomerStatus = async (req, res) => {
   }
 };
 
+/* Remove a customer Controller */
 exports.removeCustomer = async (req, res) => {
   try {
     const errors = [];

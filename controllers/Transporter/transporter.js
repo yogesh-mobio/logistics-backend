@@ -9,6 +9,7 @@ const {
 } = require("../../config/admin");
 const { validateTransporterData } = require("./transporterHelper");
 
+/* Function to get Lat-Long */
 const getLatLong = async (address) => {
   var geocoder = NodeGeocoder({
     provider: process.env.GEO_PROVIDER,
@@ -45,6 +46,7 @@ const getLatLong = async (address) => {
   return coordinates;
 };
 
+/* Function to convert into boolean */
 const isBoolean = async (string) => {
   let boolean = null;
   if (string == "true") {
@@ -55,6 +57,7 @@ const isBoolean = async (string) => {
   return boolean;
 };
 
+/* Create a new Transporter Controller --> GET */
 exports.getNewTransporter = async (req, res) => {
   const vehicleTypes = [];
   const data = await db.collection("vehicles").get();
@@ -77,6 +80,7 @@ exports.getNewTransporter = async (req, res) => {
   }
 };
 
+/* Create a new Transporter Controller --> POST */
 exports.newTransporter = async (req, res) => {
   const vehicleTypes = [];
   const data = await db.collection("vehicles").get();
@@ -331,6 +335,7 @@ exports.newTransporter = async (req, res) => {
   }
 };
 
+/* Get all the Transporter Controller */
 exports.listTransporters = async (req, res) => {
   try {
     const transporters = [];
@@ -345,18 +350,19 @@ exports.listTransporters = async (req, res) => {
         transporters.push(transporter);
       }
     });
-    return res.render("Users/Transporter/displayTransporter", {
+    return res.render("Users/Transporter/displayTransporters", {
       transporters: transporters,
     });
   } catch (error) {
     const errors = [];
     errors.push(error.message);
-    return res.render("Users/Transporter/displayTransporter", {
+    return res.render("Users/Transporter/displayTransporters", {
       errors: errors,
     });
   }
 };
 
+/* Change Status of the Transporter Controller */
 exports.changeTransporterStatus = async (req, res) => {
   try {
     const errors = [];
@@ -367,7 +373,7 @@ exports.changeTransporterStatus = async (req, res) => {
 
     if (!data) {
       errors.push({ msg: "There is no data available" });
-      return res.render("Users/Transporter/displayTransporter", {
+      return res.render("Users/Transporter/displayTransporters", {
         errors: errors,
       });
     }
@@ -394,7 +400,7 @@ exports.changeTransporterStatus = async (req, res) => {
   }
 };
 
-// Delete transporter API
+/* Delete transporter Controller */
 exports.removeTransporter = async (req, res) => {
   try {
     const errors = [];
@@ -413,7 +419,7 @@ exports.removeTransporter = async (req, res) => {
 
     if (!transporterData) {
       errors.push({ msg: "There are no data available" });
-      return res.render("User/Transporter/displayTransporter", {
+      return res.render("User/Transporter/displayTransporters", {
         errors: errors,
       });
     }
@@ -445,6 +451,7 @@ exports.removeTransporter = async (req, res) => {
   }
 };
 
+/* Get Details of a Transporter  Controller */
 exports.transporterDetails = async (req, res) => {
   try {
     const id = req.params.transporter_id;
@@ -501,6 +508,7 @@ exports.transporterDetails = async (req, res) => {
   }
 };
 
+/* Verify Transporter Controller --> GET */
 exports.verifyTransporter = async (req, res) => {
   try {
     const id = req.params.transporter_id;
@@ -558,6 +566,7 @@ exports.verifyTransporter = async (req, res) => {
   }
 };
 
+/* Verify Transporter Controller --> POST */
 exports.verifiedTransporter = async (req, res) => {
   try {
     const id = req.params.transporter_id;
@@ -653,9 +662,8 @@ exports.verifiedTransporter = async (req, res) => {
 // 1. reg_no 2. gst_no 3. is_register
 
 /*
-  Add transporter NEW API
+  Create Transporter API
 */
-
 // exports.newTransporterApi = async (req, res) => {
 //   try {
 //     const data = {

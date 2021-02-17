@@ -8,6 +8,7 @@ const isEmpty = (string) => {
   }
 };
 
+// for checking array is empty or not
 const isEmptyArray = (ary) => {
   for (let i = 0; i <= ary.length; i++) {
     if (ary[i] === "") {
@@ -27,16 +28,7 @@ const isNumeric = (string) => {
   }
 };
 
-// const isNumeric = (string) => {
-//   var numbers = /^[0-9]+$/;
-//   if (string.match(numbers)) {
-//     return true;
-//   } else {
-//     return false;
-//   }
-// };
-
-// Validating vehicle data
+// Validating vehicle-Type data
 exports.validateVehicleTypeData = (data) => {
   let errors = [];
   if (isEmpty(data.name)) {

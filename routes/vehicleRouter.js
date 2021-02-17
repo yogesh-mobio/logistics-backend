@@ -10,7 +10,7 @@ const {
 } = require("../controllers/Vehicle/vehicle");
 const { isAuthenticated } = require("../middleware/authGaurd");
 
-// Routes for Drivers
+// Routes for Vehicles
 // vehicleRouter.get("/:transporter_id/displayVehicles", transporterVehiclesList);
 
 vehicleRouter.get(

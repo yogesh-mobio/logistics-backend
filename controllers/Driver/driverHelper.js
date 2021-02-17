@@ -17,7 +17,7 @@ const isNumeric = (string) => {
   }
 };
 
-// Validating Trasporter data
+// Validating Driver data
 exports.validateDriverData = (data) => {
   let errors = [];
   if (isEmpty(data.firstname)) {

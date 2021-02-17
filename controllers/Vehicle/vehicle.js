@@ -1,7 +1,7 @@
 const { db, firebase } = require("../../config/admin");
 // const { validateDriverData } = require("./driverHelper");
 
-// Get Vehicle's list of a perticular Transporter
+// Get Vehicle's list of a perticular Transporter Controller
 // exports.transporterVehiclesList = async (req, res) => {
 //   try {
 //     const vehicles = [];
@@ -28,13 +28,13 @@ const { db, firebase } = require("../../config/admin");
 //   } catch (error) {
 //     const errors = [];
 //     errors.push({ msg: error.message });
-//     return res.render("Users/Transporter/displayTransporter", {
+//     return res.render("Users/Transporter/displayTransporters", {
 //       errors: errors,
 //     });
 //   }
 // };
 
-// Get Vehicle details
+// Get Vehicle details Controller
 exports.vehicleDetails = async (req, res) => {
   const errors = [];
   const vehicle_id = req.params.vehicle_id;
@@ -66,7 +66,7 @@ exports.vehicleDetails = async (req, res) => {
   }
 };
 
-// Change Vehicle Status API
+// Change Vehicle Status Controller
 exports.changeVehicleStatus = async (req, res) => {
   const errors = [];
   const transporter_id = req.params.transporter_id;
@@ -116,7 +116,7 @@ exports.changeVehicleStatus = async (req, res) => {
   }
 };
 
-// Delete Vehicle API
+// Delete Vehicle Controller
 exports.removeVehicle = async (req, res) => {
   const transporter_id = req.params.transporter_id;
   const vehicle_id = req.params.vehicle_id;
@@ -169,7 +169,7 @@ exports.removeVehicle = async (req, res) => {
   }
 };
 
-// Vrify Vehicle API
+// Vrify Vehicle Controller
 exports.verifyVehicle = async (req, res) => {
   const transporter_id = req.params.transporter_id;
   const vehicle_id = req.params.vehicle_id;

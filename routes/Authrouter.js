@@ -1,7 +1,7 @@
 var express = require("express");
 var Authrouter = express.Router();
 
-//Authentications all TABs.
+//Routes for Authentications.
 Authrouter.get("/", (req, res) => {
   res.render("Pages/pages-login");
 });
