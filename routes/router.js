@@ -11,6 +11,12 @@ const {
 // const { newDriver } = require("../controllers/Driver/driver");
 const { isAuthenticated } = require("../middleware/authGaurd");
 const { dashboard } = require("../controllers/Dashboard/dashboard");
+const {
+  sendNotification,
+} = require("../controllers/Notification/notification");
+
+// Router For Notification
+router.post("/api/sendNotification", sendNotification);
 
 // Routes for Signup, Signin and Signout
 router.post("/", signIn);
