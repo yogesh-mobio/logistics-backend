@@ -73,6 +73,49 @@ exports.sendNotification = async (req, res) => {
         }
       }
     } else if (req.body.type == "assign") {
+      if (req.body.userId == "" || req.body.userId == undefined) {
+        return res.status(400).send({ message: "User id is required." });
+      } else {
+        const user = await db.collection("users").doc(req.body.userId).get();
+        userFcmToken.push(await user.data().fcm_token);
+
+        if (req.body.transporterId !== "" && req.body.driverId !== "") {
+          const driver = await db
+            .collection("users")
+            .doc(req.body.driverId)
+            .get();
+          const driverFirstName = await driver.data().first_name;
+          const driverLastName = await driver.data().last_name;
+          const transporter = await db
+            .collection("users")
+            .doc(req.body.transporterId)
+            .get();
+          const transporterFirstName = await transporter.data().first_name;
+          const transporterLastName = await transporter.data().last_name;
+
+          const split_text_driver = text.slice(0, 27);
+          //   const split_text_vehicle = text.slice(28, 27);
+          console.log("split_text", split_text_driver);
+
+          ntitle = "Assign Order";
+          nbody = `${transporterFirstName} ${transporterLastName} ${text.slice(
+            0,
+            26
+          )} ${driverFirstName} ${driverLastName}${text.slice(26)} Hello BABY`;
+        } else {
+          const transporter = await db
+            .collection("users")
+            .doc(req.body.transporterId)
+            .get();
+          const transporterFirstName = await transporter.data().first_name;
+          const transporterLastName = await transporter.data().last_name;
+          ntitle = "Assign Order";
+          nbody = `${transporterFirstName} ${transporterLastName} ${text.slice(
+            0,
+            27
+          )}`;
+        }
+      }
     }
 
     const notification = {
@@ -103,7 +146,8 @@ exports.sendNotification = async (req, res) => {
     messaging
       .sendToDevice(fireToken, payload)
       .then(function (response) {
-        // console.log("Have Permission******", response);
+        console.log("Have Permission******", response);
+        console.log("PAYLOAD******", payload);
         return response;
       })
       .catch(function (err) {
