@@ -19,7 +19,10 @@ const firebaseSecondaryApp = firebase.initializeApp(
 );
 
 const db = firebase.firestore();
-let bucket = firebaseAdmin.storage().bucket(process.env.STORAGE_BUCKET);
+// let bucket = firebaseAdmin.storage().bucket(process.env.STORAGE_BUCKET);
+let bucket = firebaseAdmin
+  .storage()
+  .bucket("logistics - ondemand - app.appspot.com");
 let messaging = firebaseAdmin.messaging();
 
 var payload = {
