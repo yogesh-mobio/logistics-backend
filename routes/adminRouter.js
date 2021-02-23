@@ -10,6 +10,10 @@ const {
 } = require("../controllers/Admin/admin");
 const { isAuthenticated } = require("../middleware/authGaurd");
 
+// adminRouter.get("/transporter-register", (req, res) => {
+//   res.render("TransporterRegister/registerTransporter");
+// });
+
 // Routes for Admin
 adminRouter.get("/createAdmin", (req, res) => {
   res.render("Users/Admin/addAdmin");

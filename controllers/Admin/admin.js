@@ -1,9 +1,45 @@
-const { db, firebaseSecondaryApp, firebase } = require("../../config/admin");
+const {
+  db,
+  firebaseSecondaryApp,
+  firebase,
+  messaging,
+} = require("../../config/admin");
 const { validateAdminData } = require("./adminHelper");
 
 /* Create a new Admin Controller */
 exports.newAdmin = async (req, res) => {
   try {
+    // // messaging
+    // //   .requestPermission()
+    // //   .then(function () {
+    // //     MsgElem.innerHTML = "Notification permission granted.";
+    // //     console.log("Notification permission granted.");
+    // //     // get the token in the form of promise
+    // //     return messaging.getToken();
+    // //   })
+    // //   .then(function (token) {
+    // //     // print the token on the HTML page
+    // //     console.log("token is : ", token);
+    // //   })
+    // //   .catch(function (err) {
+    // //     ErrElem.innerHTML = ErrElem.innerHTML + "; " + err;
+    // //     console.log("Unable to get permission to notify.", err);
+    // //   });
+    // messaging
+    //   .getToken({
+    //     vapidKey:
+    //       "BBBrOLIqdpBfi2k450IBiThfbqBxfWmHcOQ9UYYUiBqDcLBlMgCqrkB2_Zq6crUk2kvypCxXdLnU-5scdg5jjco",
+    //   })
+    //   .then((fcmToken) => {
+    //     if (fcmToken) {
+    //       console.log("FCM TOKEN*******", fcmToken);
+    //     } else {
+    //       console.log("[FCMService] User does not have a device token");
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     console.log("[FCMService] getToken rejected", error);
+    //   });
     const adminData = {
       email: req.body.email,
       password: req.body.password,
@@ -13,9 +49,7 @@ exports.newAdmin = async (req, res) => {
       documentType: req.body.documentType,
       status: req.body.status,
     };
-
     const { valid, errors } = validateAdminData(adminData);
-
     if (!valid) {
       res.render("Users/Admin/addAdmin", {
         errors,
@@ -24,14 +58,12 @@ exports.newAdmin = async (req, res) => {
       const newAdmin = await firebaseSecondaryApp
         .auth()
         .createUserWithEmailAndPassword(adminData.email, adminData.password);
-
       let status = null;
       if (adminData.status == "true") {
         status = Boolean(!!adminData.status);
       } else {
         status = Boolean(!adminData.status);
       }
-
       const data = {
         first_name: adminData.firstname,
         last_name: adminData.lastname,
@@ -43,16 +75,13 @@ exports.newAdmin = async (req, res) => {
         created_at: new Date(),
         is_deleted: false,
       };
-
       await db.collection("users").doc(newAdmin.user.uid).set(data);
       await db
         .collection("users")
         .doc(newAdmin.user.uid)
         .collection("documents")
         .add({ type: adminData.documentType, url: "", updated_at: new Date() });
-
       firebaseSecondaryApp.auth().signOut();
-
       res.render("Users/Admin/addAdmin", {
         message: "Admin is created...!!",
       });

@@ -1,6 +1,11 @@
 var express = require("express");
 var Authrouter = express.Router();
 
+// Routes for transporter Register
+Authrouter.get("/transporter-register", (req, res) => {
+  res.render("TransporterRegister/registerTransporter");
+});
+
 //Routes for Authentications.
 Authrouter.get("/", (req, res) => {
   res.render("Pages/pages-login");
