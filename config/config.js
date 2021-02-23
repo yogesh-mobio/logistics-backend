@@ -13,7 +13,7 @@ const {
 } = process.env;
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDWcZSbyp_kYJSNxLRVVemkx_5V9JlQDHA",
+  apiKey: API_KEY,
   authDomain: AUTH_DOMAIN,
   databaseURL: DATABASE_URL,
   projectId: PROJECT_ID,
