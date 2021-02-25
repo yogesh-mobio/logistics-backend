@@ -386,6 +386,70 @@ exports.verifyDriver = async (req, res) => {
   }
 };
 
+// Reject Driver Controller
+exports.rejectDriver = async (req, res) => {
+  const transporter_id = req.params.transporter_id;
+  const driver_id = req.params.driver_id;
+  const errors = [];
+
+  try {
+    // console.log("HELLO YOU ARE IN Verify API OF Driver");
+    // console.log("TID", transporter_id);
+    // console.log("DID", driver_id);
+
+    const transporter = await db.collection("users").doc(transporter_id);
+
+    const getDrivers = await transporter.collection("driver_details").get();
+
+    let id = null;
+    getDrivers.forEach((doc) => {
+      if (driver_id == doc.data().user_uid) {
+        id = doc.id;
+      }
+    });
+    const getDriverId = await transporter.collection("driver_details").doc(id);
+
+    if (transporter_id === driver_id) {
+      await getDriverId.update({
+        is_verified: "verified",
+      });
+    } else {
+      const user = await db.collection("users").doc(driver_id);
+      const data = await user.get();
+      const driverData = await data.data();
+
+      if (driverData === undefined) {
+        errors.push({ msg: "Driver not found...!!" });
+        res.render("Errors/errors", { errors: errors });
+      } else {
+        let updateData = {};
+        if (driverData.is_verified === "pending") {
+          updateData = {
+            is_verified: "verified",
+          };
+        }
+
+        await user.update(updateData);
+
+        await getDriverId.update(updateData);
+      }
+    }
+    await transporter.update({ is_request: true });
+
+    await sendAdminNotification(transporter_id, driver_id, "verified");
+
+    return res.redirect("back");
+    // return res.redirect(`/transporter/transporterDetails/${transporter_id}`);
+  } catch (error) {
+    const errors = [];
+    console.log(error);
+    errors.push({ msg: error.message });
+    return res.render("Errors/errors", {
+      errors: errors,
+    });
+  }
+};
+
 /*
   Add New Driver
 */
