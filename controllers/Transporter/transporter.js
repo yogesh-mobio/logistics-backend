@@ -12,8 +12,10 @@ const { validateTransporterData } = require("./transporterHelper");
 /* Function to get Lat-Long */
 const getLatLong = async (address) => {
   var geocoder = NodeGeocoder({
-    provider: process.env.GEO_PROVIDER,
-    apiKey: process.env.GEO_API_KEY,
+    // provider: process.env.GEO_PROVIDER,
+    provider: "opencage",
+    // apiKey: process.env.GEO_API_KEY,
+    apiKey: "6a6bca1dc71e4877b61d1a38ea7f46db",
   });
 
   // const res = await geocoder.geocode("Rajasthan 302029");
