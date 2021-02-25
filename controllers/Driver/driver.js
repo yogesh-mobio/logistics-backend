@@ -1,4 +1,5 @@
-const { db, firebase } = require("../../config/admin");
+const { db, firebase, messaging } = require("../../config/admin");
+const { sendAdminNotification } = require("../Notification/notification");
 // const { validateDriverData } = require("./driverHelper");
 
 // Get Driver's list of a perticular Transporter
@@ -370,6 +371,9 @@ exports.verifyDriver = async (req, res) => {
       }
     }
     await transporter.update({ is_request: true });
+
+    await sendAdminNotification(transporter_id, driver_id, "verified");
+
     return res.redirect("back");
     // return res.redirect(`/transporter/transporterDetails/${transporter_id}`);
   } catch (error) {
