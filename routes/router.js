@@ -13,10 +13,12 @@ const { isAuthenticated } = require("../middleware/authGaurd");
 const { dashboard } = require("../controllers/Dashboard/dashboard");
 const {
   sendNotification,
+  sendAdminNotification,
 } = require("../controllers/Notification/notification");
 
 // Router For Notification
 router.post("/api/sendNotification", sendNotification);
+router.post("/api/sendAdminNotification", sendAdminNotification);
 
 // Routes for Signup, Signin and Signout
 router.post("/", signIn);
@@ -26,29 +28,29 @@ router.get("/logout", signOut);
 // Routes for Forget Password
 router.post("/forget-password", forgetPassword);
 
-//  Routes for Driver
-router.get("/transporter/:transporter_id/createDriver", (req, res) => {
-  res.render("Users/Driver/addDriver");
-});
-
-// router.post("/transporter/:transporter_id/createDriver", newDriver);
-
-router.get("/displayDrivers");
-
-// Routes for Vehicle
-// router.get("/transporter/:transporter_id/createVehicle", (req, res) => {
-//   res.render("Vehicle/addVehicle");
+// //  Routes for Driver
+// router.get("/transporter/:transporter_id/createDriver", (req, res) => {
+//   res.render("Users/Driver/addDriver");
 // });
 
-router.post("/transporter/:transporter_id/createVehicle");
+// // router.post("/transporter/:transporter_id/createDriver", newDriver);
 
-router.get("/displayVehicles");
+// router.get("/displayDrivers");
+
+// // Routes for Vehicle
+// // router.get("/transporter/:transporter_id/createVehicle", (req, res) => {
+// //   res.render("Vehicle/addVehicle");
+// // });
+
+// router.post("/transporter/:transporter_id/createVehicle");
+
+// router.get("/displayVehicles");
 
 // Dashboard
 router.get("/dashboard", isAuthenticated, dashboard);
-// router.get("/dashboard-copy", (req, res) => {
-//   res.render("Dashboard/dashboard-copy");
-// });
+router.get("/dashboard-copy", (req, res) => {
+  res.render("Dashboard/dashboard-copy");
+});
 
 // Change Password API
 router.get("/changePassword", isAuthenticated, (req, res) => {

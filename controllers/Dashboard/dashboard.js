@@ -1,4 +1,5 @@
 const { db } = require("../../config/admin");
+const moment = require("moment");
 
 /* Function to count every user-type */
 const userCounter = async () => {
@@ -117,6 +118,16 @@ const orderCounter = async () => {
     console.log(error);
   }
 };
+
+// /* Function to get register user count report */
+// const registerUserReport = () => {
+//   if (req.query.start && req.query.end) {
+//     var st = new Date(req.query.start);
+//     var e = new Date(req.query.end);
+//     console.log("START*****", st);
+//     console.log("END*****", e);
+//   }
+// };
 
 /* Dashboard Controller */
 exports.dashboard = async (req, res) => {

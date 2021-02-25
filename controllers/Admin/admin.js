@@ -4,27 +4,34 @@ const {
   firebase,
   messaging,
 } = require("../../config/admin");
+// importScripts("https://www.gstatic.com/firebasejs/4.13.0/firebase-app.js");
+// importScripts(
+//   "https://www.gstatic.com/firebasejs/4.13.0/firebase-messaging.js"
+// );
 const { validateAdminData } = require("./adminHelper");
 
 /* Create a new Admin Controller */
 exports.newAdmin = async (req, res) => {
   try {
-    // // messaging
-    // //   .requestPermission()
-    // //   .then(function () {
-    // //     MsgElem.innerHTML = "Notification permission granted.";
-    // //     console.log("Notification permission granted.");
-    // //     // get the token in the form of promise
-    // //     return messaging.getToken();
-    // //   })
-    // //   .then(function (token) {
-    // //     // print the token on the HTML page
-    // //     console.log("token is : ", token);
-    // //   })
-    // //   .catch(function (err) {
-    // //     ErrElem.innerHTML = ErrElem.innerHTML + "; " + err;
-    // //     console.log("Unable to get permission to notify.", err);
-    // //   });
+    // messaging
+    //   .requestPermission()
+    //   .then(function () {
+    //     // MsgElem.innerHTML = "Notification permission granted.";
+    //     console.log("Notification permission granted.");
+    //     // get the token in the form of promise
+    //     return messaging.getToken();
+    //   })
+    //   .then(function (token) {
+    //     // print the token on the HTML page
+    //     console.log("token is : ", token);
+    //   })
+    //   .catch(function (err) {
+    //     // ErrElem.innerHTML = ErrElem.innerHTML + "; " + err;
+    //     console.log("Unable to get permission to notify.", err);
+    //   });
+    // messaging.onMessage(function (payload) {
+    //   console.log("OnMessage:", payload);
+    // });
     // messaging
     //   .getToken({
     //     vapidKey:
@@ -51,7 +58,7 @@ exports.newAdmin = async (req, res) => {
     };
     const { valid, errors } = validateAdminData(adminData);
     if (!valid) {
-      res.render("Users/Admin/addAdmin", {
+      return res.render("Users/Admin/addAdmin", {
         errors,
       });
     } else {
@@ -82,7 +89,7 @@ exports.newAdmin = async (req, res) => {
         .collection("documents")
         .add({ type: adminData.documentType, url: "", updated_at: new Date() });
       firebaseSecondaryApp.auth().signOut();
-      res.render("Users/Admin/addAdmin", {
+      return res.render("Users/Admin/addAdmin", {
         message: "Admin is created...!!",
       });
     }
@@ -90,7 +97,7 @@ exports.newAdmin = async (req, res) => {
     const errors = [];
     if (error.code == "auth/email-already-in-use") {
       errors.push({ msg: "Email already exists!" });
-      res.render("Users/Admin/addAdmin", {
+      return res.render("Users/Admin/addAdmin", {
         errors,
       });
     }
