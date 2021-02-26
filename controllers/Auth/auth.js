@@ -20,36 +20,36 @@ exports.signIn = async (req, res) => {
       return res.status(400).json(errors);
     }
 
-    const data = await firebase
-      .auth()
-      .signInWithEmailAndPassword(user.email, user.password);
+    // const data = await firebase
+    //   .auth()
+    //   .signInWithEmailAndPassword(user.email, user.password);
 
-    const token = await data.user.getIdToken();
+    // const token = await data.user.getIdToken();
 
-    if (token) {
-      res.redirect("/dashboard");
-    }
-
-    // let userEmail = null;
-    // const usersData = await db.collection("users").get();
-    // usersData.forEach((doc) => {
-    //   if (
-    //     doc.data().email == user.email &&
-    //     (doc.data().user_type == "Admin" || doc.data().user_type == "admin")
-    //   ) {
-    //     userEmail = doc.data().email;
-    //   }
-    // });
-
-    // if (user.email == userEmail) {
-    //   await firebase
-    //     .auth()
-    //     .signInWithEmailAndPassword(user.email, user.password);
-
+    // if (token) {
     //   res.redirect("/dashboard");
-    // } else {
-    //   res.redirect("/");
     // }
+
+    let userEmail = null;
+    const usersData = await db.collection("users").get();
+    usersData.forEach((doc) => {
+      if (
+        doc.data().email == user.email &&
+        (doc.data().user_type == "Admin" || doc.data().user_type == "admin")
+      ) {
+        userEmail = doc.data().email;
+      }
+    });
+
+    if (user.email == userEmail) {
+      await firebase
+        .auth()
+        .signInWithEmailAndPassword(user.email, user.password);
+
+      res.redirect("/dashboard");
+    } else {
+      res.redirect("/");
+    }
   } catch (error) {
     if (error.code == "auth/invalid-email") {
       return res.status(403).json("Please enter the valid email ID");
