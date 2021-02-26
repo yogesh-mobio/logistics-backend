@@ -52,7 +52,11 @@ exports.driverDetails = async (req, res) => {
         });
       }
 
-      driver = { id: driver_id, driverData: data };
+      driver = {
+        id: driver_id,
+        driverData: data,
+        transporterId: transporter_id,
+      };
       // console.log("DRIVER DETAILS*************", driver);
     } else {
       const transporter = await db.collection("users").doc(transporter_id);
@@ -66,7 +70,12 @@ exports.driverDetails = async (req, res) => {
       });
       const getDriver = await drivers.doc(id).get();
       const data = await getDriver.data();
-      driver = { id: driver_id, driverData: data };
+      driver = {
+        id: driver_id,
+        driverData: data,
+        transporterId: transporter_id,
+      };
+      // console.log("DRIVER DETAILS*************", driver);
     }
 
     return res.render("Users/Driver/driverDetails", {
@@ -374,8 +383,8 @@ exports.verifyDriver = async (req, res) => {
 
     await sendAdminNotification(transporter_id, driver_id, "verified");
 
-    return res.redirect("back");
-    // return res.redirect(`/transporter/transporterDetails/${transporter_id}`);
+    // return res.redirect("back");
+    return res.redirect(`/transporter/transporterDetails/${transporter_id}`);
   } catch (error) {
     const errors = [];
     console.log(error);
@@ -411,7 +420,7 @@ exports.rejectDriver = async (req, res) => {
 
     if (transporter_id === driver_id) {
       await getDriverId.update({
-        is_verified: "verified",
+        is_verified: "rejected",
       });
     } else {
       const user = await db.collection("users").doc(driver_id);
@@ -425,7 +434,7 @@ exports.rejectDriver = async (req, res) => {
         let updateData = {};
         if (driverData.is_verified === "pending") {
           updateData = {
-            is_verified: "verified",
+            is_verified: "rejected",
           };
         }
 
@@ -434,12 +443,12 @@ exports.rejectDriver = async (req, res) => {
         await getDriverId.update(updateData);
       }
     }
-    await transporter.update({ is_request: true });
+    // await transporter.update({ is_request: true });
 
-    await sendAdminNotification(transporter_id, driver_id, "verified");
+    await sendAdminNotification(transporter_id, driver_id, "rejected");
 
-    return res.redirect("back");
-    // return res.redirect(`/transporter/transporterDetails/${transporter_id}`);
+    // return res.redirect("back");
+    return res.redirect(`/transporter/transporterDetails/${transporter_id}`);
   } catch (error) {
     const errors = [];
     console.log(error);

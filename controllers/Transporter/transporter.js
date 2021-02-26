@@ -232,6 +232,17 @@ exports.newTransporter = async (req, res) => {
         status: false,
       };
 
+      const notification = {
+        // type: req.body.type,
+        type: "new_driver",
+        is_read: false,
+        text: `${transporterData.first_name} ${transporterData.last_name} has added ${driverData.first_name} ${driverData.last_name} to his profile, please verify its details at earliest.`,
+        created_at: new Date(),
+        // user_id: userId,
+        title: "New Driver Added",
+        // orderId: orderId,
+      };
+
       const newTransporter = await firebaseSecondaryApp
         .auth()
         .createUserWithEmailAndPassword(data.email, data.password);
@@ -284,6 +295,9 @@ exports.newTransporter = async (req, res) => {
           .collection("driver_details")
           .doc();
         await transporterDriver.set(transporterDriverData);
+
+        await db.collection("notification").add(notification);
+
         firebaseSecondaryApp.auth().signOut();
       }
 
