@@ -202,22 +202,32 @@
                 </div>
               </div>
 
-              <button
-                type="button"
-                class="btn btn-primary btn-group waves-effect"
-                onclick="window.history.back()"
-              >
-                Display Drivers
-              </button>
-
+              <% if(driver.driverData.is_verified === "pending") { %>
               <button
                 type="button"
                 class="btn btn-danger btn-group waves-effect"
+                onclick="location.href='/driver/<%= driver.transporterId %>/rejectDriver/<%= driver.id %>'"
               >
                 Reject
               </button>
-
               <button
+                type="button"
+                class="btn btn-success btn-group waves-effect"
+                onclick="location.href='/driver/<%= driver.transporterId %>/verifyDriver/<%= driver.id %>'"
+              >
+                Verify
+              </button>
+              <% } else { %>
+              <button
+                type="button"
+                class="btn btn-primary btn-group waves-effect"
+                onclick="location.href='/transporter/transporterDetails/<%= driver.transporterId %>'"
+              >
+                Display Drivers
+              </button>
+              <% } %>
+
+              <!-- <button
                 id="btnCancel"
                 name="btnCancel"
                 type="button"
@@ -225,7 +235,7 @@
                 onclick="location.href='/dashboard'"
               >
                 Cancel
-              </button>
+              </button> -->
             </form>
             %>
           </div>

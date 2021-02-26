@@ -15,6 +15,7 @@ const {
   sendNotification,
   sendAdminNotification,
 } = require("../controllers/Notification/notification");
+const { db } = require("../config/admin");
 
 // Router For Notification
 router.post("/api/sendNotification", sendNotification);
@@ -371,7 +372,13 @@ router.get("/HeaderStyle", (req, res) => {
   res.render("Partials/HeaderStyle");
 });
 router.get("/Sidebar", (req, res) => {
-  res.render("Partials/Sidebar");
+  let notifications = [];
+  const getNotifications = db.collection("notification").get();
+  getNotifications.forEach((doc) => {
+    const notification = { id: doc.id, notificationData: doc.data() };
+    notifications.push(notification);
+  });
+  res.render("Partials/Sidebar", { notifications: notifications });
 });
 router.get("/TinyCharts", (req, res) => {
   res.render("Partials/TinyCharts");
