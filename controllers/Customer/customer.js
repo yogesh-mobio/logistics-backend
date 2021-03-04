@@ -33,13 +33,30 @@ exports.customerDetails = async (req, res) => {
     // console.log("*****ID*****", id);
 
     const data = await db.collection("users").doc(id).get();
-    if (!data) {
+    if (!data.data() == undefined) {
       errors.push({ msg: "There are no data available" });
       res.render("User/Customer/displayCutomers", { errors: errors });
-    }
-    const customerData = data.data();
+    } else {
+      const orders = [];
 
-    res.render("Users/Customer/customerDetails", { customer: customerData });
+      let customer = { id: data.id, customerData: data.data() };
+      let getOrders = await db.collection("order_details").get();
+
+      getOrders.forEach(async (doc) => {
+        if (doc.data().requested_uid == id) {
+          const order = {
+            id: doc.id,
+            orderData: doc.data(),
+            requested_id: id,
+          };
+          orders.push(order);
+        }
+      });
+      res.render("Users/Customer/customerDetails", {
+        customer: customer,
+        orders: orders,
+      });
+    }
   } catch (error) {
     const errors = [];
     errors.push({ msg: error.message });

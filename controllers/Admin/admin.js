@@ -54,7 +54,7 @@ exports.newAdmin = async (req, res) => {
       lastname: req.body.lastname,
       phone: req.body.phone,
       documentType: req.body.documentType,
-      status: req.body.status,
+      // status: req.body.status,
     };
     const { valid, errors } = validateAdminData(adminData);
     if (!valid) {
@@ -65,12 +65,12 @@ exports.newAdmin = async (req, res) => {
       const newAdmin = await firebaseSecondaryApp
         .auth()
         .createUserWithEmailAndPassword(adminData.email, adminData.password);
-      let status = null;
-      if (adminData.status == "true") {
-        status = Boolean(!!adminData.status);
-      } else {
-        status = Boolean(!adminData.status);
-      }
+      // let status = null;
+      // if (adminData.status == "true") {
+      //   status = Boolean(!!adminData.status);
+      // } else {
+      //   status = Boolean(!adminData.status);
+      // }
       const data = {
         first_name: adminData.firstname,
         last_name: adminData.lastname,
@@ -78,7 +78,7 @@ exports.newAdmin = async (req, res) => {
         phone_number: adminData.phone,
         user_type: "Admin",
         photo: "",
-        status: status,
+        status: true,
         created_at: new Date(),
         is_deleted: false,
       };

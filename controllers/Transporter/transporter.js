@@ -167,7 +167,7 @@ exports.newTransporter = async (req, res) => {
       const latLong = await getLatLong(stringAddress);
 
       let status = await isBoolean(data.status);
-      let registered = await isBoolean(data.registered);
+      // let registered = await isBoolean(data.registered);
 
       let transporterData = {
         first_name: data.firstname,
@@ -179,7 +179,8 @@ exports.newTransporter = async (req, res) => {
         is_verified: "pending",
         gst_number: data.gstNo,
         status: status,
-        registered: registered,
+        // registered: registered,
+        registered: true,
         is_deleted: false,
         reason: "",
         created_at: new Date(),
@@ -480,6 +481,7 @@ exports.transporterDetails = async (req, res) => {
     } else {
       const drivers = [];
       const vehicles = [];
+      const orders = [];
 
       let getDrivers = await getTransporterById
         .collection("driver_details")
@@ -511,11 +513,25 @@ exports.transporterDetails = async (req, res) => {
         }
       });
 
+      let getOrders = await db.collection("order_details").get();
+
+      getOrders.forEach(async (doc) => {
+        if (doc.data().transporter_uid == id) {
+          const order = {
+            id: doc.id,
+            orderData: doc.data(),
+            transporter_id: id,
+          };
+          orders.push(order);
+        }
+      });
+
       let transporter = { id: data.id, transporterData: data.data() };
       return res.render("Users/Transporter/transporterDetails", {
         transporter: transporter,
         drivers: drivers,
         vehicles: vehicles,
+        orders: orders,
       });
     }
   } catch (error) {

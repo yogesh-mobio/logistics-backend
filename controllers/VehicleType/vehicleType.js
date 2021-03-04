@@ -120,6 +120,7 @@ exports.listVehicleTypes = async (req, res) => {
 /* Remove Vehicle Type Controller */
 exports.removeVehicleType = async (req, res) => {
   try {
+    const errors = [];
     const id = req.params.vehicleType_id;
     // console.log("*****ID*****", id);
 
@@ -133,25 +134,47 @@ exports.removeVehicleType = async (req, res) => {
       res.render("Errors/errors", { errors: errors });
     }
 
-    const updateData = {
-      reason: req.body.reason,
-      is_deleted: true,
-    };
+    let counter = 0;
+    const orders = await db.collection("order_details").get();
+    orders.forEach((doc) => {
+      if (doc.data().vehicle_type === vehicleType.vehicle_type) {
+        counter++;
+      }
+    });
 
-    const deletedData = {
-      type: "vehicle-type",
-      id: await db.doc("vehicles/" + id),
-      user_id: await firebase.auth().currentUser.uid,
-      deleted_at: new Date(),
-    };
+    if (counter == 0) {
+      const updateData = {
+        reason: req.body.reason,
+        is_deleted: true,
+      };
 
-    // console.log("*******", updateData);
+      const deletedData = {
+        type: "vehicle-type",
+        id: await db.doc("vehicles/" + id),
+        user_id: await firebase.auth().currentUser.uid,
+        deleted_at: new Date(),
+      };
 
-    await getVehicleTypeById.update(updateData);
-    await db.collection("deletion_logs").add(deletedData);
+      // console.log("*******", updateData);
 
-    return res.redirect("back");
+      await getVehicleTypeById.update(updateData);
+      await db.collection("deletion_logs").add(deletedData);
+
+      return res.redirect("back");
+      // return res.redirect("/vehicle-type/displayVehicleTypes");
+    }
+    // req.flash(
+    //   "error_msg",
+    //   `You cannot delete ${vehicleType.vehicle_type} because it is associated with some order`
+    // );
     // return res.redirect("/vehicle-type/displayVehicleTypes");
+
+    errors.push({
+      msg: `You cannot delete ${vehicleType.vehicle_type} because it is associated with some order`,
+    });
+    res.render("Errors/errors", {
+      errors: errors,
+    });
   } catch (error) {
     const errors = [];
     console.log(error);
