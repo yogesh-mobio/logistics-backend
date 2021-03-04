@@ -234,7 +234,7 @@
                 </div>
               </div>
 
-              <div class="form-group row">
+              <!-- <div class="form-group row">
                 <label
                   for="transporterIsDeleted"
                   class="col-sm-2 col-form-label"
@@ -246,9 +246,9 @@
                   transporter.transporterData.is_deleted === false ) { %>
                   value="No" <% } else { %> value="Yes" <% } %> readonly />
                 </div>
-              </div>
+              </div> -->
 
-              <% if( transporter.is_deleted === true ) { %>
+              <!-- <% if( transporter.is_deleted === true ) { %>
               <div class="form-group row">
                 <label
                   for="transporterRemoveReason"
@@ -267,7 +267,7 @@
                   />
                 </div>
               </div>
-              <% } %>
+              <% } %> -->
 
               <div class="form-group row">
                 <label
@@ -343,7 +343,7 @@
                       href="#DriversList"
                       role="tab"
                     >
-                      <span>List all Drivers</span>
+                      <span>Drivers</span>
                     </a>
                   </li>
                   <li class="nav-item">
@@ -353,7 +353,17 @@
                       href="#VehicleList"
                       role="tab"
                     >
-                      <span>List all Vehicles</span>
+                      <span>Vehicles</span>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a
+                      class="nav-link"
+                      data-toggle="tab"
+                      href="#OrderList"
+                      role="tab"
+                    >
+                      <span>Orders</span>
                     </a>
                   </li>
                 </ul>
@@ -740,6 +750,63 @@
                                 </div>
                               </div>
                             </div>
+                            <% } %>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- end col -->
+                  </div>
+                  <!-- end row -->
+                </div>
+                <div class="tab-pane p-3" id="OrderList" role="tabpanel">
+                  <!-- <p>I am in Order Tab</p> -->
+                  <div class="row">
+                    <div class="col-12">
+                      <div class="card m-b-20">
+                        <div class="card-body">
+                          <h4 class="mt-0 header-title">List of all the Orders</h4>
+                          <% include ../../Partials/errorMessages %>
+                          <table
+                            id="datatable2"
+                            class="table table-bordered dt-responsive nowrap"
+                            cellspacing="0"
+                            width="100%"
+                          >
+                            <thead>
+                              <tr>
+                                <th>ID</th>
+                                <th>Order ID</th>
+                                <th>Vehicle Type</th>
+                                <th>Price</th>
+                                <th>Requested User</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                              </tr>
+                            </thead>
+              
+                            <tbody>
+                              <% for(var i=0;i<orders.length;i++) { %>
+                              <tr>
+                                <td><%= i+1 %></td>
+                                <td><%= orders[i].orderData.order_id %></td>
+                                <td><%= orders[i].orderData.vehicle_type %></td>
+                                <td><%= orders[i].orderData.price %></td>
+                                <td><%= orders[i].orderData.requested_uid %></td>
+                                <td><%= orders[i].orderData.status %></td>
+                                <td style="text-align: center;">
+                                  <button 
+                                  type="button"
+                                  class="btn btn-info waves-effect waves-light m-r-5" 
+                                  data-toggle="tooltip" data-original-title="View"
+                                  onclick="location.href='/order/orderDetails/<%= orders[i].id %>'"
+                                  >
+                                  <i class="mdi mdi-file-document"></i>
+                                  <!-- <span> View </span> -->
+                                  </button>
+                                </td>
+                              </tr>
                             <% } %>
                             </tbody>
                           </table>

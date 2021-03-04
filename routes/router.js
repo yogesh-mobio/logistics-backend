@@ -7,6 +7,8 @@ const {
   forgetPassword,
   changePassword,
   profile,
+  updateProfile,
+  updatedProfile,
 } = require("../controllers/Auth/auth");
 // const { newDriver } = require("../controllers/Driver/driver");
 const { isAuthenticated } = require("../middleware/authGaurd");
@@ -63,9 +65,9 @@ router.post("/changePassword", changePassword);
 // Profile API
 router.get("/profile", isAuthenticated, profile);
 
-router.get("/update-profile", isAuthenticated, (req, res) => {
-  res.render("Pages/update-profile");
-});
+router.get("/update-profile", isAuthenticated, updateProfile);
+
+router.post("/update-profile", isAuthenticated, updatedProfile);
 
 // Calendar
 router.get("/calendar", (req, res) => {

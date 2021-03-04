@@ -156,13 +156,73 @@ exports.profile = async (req, res) => {
       }
 
       admin = { userAdmin, status };
-      res.render("Pages/profile", { admin: admin });
+      return res.render("Pages/profile", { admin: admin });
     }
     errors.push({ msg: "This user is not available..!!" });
-    res.render("Pages/pages-error", { errors });
+    return res.render("Pages/pages-error", { errors });
   } catch (error) {
     let errors = [];
     errors.push({ msg: error.code });
-    res.render("Pages/pages-error", { errors });
+    return res.render("Pages/pages-error", { errors });
+  }
+};
+
+/* Get Profile of Signed In User Controller */
+exports.updateProfile = async (req, res) => {
+  try {
+    const currentUser = getCurrentUser();
+
+    let errors = [];
+    let admin = null;
+
+    if (currentUser != null) {
+      const userUid = currentUser.uid;
+      const user = await db.collection("users").doc(userUid).get();
+      const userAdmin = user.data();
+
+      let status = null;
+      if (userAdmin.status === true) {
+        status = "Active";
+      } else {
+        status = "In-active";
+      }
+
+      admin = { userAdmin, status };
+      return res.render("Pages/update-profile", { admin: admin });
+    }
+    errors.push({ msg: "This user is not available..!!" });
+    return res.render("Pages/pages-error", { errors });
+  } catch (error) {
+    let errors = [];
+    errors.push({ msg: error.code });
+    return res.render("Pages/pages-error", { errors });
+  }
+};
+
+/* Get Profile of Signed In User Controller */
+exports.updatedProfile = async (req, res) => {
+  try {
+    const currentUser = getCurrentUser();
+
+    let data = {
+      first_name: req.body.firstName,
+      last_name: req.body.lastName,
+      phone_number: req.body.phone,
+    };
+
+    if (currentUser != null) {
+      const userUid = currentUser.uid;
+      const admin = await db.collection("users").doc(userUid);
+
+      await admin.update(data);
+
+      return res.redirect("/profile");
+    }
+    errors.push({ msg: "This user is not available..!!" });
+    return res.render("Pages/update-profile", { errors });
+  } catch (error) {
+    let errors = [];
+    errors.push({ msg: error.code });
+    return res.render("Pages/update-profile", { errors });
   }
 };

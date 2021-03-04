@@ -1,4 +1,23 @@
-<%- contentFor('HeaderCss') %> <%- contentFor('breadcrumb') %>
+<%- contentFor('HeaderCss') %>
+
+<!-- DataTables -->
+<link
+  href="/assets/plugins/datatables/dataTables.bootstrap4.min.css"
+  rel="stylesheet"
+  type="text/css"
+/>
+<link
+  href="/assets/plugins/datatables/buttons.bootstrap4.min.css"
+  rel="stylesheet"
+  type="text/css"
+/>
+<!-- Responsive datatable examples -->
+<link
+  href="/assets/plugins/datatables/responsive.bootstrap4.min.css"
+  rel="stylesheet"
+  type="text/css"
+/>
+<%- contentFor('breadcrumb') %>
 <ul class="list-inline menu-left mb-0">
   <li class="list-inline-item">
     <button type="button" class="button-menu-mobile open-left waves-effect">
@@ -34,7 +53,7 @@
                     id="customerFirstName"
                     name="firstname"
                     placeholder="Enter your First Name"
-                    value="<%= customer.first_name %>"
+                    value="<%= customer.customerData.first_name %>"
                     readonly
                   />
                 </div>
@@ -50,7 +69,7 @@
                     type="text"
                     id="customerLastName"
                     name="lastname"
-                    value="<%= customer.last_name %>"
+                    value="<%= customer.customerData.last_name %>"
                     placeholder="Enter your Last Name"
                     readonly
                   />
@@ -68,7 +87,7 @@
                     id="customerEmail"
                     name="email"
                     placeholder="Enter your Email"
-                    value="<%= customer.email %>"
+                    value="<%= customer.customerData.email %>"
                     readonly
                   />
                 </div>
@@ -85,7 +104,7 @@
                     id="customerPhoneNumber"
                     name="phone"
                     placeholder="Enter your Phone Number"
-                    value="<%= customer.phone_number %>"
+                    value="<%= customer.customerData.phone_number %>"
                     readonly
                   />
                 </div>
@@ -102,7 +121,7 @@
                     id="customerAddress"
                     name="address"
                     placeholder="Please enter your address"
-                    value="<%= customer.address.flatNumber %>"
+                    value="<%= customer.customerData.address.flatNumber %>"
                     readonly
                   />
                   <br />
@@ -119,7 +138,7 @@
                       id="area"
                       name="area"
                       placeholder="Enter the area"
-                      value="<%= customer.address.area %>"
+                      value="<%= customer.customerData.address.area %>"
                       readonly
                     />
                     &nbsp;
@@ -133,7 +152,7 @@
                       id="city"
                       name="city"
                       placeholder="Enter the city"
-                      value="<%= customer.address.city %>"
+                      value="<%= customer.customerData.address.city %>"
                       readonly
                     />
                     &nbsp;
@@ -147,7 +166,7 @@
                       id="pincode"
                       name="pincode"
                       placeholder="Enter your pincode"
-                      value="<%= customer.address.pincode %>"
+                      value="<%= customer.customerData.address.pincode %>"
                       readonly
                     />
                   </div>
@@ -165,7 +184,7 @@
                       id="state"
                       name="state"
                       placeholder="Enter the State"
-                      value="<%= customer.address.state %>"
+                      value="<%= customer.customerData.address.state %>"
                       readonly
                     />
                     &nbsp;
@@ -179,7 +198,7 @@
                       id="country"
                       name="country"
                       placeholder="Enter the Country"
-                      value="<%= customer.address.country %>"
+                      value="<%= customer.customerData.address.country %>"
                       readonly
                     />
                   </div>
@@ -196,7 +215,7 @@
                       type="text"
                       id="latitude"
                       name="latitude"
-                      value="<%= customer.address.latitude %>"
+                      value="<%= customer.customerData.address.latitude %>"
                       readonly
                     />
                     &nbsp;
@@ -209,7 +228,7 @@
                       type="text"
                       id="longitude"
                       name="longitude"
-                      value="<%= customer.address.longitude %>"
+                      value="<%= customer.customerData.address.longitude %>"
                       readonly
                     />
                   </div> -->
@@ -222,24 +241,24 @@
                 >
                 <div class="col-sm-10">
                   <input class="form-control" type="text" id="customerStatus"
-                  name="status" <% if( customer.status === true ) { %>
-                  value="Active" <% } else { %> value="In-Active" <% } %>
+                  name="status" <% if( customer.customerData.status === true ) {
+                  %> value="Active" <% } else { %> value="In-Active" <% } %>
                   readonly />
                 </div>
               </div>
 
-              <div class="form-group row">
+              <!-- <div class="form-group row">
                 <label for="customerIsDeleted" class="col-sm-2 col-form-label"
                   >Deleted</label
                 >
                 <div class="col-sm-10">
                   <input class="form-control" type="text" id="customerIsDeleted"
-                  name="isDeleted" <% if( customer.is_deleted === false ) { %>
+                  name="isDeleted" <% if( customer.customerData.is_deleted === false ) { %>
                   value="No" <% } else { %> value="Yes" <% } %> readonly />
                 </div>
-              </div>
+              </div> -->
 
-              <% if( customer.is_deleted === true ) { %>
+              <!-- <% if( customer.customerData.is_deleted === true ) { %>
               <div class="form-group row">
                 <label
                   for="customerRemoveReason"
@@ -253,12 +272,91 @@
                     id="customerRemoveReason"
                     name="reason"
                     placeholder="Reason for deleting the user"
-                    value="<%= customer.reason %>"
+                    value="<%= customer.customerData.reason %>"
                     readonly
                   />
                 </div>
               </div>
-              <% } %>
+              <% } %> -->
+
+              <!-- Tabs -->
+              <div class="form-group row">
+                <ul class="nav nav-tabs" role="tablist">
+                  <li class="nav-item">
+                    <a
+                      class="nav-link active"
+                      data-toggle="tab"
+                      href="#OrderList"
+                      role="tab"
+                    >
+                      <span>Orders</span>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+
+              <div class="tab-content">
+                <div class="tab-pane active p-3" id="OrderList" role="tabpanel">
+                  <!-- <p>I am in Order Tab</p> -->
+                  <div class="tab-pane p-3" id="OrderList" role="tabpanel">
+                    <!-- <p>I am in Order Tab</p> -->
+                    <div class="row">
+                      <div class="col-12">
+                        <div class="card m-b-20">
+                          <div class="card-body">
+                            <h4 class="mt-0 header-title">List of all the Orders</h4>
+                            <% include ../../Partials/errorMessages %>
+                            <table
+                              id="datatable"
+                              class="table table-bordered dt-responsive nowrap"
+                              cellspacing="0"
+                              width="100%"
+                            >
+                              <thead>
+                                <tr>
+                                  <th>ID</th>
+                                  <th>Order ID</th>
+                                  <th>Vehicle Type</th>
+                                  <th>Price</th>
+                                  <th>Requested User</th>
+                                  <th>Status</th>
+                                  <th>Actions</th>
+                                </tr>
+                              </thead>
+                
+                              <tbody>
+                                <% for(var i=0;i<orders.length;i++) { %>
+                                <tr>
+                                  <td><%= i+1 %></td>
+                                  <td><%= orders[i].orderData.order_id %></td>
+                                  <td><%= orders[i].orderData.vehicle_type %></td>
+                                  <td><%= orders[i].orderData.price %></td>
+                                  <td><%= orders[i].orderData.requested_uid %></td>
+                                  <td><%= orders[i].orderData.status %></td>
+                                  <td style="text-align: center;">
+                                    <button 
+                                    type="button"
+                                    class="btn btn-info waves-effect waves-light m-r-5" 
+                                    data-toggle="tooltip" data-original-title="View"
+                                    onclick="location.href='/order/orderDetails/<%= orders[i].id %>'"
+                                    >
+                                    <i class="mdi mdi-file-document"></i>
+                                    <!-- <span> View </span> -->
+                                    </button>
+                                  </td>
+                                </tr>
+                              <% } %>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- end col -->
+                    </div>
+                    <!-- end row -->
+                  </div>
+                </div>
+              </div>
 
               <button
                 type="button"
@@ -285,4 +383,24 @@
   </div>
 </div>
 
-<%- contentFor('FooterJs') %> <%- contentFor('BottomJs') %>
+<%- contentFor('FooterJs') %>
+<!-- Required datatable js -->
+<script src="/assets/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="/assets/plugins/datatables/dataTables.bootstrap4.min.js"></script>
+<!-- Buttons examples -->
+<script src="/assets/plugins/datatables/dataTables.buttons.min.js"></script>
+<script src="/assets/plugins/datatables/buttons.bootstrap4.min.js"></script>
+<script src="/assets/plugins/datatables/jszip.min.js"></script>
+<script src="/assets/plugins/datatables/pdfmake.min.js"></script>
+<script src="/assets/plugins/datatables/vfs_fonts.js"></script>
+<script src="/assets/plugins/datatables/buttons.html5.min.js"></script>
+<script src="/assets/plugins/datatables/buttons.print.min.js"></script>
+<script src="/assets/plugins/datatables/buttons.colVis.min.js"></script>
+<!-- Responsive examples -->
+<script src="/assets/plugins/datatables/dataTables.responsive.min.js"></script>
+<script src="/assets/plugins/datatables/responsive.bootstrap4.min.js"></script>
+
+<!-- Datatable init js -->
+<script src="/assets/pages/datatables.init.js"></script>
+
+<%- contentFor('BottomJs') %>
