@@ -116,17 +116,16 @@
                   >Images</label
                 >
                 <div class="col-sm-10">
-                <% if(vehicle.vehicleData.vehicle_photos>=1) { %>
+                <% if(vehicle.vehicleData.vehicle_photos.length>=1) { %>
                   <% for(var i=0;i<vehicle.vehicleData.vehicle_photos.length;i++) { %>
                     <img
                       src="<%= vehicle.vehicleData.vehicle_photos[i] %>"
                       height="100px"
                       width="100px"
                     />&nbsp;
+                  <% } } else { %>
+                    <h6>No images Available</h6>
                   <% } %>
-                <% } else { %>
-                  <h6>No images Available</h6>
-                <% } %>
                 </div>
               </div>
 
