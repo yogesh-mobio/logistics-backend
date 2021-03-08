@@ -25,7 +25,7 @@
     </button>
   </li>
   <li class="hide-phone list-inline-item app-search">
-    <h3 class="page-title">Orders</h3>
+    <h3 class="page-title">Contacts</h3>
   </li>
 </ul>
 
@@ -36,7 +36,7 @@
       <div class="col-12">
         <div class="card m-b-20">
           <div class="card-body">
-            <h4 class="mt-0 header-title">List of all the orders</h4>
+            <h4 class="mt-0 header-title">List of all the contacts</h4>
             <% include ../Partials/errorMessages %>
 
             <table
@@ -48,30 +48,26 @@
               <thead>
                 <tr>
                   <th>ID</th>
-                  <th>Order ID</th>
-                  <th>Vehicle Type</th>
-                  <th>Price</th>
-                  <th>Requested User</th>
-                  <th>Status</th>
+                  <th>Title</th>
+                  <th>Subject</th>
+                  <th>Contact By</th>
                   <th>Actions</th>
                 </tr>
               </thead>
 
               <tbody>
-                <% for(var i=0;i<orders.length;i++) { %>
+                <% for(var i=0;i<contacts.length;i++) { %>
                 <tr>
                   <td><%= i+1 %></td>
-                  <td><%= orders[i].orderData.order_id %></td>
-                  <td><%= orders[i].orderData.vehicle_type %></td>
-                  <td><%= orders[i].orderData.price %></td>
-                  <td><%= orders[i].orderData.requested_uid %></td>
-                  <td><%= orders[i].orderData.status %></td>
+                  <td><%= contacts[i].contactData.title %></td>
+                  <td><%= contacts[i].contactData.subject %></td>
+                  <td><%= contacts[i].contactData.contact_by %></td>
                   <td style="text-align: center;">
                     <button 
                     type="button"
                     class="btn btn-info waves-effect waves-light m-r-5" 
                     data-toggle="tooltip" data-original-title="View"
-                    onclick="location.href='/order/orderDetails/<%= orders[i].id %>'"
+                    onclick="location.href='/contact/contactDetails/<%= contacts[i].id %>'"
                     >
                     <i class="mdi mdi-file-document"></i>
                     <!-- <span> View </span> -->

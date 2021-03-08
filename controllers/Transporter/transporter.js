@@ -7,7 +7,62 @@ const {
   firebase,
   bucket,
 } = require("../../config/admin");
-const { validateTransporterData } = require("./transporterHelper");
+const {
+  validateTransporterData,
+  validateTransporterDocuments,
+} = require("./transporterHelper");
+
+/**Function to get public URL of a Image */
+const imagePublicUrl = async (file) => {
+  let urls = [];
+  let publicUrl;
+
+  if (file.length === 1) {
+    const filename =
+      file[0].fieldname + "-" + Date.now() + "-" + file[0].originalname;
+    let blob = await bucket.file(filename);
+
+    const blobWriter = blob.createWriteStream({
+      metadata: {
+        contentType: file[0].mimetype,
+      },
+    });
+
+    blobWriter.on("finish", async () => {
+      console.log("Image Uploaded...!!");
+    });
+    blobWriter.end(file[0].buffer);
+
+    publicUrl = `https://firebasestorage.googleapis.com/v0/b/${
+      bucket.name
+    }/o/${encodeURI(blob.name)}?alt=media`;
+
+    return publicUrl;
+  } else if (file.length > 1) {
+    let blobWriter;
+    for (let i = 0; i < file.length; i++) {
+      const filename =
+        file[i].fieldname + "-" + Date.now() + "-" + file[i].originalname;
+      let blob = await bucket.file(filename);
+      blobWriter = blob.createWriteStream({
+        metadata: {
+          contentType: file[i].mimetype,
+        },
+      });
+
+      blobWriter.on("finish", async () => {
+        console.log("Image Uploaded...!!");
+      });
+      blobWriter.end(file[i].buffer);
+
+      publicUrl = `https://firebasestorage.googleapis.com/v0/b/${
+        bucket.name
+      }/o/${encodeURI(blob.name)}?alt=media`;
+      urls.push(publicUrl);
+    }
+    return urls;
+  }
+};
 
 /* Function to get Lat-Long */
 const getLatLong = async (address) => {
@@ -94,67 +149,16 @@ exports.newTransporter = async (req, res) => {
     const data = req.body;
     // console.log("***************", data);
 
-    /*
-    Files related work START
-     */
-    // const file = req.files;
-    // const file = req.files;
-    // const file = req.files.profile[0];
-    // const filename = req.files.profile[0].originalname;
-    // console.log(
-    //   "***************",
-    //   data,
-    //   "*********",
-    //   file
-    // "************",
-    // filename
-    // );
+    const files = req.files;
+    // console.log("***************", files);
 
-    // let blob = await bucket.file(file.originalname);
-    // const blobWriter = blob.createWriteStream({
-    //   metadata: {
-    //     contentType: file.mimetype,
-    //   },
-    // });
-
-    // blobWriter.on("finish", async () => {
-    //   let url = await blob.getSignedUrl({
-    //     action: "read",
-    //     expires: "01-01-2500",
-    //   });
-    //   const publicUrl = `https://firebasestorage.googleapis.com/v0/b/${
-    //     bucket.name
-    //   }/o/${encodeURI(blob.name)}?alt=media`;
-    //   console.log("%%%%%%%%%%%%", publicUrl);
-    //   console.log("%%%%%%%%%%%%", url);
-    // });
-    // blobWriter.end(file.buffer);
-
-    // let url = await blob.publicUrl();
-    // let token = await ref.to;
-    // let url = await ref.getSignedUrl({ action: "read", expires: "01-01-2500" });
-    // let storageRef = await firebase.storage.ref(filename);
-    // let putFile = await storageRef.child(filename).put(file);
-    // putFile.then((call) => {
-    //   let url = call.ref.getDownloadURL();
-    //   console.log("%%%%%%%%%%%%%%", url);
-    // });
-    // let url = await storageRef.getDownloadURL();
-    // let ref1 = await bucket.upload(file.originalname, {
-    //   contentType: file.mimetype,
-    // });
-    // console.log("%%%%%%%%%%%%%%", url);
-    /*
-      Files related work END
-    */
-
-    // Add document type whenever its required. It is not added yet.
-
+    /**Add document type whenever its required. It is not added yet. */
     const { valid, errors } = validateTransporterData(data);
-
-    if (!valid) {
+    const { fileValid, fileErrors } = validateTransporterDocuments(files);
+    if (!fileValid || !valid) {
       return res.render("Users/Transporter/addTransporter", {
         vehicleTypes: vehicleTypes,
+        fileErrors,
         errors,
       });
     } else {
@@ -168,6 +172,11 @@ exports.newTransporter = async (req, res) => {
 
       let status = await isBoolean(data.status);
       // let registered = await isBoolean(data.registered);
+
+      const profilePublicUrl = await imagePublicUrl(files.profile);
+      const addressProofPublicUrl = await imagePublicUrl(files.AddressProof);
+      const identityProofPublicUrl = await imagePublicUrl(files.IdentityProof);
+      const icons = await imagePublicUrl(files.icons);
 
       let transporterData = {
         first_name: data.firstname,
@@ -206,13 +215,10 @@ exports.newTransporter = async (req, res) => {
         phone_number: data.Phone,
         // user_type: "transporter",
         age: data.Age,
-        // address_proof: data.AddressProof,
-        address_proof: "",
-        // identity_proof: data.IdentityProof,
-        identity_proof: "",
+        address_proof: addressProofPublicUrl,
+        identity_proof: identityProofPublicUrl,
         created_at: new Date(),
-        // driver_photo: data.profile,
-        driver_photo: "",
+        driver_photo: profilePublicUrl,
         is_assign: false,
         is_deleted: false,
         is_verified: "pending",
@@ -231,6 +237,7 @@ exports.newTransporter = async (req, res) => {
         is_deleted: false,
         is_verified: "pending",
         status: false,
+        vehicle_photos: icons,
       };
 
       const notification = {
