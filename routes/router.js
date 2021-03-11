@@ -64,7 +64,7 @@ router.get("/report", registerUserReport);
 
 router.get("/chartReport", orderReport);
 
-router.post("/notification", listNotifications);
+router.get("/notifications", listNotifications);
 
 // Change Password API
 router.get("/changePassword", isAuthenticated, (req, res) => {
