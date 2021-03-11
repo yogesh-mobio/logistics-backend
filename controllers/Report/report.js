@@ -1,41 +1,88 @@
-const {
-  db,
-  firebaseSecondaryApp,
-  firebase,
-  messaging,
-} = require("../../config/admin");
+const { db } = require("../../config/admin");
 const moment = require("moment");
 
 exports.registerUserReport = async (req, res) => {
+  let counter = 0;
   if (req.query.start && req.query.end) {
     var st = new Date(req.query.start);
     var e = new Date(req.query.end);
-    console.log("START*****", st);
-    console.log("END*****", e);
+
+    let startDate = moment(st, "YYYY-MM-DD").format("MM-DD-YYYY") + " 00:00:00";
+    let endDate = moment(e, "YYYY-MM-DD").format("MM-DD-YYYY") + " 23:59:59";
+
+    let getUsers = await db.collection("users");
+    let users = await getUsers.get();
+
+    users.forEach((doc) => {
+      let userDate = doc.data().created_at.toDate();
+      let date = moment(userDate).format("MM-DD-YYYY");
+      if (date >= startDate && date <= endDate) {
+        counter++;
+      }
+    });
+    return res.json({ counter: counter });
   }
 };
 
-// if (req.query.start && req.query.end) {
-//   var st = new Date(req.query.start);
-//   var e = new Date(req.query.end);
-//   if (st > e) {
-//     return res.status(200).send({
-//       success: "0",
-//       message: "Start date can not be greater than End date",
-//     });
-//   }
-//   let startDate =
-//     moment(req.query.start, "YYYY-MM-DD").format("MM-DD-YYYY") + " 00:00:00";
-//   let endDate =
-//     moment(req.query.end, "YYYY-MM-DD").format("MM-DD-YYYY") + " 23:59:59";
-// } else {
-//   return res.status(200).send({ success: "0", message: "Input valid dates" });
-// }
-// let totalUsers = await User.count({
-//   where: {
-//     createdAt: {
-//       [Op.gte]: startDate,
-//       [Op.lte]: endDate,
-//     },
-//   },
-// });
+exports.orderReport = async (req, res) => {
+  let completedCnt = 0,
+    pendingCnt = 0,
+    rejectedCnt = 0,
+    ongoingCnt = 0;
+
+  if (req.query.start && req.query.end) {
+    var st = new Date(req.query.start);
+    var e = new Date(req.query.end);
+
+    console.log("START and END", st, e);
+
+    let startDate = moment(st, "YYYY-MM-DD").format("MM-DD-YYYY") + " 00:00:00";
+    let endDate = moment(e, "YYYY-MM-DD").format("MM-DD-YYYY") + " 23:59:59";
+
+    let getOrders = await db.collection("order_details");
+    let orders = await getOrders.get();
+
+    orders.forEach((doc) => {
+      let orderDate = doc.data().created_at.toDate();
+      let date = moment(orderDate).format("MM-DD-YYYY");
+      if (date >= startDate && date <= endDate) {
+        if (doc.data().status == "completed") {
+          completedCnt++;
+        } else if (doc.data().status == "pending") {
+          pendingCnt++;
+        } else if (doc.data().status == "rejected") {
+          rejectedCnt++;
+        } else if (doc.data().status == "ongoing") {
+          ongoingCnt++;
+        }
+      }
+    });
+
+    let orderCompleted = {
+      label: "Completed",
+      cnt: completedCnt,
+    };
+
+    let orderPending = {
+      label: "Pending",
+      cnt: pendingCnt,
+    };
+
+    let orderRejected = {
+      label: "Rejected",
+      cnt: rejectedCnt,
+    };
+
+    let orderOngoing = {
+      label: "Ongoing",
+      cnt: ongoingCnt,
+    };
+
+    return res.json({
+      orderCompleted: orderCompleted,
+      orderPending: orderPending,
+      orderRejected: orderRejected,
+      orderOngoing: orderOngoing,
+    });
+  }
+};

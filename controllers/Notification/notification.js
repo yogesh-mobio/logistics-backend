@@ -459,3 +459,27 @@ exports.sendAdminNotification = async (transporter_id, driver_id, type) => {
 
   await db.collection("notification").add(notification);
 };
+
+exports.listNotifications = async (req, res) => {
+  try {
+    const notifications = [];
+
+    const data = await db.collection("notification").get();
+    data.forEach(async (doc) => {
+      const notification = {
+        id: doc.id,
+        notificationData: doc.data(),
+      };
+      notifications.push(notification);
+    });
+    return res.render("Partials/notification", {
+      notifications: notifications,
+    });
+  } catch (error) {
+    const errors = [];
+    errors.push(error.message);
+    return res.render("Partials/notification", {
+      errors: errors,
+    });
+  }
+};
