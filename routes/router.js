@@ -16,8 +16,13 @@ const { dashboard } = require("../controllers/Dashboard/dashboard");
 const {
   sendNotification,
   sendAdminNotification,
+  listNotifications,
 } = require("../controllers/Notification/notification");
 const { db } = require("../config/admin");
+const {
+  registerUserReport,
+  orderReport,
+} = require("../controllers/Report/report");
 
 // Router For Notification
 router.post("/api/sendNotification", sendNotification);
@@ -54,6 +59,12 @@ router.get("/dashboard", isAuthenticated, dashboard);
 router.get("/dashboard-copy", (req, res) => {
   res.render("Dashboard/dashboard-copy");
 });
+
+router.get("/report", registerUserReport);
+
+router.get("/chartReport", orderReport);
+
+router.post("/notification", listNotifications);
 
 // Change Password API
 router.get("/changePassword", isAuthenticated, (req, res) => {

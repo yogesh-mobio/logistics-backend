@@ -75,10 +75,12 @@ const orderCounter = async () => {
     let cntPendingOrder = {};
     let cntOnGoingOrder = {};
     let cntCompleteOrder = {};
+    let cntRejectedOrder = {};
 
     const pendingOrder = [];
     const onGoingOrder = [];
     const completeOrder = [];
+    const rejectedOrder = [];
 
     const orders = await db.collection("order_details").get();
     orders.forEach((doc) => {
@@ -90,10 +92,15 @@ const orderCounter = async () => {
       ) {
         onGoingOrder.push(doc.data());
       } else if (
-        doc.data().status == "complete" ||
-        doc.data().status == "Complete"
+        doc.data().status == "completed" ||
+        doc.data().status == "Completed"
       ) {
         completeOrder.push(doc.data());
+      } else if (
+        doc.data().status == "rejected" ||
+        doc.data().status == "Rejected"
+      ) {
+        rejectedOrder.push(doc.data());
       }
     });
 
@@ -109,11 +116,21 @@ const orderCounter = async () => {
     };
     cntCompleteOrder = {
       counter: completeOrder.length,
-      heading: "Complete Orders",
+      heading: "Completed Orders",
       icon: "mdi mdi-cart",
     };
+    cntRejectedOrder = {
+      counter: rejectedOrder.length,
+      heading: "Rejected Orders",
+      icon: "mdi mdi-cart-off",
+    };
 
-    return { cntPendingOrder, cntOnGoingOrder, cntCompleteOrder };
+    return {
+      cntPendingOrder,
+      cntOnGoingOrder,
+      cntCompleteOrder,
+      cntRejectedOrder,
+    };
   } catch (error) {
     console.log(error);
   }
@@ -133,6 +150,13 @@ const orderCounter = async () => {
 exports.dashboard = async (req, res) => {
   try {
     let data = [];
+    let orderByStatus = [];
+    let userCnt = 0;
+
+    let getUsers = await db.collection("users").get();
+    getUsers.forEach((doc) => {
+      userCnt++;
+    });
 
     let users = await userCounter();
     Object.values(users).forEach((val) => {
@@ -142,9 +166,14 @@ exports.dashboard = async (req, res) => {
     let orders = await orderCounter();
     Object.values(orders).forEach((val) => {
       data.push(val);
+      orderByStatus.push(val);
     });
 
-    res.render("Dashboard/dashboard1", { data: data });
+    res.render("Dashboard/dashboard1", {
+      data: data,
+      orders: orderByStatus,
+      userCnt: userCnt,
+    });
   } catch (error) {
     console.log(error);
   }
