@@ -17,6 +17,8 @@ const {
   sendNotification,
   sendAdminNotification,
   listNotifications,
+  notificationCount,
+  notificationRead,
 } = require("../controllers/Notification/notification");
 const { db } = require("../config/admin");
 const {
@@ -65,6 +67,10 @@ router.get("/report", registerUserReport);
 router.get("/chartReport", orderReport);
 
 router.get("/notifications", listNotifications);
+
+router.get("/notificationCount", notificationCount);
+
+router.get("/readNotification", notificationRead);
 
 // Change Password API
 router.get("/changePassword", isAuthenticated, (req, res) => {

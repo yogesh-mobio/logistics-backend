@@ -304,12 +304,25 @@ exports.newTransporter = async (req, res) => {
           .doc();
         await transporterDriver.set(transporterDriverData);
 
-        await db.collection("notification").add(notification);
-
         firebaseSecondaryApp.auth().signOut();
       }
 
       firebaseSecondaryApp.auth().signOut();
+
+      await db.collection("notification").add(notification);
+
+      const getAllUsers = await db.collection("users");
+      const getUsers = await getAllUsers.get();
+      getUsers.forEach(async (user) => {
+        if (
+          user.data().user_type === "admin" ||
+          user.data().user_type === "Admin"
+        ) {
+          await getAllUsers
+            .doc(user.id)
+            .update({ noti_count: user.data().noti_count + 1 });
+        }
+      });
 
       return res.render("Users/Transporter/addTransporter", {
         message: "Transporter is created...!!",
