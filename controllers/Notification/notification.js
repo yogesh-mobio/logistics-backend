@@ -1,4 +1,4 @@
-const { db, messaging } = require("../../config/admin");
+const { db, firebase, messaging } = require("../../config/admin");
 
 exports.sendNotification = async (req, res) => {
   try {
@@ -463,19 +463,75 @@ exports.sendAdminNotification = async (transporter_id, driver_id, type) => {
 exports.listNotifications = async (req, res) => {
   const notifications = [];
 
+  const currentUser = firebase.auth().currentUser;
+
+  let admin;
+
+  if (currentUser != null) {
+    const userUid = currentUser.uid;
+    await db.collection("users").doc(userUid).update({ noti_count: 0 });
+    const user = await db.collection("users").doc(userUid).get();
+    admin = await user.data();
+  }
+
   const data = await db
     .collection("notification")
     .orderBy("created_at", "desc")
     .get();
   data.forEach((doc) => {
-    const notification = {
-      id: doc.id,
-      notificationData: doc.data(),
-    };
-    notifications.push(notification);
+    if (doc.data().type === "new_driver" && doc.data().is_read === false) {
+      const notification = {
+        id: doc.id,
+        notificationData: doc.data(),
+      };
+      notifications.push(notification);
+    }
   });
 
   return res.json({
     notifications: notifications,
+    admin: admin,
   });
+};
+
+exports.notificationCount = async (req, res) => {
+  try {
+    const currentUser = firebase.auth().currentUser;
+
+    let admin = null;
+
+    if (currentUser != null) {
+      const userUid = currentUser.uid;
+      const user = await db.collection("users").doc(userUid).get();
+      const userAdmin = user.data();
+
+      let status = null;
+      if (userAdmin.status === true) {
+        status = "Active";
+      } else {
+        status = "In-active";
+      }
+
+      admin = { userAdmin, status };
+      return res.json({ admin: admin });
+    }
+  } catch (error) {
+    let errors = [];
+    errors.push({ msg: error.code });
+    return res.json({ errors });
+  }
+};
+
+exports.notificationRead = async (req, res) => {
+  try {
+    await db
+      .collection("notification")
+      .doc(req.query.notiId)
+      .update({ is_read: true });
+    return res.json({ msg: "Notification is read already...!!" });
+  } catch (error) {
+    let errors = [];
+    errors.push({ msg: error.code });
+    return res.json({ errors });
+  }
 };

@@ -76,7 +76,7 @@ exports.newAdmin = async (req, res) => {
         last_name: adminData.lastname,
         email: adminData.email,
         phone_number: adminData.phone,
-        user_type: "Admin",
+        user_type: "admin",
         photo: "",
         status: true,
         created_at: new Date(),

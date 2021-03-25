@@ -131,7 +131,7 @@
                   class="list-inline-item dropdown notification-list notificationClass"
                 >
                   <a
-                    href="/notifications"
+                    href="#"
                     class="nav-link dropdown-toggle arrow-none waves-effect notificationList"
                     data-toggle="dropdown"
                     role="button"
@@ -139,7 +139,10 @@
                     aria-expanded="false"
                   >
                     <i class="ion-ios7-bell noti-icon"></i>
-                    <span class="badge badge-danger noti-icon-badge">3</span>
+                    <span
+                      class="badge badge-danger noti-icon-badge"
+                      id="notiCount"
+                    ></span>
                   </a>
                   <div
                     class="dropdown-menu dropdown-menu-right dropdown-arrow dropdown-menu-lg"
@@ -220,14 +223,34 @@
     <script src="/assets/js/app.js"></script>
     <script>
       $(function () {
+        $(document).ready(function () {
+          $.ajax({
+            url: `/notificationCount`,
+          }).done(function (res) {
+            // console.log("RESPONSE******", res.admin);
+            document.getElementById("notiCount").innerHTML =
+              res.admin.userAdmin.noti_count;
+          });
+        });
+
         $(document).on("click", ".notificationList", function (e) {
           e.preventDefault();
 
           $.ajax({
             url: `/notifications`,
           }).done(function (res) {
+            // console.log("RESPONSE******", res);
+            // $("#notiCount").css("display", "none");
+            document.getElementById("notiCount").innerHTML =
+              res.admin.noti_count;
             for (var i = 0; i < res.notifications.length; i++) {
-              var html = `<a href="javascript:void(0);" class="dropdown-item notify-item">
+              const id = "notiRead_" + res.notifications[i].id;
+              // console.log("ID IS*******", id);
+              // var html = `<a href="javascript:void(0);" class="dropdown-item notify-item">
+              var html =
+                `<a href="#" class="dropdown-item notify-item readNotifications" id=` +
+                id +
+                `>
                           <div class="notify-icon bg-warning">
                             <i>${i + 1}</i>
                           </div>
@@ -243,6 +266,29 @@
                       `;
               $(".notificationMainDiv").append(html);
             }
+          });
+        });
+
+        $(document).on("click", ".readNotifications", function (e) {
+          e.preventDefault();
+          let id = $(this).attr("id");
+          let getNotiId = id.split("_")[1];
+
+          const data = {
+            notiId: getNotiId,
+          };
+
+          // console.log("ID*******", id);
+          // console.log("SPLIT ID***", getNotiId);
+
+          $.ajax({
+            url: `/readNotification`,
+            data: data,
+          }).done(function (res) {
+            location.reload();
+            // console.log("RESPONSE******", res);
+            // document.getElementById("notiCount").innerHTML =
+            //   res.admin.userAdmin.noti_count;
           });
         });
       });
