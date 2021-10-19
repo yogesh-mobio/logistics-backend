@@ -65,43 +65,43 @@ const imagePublicUrl = async (file) => {
 };
 
 /* Function to get Lat-Long */
-const getLatLong = async (address) => {
-  var geocoder = NodeGeocoder({
-    // provider: process.env.GEO_PROVIDER,
-    provider: "opencage",
-    // apiKey: process.env.GEO_API_KEY,
-    apiKey: "6a6bca1dc71e4877b61d1a38ea7f46db",
-  });
+// const getLatLong = async (address) => {
+//   var geocoder = NodeGeocoder({
+//     // provider: process.env.GEO_PROVIDER,
+//     provider: "opencage",
+//     // apiKey: process.env.GEO_API_KEY,
+//     apiKey: "6a6bca1dc71e4877b61d1a38ea7f46db",
+//   });
 
-  // const res = await geocoder.geocode("Rajasthan 302029");
-  // const res = await geocoder.geocode("andheri east mumbai 400069");
-  const res = await geocoder.geocode(address);
+//   // const res = await geocoder.geocode("Rajasthan 302029");
+//   // const res = await geocoder.geocode("andheri east mumbai 400069");
+//   const res = await geocoder.geocode(address);
 
-  let max = 0;
-  let latitude = null;
-  let longitude = null;
-  let coordinates = {};
+//   let max = 0;
+//   let latitude = null;
+//   let longitude = null;
+//   let coordinates = {};
 
-  if (res.length > 1) {
-    for (var i = 0; i < res.length; i++) {
-      if (res[i].extra.confidence > max) {
-        max = res[i].extra.confidence;
-        latitude = res[i].latitude;
-        longitude = res[i].longitude;
-      }
-    }
-    coordinates = {
-      latitude: latitude,
-      longitude: longitude,
-    };
-  } else {
-    coordinates = {
-      latitude: res[0].latitude,
-      longitude: res[0].longitude,
-    };
-  }
-  return coordinates;
-};
+//   if (res.length > 1) {
+//     for (var i = 0; i < res.length; i++) {
+//       if (res[i].extra.confidence > max) {
+//         max = res[i].extra.confidence;
+//         latitude = res[i].latitude;
+//         longitude = res[i].longitude;
+//       }
+//     }
+//     coordinates = {
+//       latitude: latitude,
+//       longitude: longitude,
+//     };
+//   } else {
+//     coordinates = {
+//       latitude: res[0].latitude,
+//       longitude: res[0].longitude,
+//     };
+//   }
+//   return coordinates;
+// };
 
 /* Function to convert into boolean */
 const isBoolean = async (string) => {
@@ -167,8 +167,8 @@ exports.newTransporter = async (req, res) => {
         city: data.city,
         pincode: data.pincode,
       };
-      const stringAddress = JSON.stringify(Object.values(address));
-      const latLong = await getLatLong(stringAddress);
+     // const stringAddress = JSON.stringify(Object.values(address));
+      //const latLong = await getLatLong(stringAddress);
 
       let status = await isBoolean(data.status);
       // let registered = await isBoolean(data.registered);
@@ -197,7 +197,7 @@ exports.newTransporter = async (req, res) => {
         is_request: false,
         driver_count: 1,
         address: {
-          coordinates: latLong,
+          coordinates: 5.565656,
           flatNumber: data.address,
           area: data.area,
           city: data.city,

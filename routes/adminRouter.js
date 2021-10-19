@@ -16,7 +16,7 @@ const { isAuthenticated } = require("../middleware/authGaurd");
 
 // Routes for Admin
 adminRouter.get("/createAdmin", (req, res) => {
-  res.render("Users/Admin/addAdmin");
+  res.render("Users/Admin/addAdmin",{title:"Logistic-Admin"});
 });
 
 adminRouter.post("/createAdmin", newAdmin);

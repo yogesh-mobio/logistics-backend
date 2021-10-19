@@ -7,13 +7,13 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui"
     />
-    <title>Admiria - Responsive Flat Admin Dashboard</title>
+     <title>Logistic</title>
     <meta content="Admin Dashboard" name="description" />
     <meta content="Themesbrand" name="author" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
     <!-- App Icons -->
-    <link rel="icon" href="/assets/images/favicon.ico" type="image/x-icon" />
+    <link rel="icon" href="/assets/images/road.png" type="image/x-icon" />
 
     <%- HeaderCss %> <% include ./Partials/HeaderStyle %>
   </head>
@@ -173,7 +173,7 @@
                     aria-expanded="false"
                   >
                     <img
-                      src="/assets/images/users/avatar-1.jpg"
+                      src="/assets/images/user.png"
                       alt="user"
                       class="rounded-circle"
                     />
@@ -219,11 +219,17 @@
     </div>
 
     <% include ./Partials/FooterScript %> <%- FooterJs %>
-
+   
     <script src="/assets/js/app.js"></script>
     <script>
+    
       $(function () {
         $(document).ready(function () {
+          let title= $(".page-title").text();
+      
+         document.title=`Logistic - ${title}`;
+
+          console.log("page title******",title)
           $.ajax({
             url: `/notificationCount`,
           }).done(function (res) {
@@ -232,7 +238,7 @@
               res.admin.userAdmin.noti_count;
           });
         });
-
+  
         $(document).on("click", ".notificationList", function (e) {
           e.preventDefault();
 
