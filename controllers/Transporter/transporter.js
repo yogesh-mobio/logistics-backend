@@ -1,6 +1,6 @@
 var NodeGeocoder = require("node-geocoder");
 require("dotenv").config();
-
+const { v4: uuidv4 } = require('uuid');
 const {
   db,
   firebaseSecondaryApp,
@@ -222,22 +222,46 @@ exports.newTransporter = async (req, res) => {
         is_assign: false,
         is_deleted: false,
         is_verified: "pending",
-        status: false,
+        status: status,
         // user_uid: newTransporter.user.uid,
       };
+      console.log(req.files,"req files*****");
+      let iconss = [];
+      for (var i = 0; i < req.files.length; i++) {
+        console.log(req.files,"req files1****");
+        const iconId = uuidv4();
+        let base64 = req.files[i].buffer.toString("base64");
+        let mimetype = req.files[i].mimetype;
+        const nameArr = req.files[i].originalname.split(".")
+        const fileLocation = `vehicle-details/${iconId}.${(nameArr.length !== 0) ? nameArr[nameArr.length - 1] : ""}`
+        const file = bucket.file(fileLocation)
+        await file.save(req.files[i].buffer, { contentType: mimetype })
+        await file.setMetadata({
+          firebaseStorageDownloadTokens: iconId
+        })
+        
+        const icon = {
+          id: iconId,
+          base64: base64,
+          dataUrl: `data:${mimetype};${base64}`,
+          url: `https://firebasestorage.googleapis.com/v0/b/${bucket.name}/o/${encodeURIComponent(fileLocation)}?alt=media&token=${iconId}`,
+          type: mimetype,
+        };
+        iconss.push(icon);
+      }
 
       const vehicleData = {
         vehicle_type: data.vehicleTypeName,
         vehicle_number: data.VehicleNumber,
         comment: data.Comments,
         chassis_number: data.ChassisNumber,
-        vehicle_photos: [],
+        vehicle_photos: iconss,
         created_at: new Date(),
         is_assign: false,
         is_deleted: false,
         is_verified: "pending",
-        status: false,
-        vehicle_photos: icons,
+        status: status,
+        //vehicle_photos: icons,
       };
 
       const notification = {
