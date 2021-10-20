@@ -8,7 +8,7 @@ const firebaseConfig = require("./config");
 firebaseAdmin.initializeApp({
   credential: firebaseAdmin.credential.cert(serviceAccount),
   // credential: firebaseAdmin.credential.applicationDefault(),
-  databaseURL: process.env.DATABASE_URL,
+  databaseURL: firebaseConfig.databaseURL
 });
 
 // firebaseAdmin.initializeApp();
@@ -22,7 +22,7 @@ const db = firebase.firestore();
 // let bucket = firebaseAdmin.storage().bucket(process.env.STORAGE_BUCKET);
 let bucket = firebaseAdmin
   .storage()
-  .bucket("logistics-ondemand-app.appspot.com");
+  .bucket(firebaseConfig.storageBucket);
 let messaging = firebaseAdmin.messaging();
 
 module.exports = {

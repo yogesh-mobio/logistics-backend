@@ -11,6 +11,10 @@ Authrouter.get("/", (req, res) => {
   res.render("Pages/pages-login");
 });
 
+Authrouter.get("/login", (req, res) => {
+  res.render("Pages/pages-login");
+});
+
 Authrouter.get("/pages-coming-soon", (req, res) => {
   res.render("Pages/pages-coming-soon");
 });

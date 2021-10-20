@@ -1,5 +1,7 @@
-const { db, firebase } = require("../../config/admin");
+const { db, firebase, bucket, firebaseAdmin } = require("../../config/admin");
 const { validateVehicleTypeData } = require("./vehicleTypeHelper");
+
+const { v4: uuidv4 } = require('uuid');
 
 /* Function to get rates */
 const vehicleRates = (kmFrom, kmTo, price) => {
@@ -60,10 +62,22 @@ exports.newVehicleType = async (req, res) => {
 
     let icons = [];
     for (var i = 0; i < req.files.length; i++) {
+      const iconId = uuidv4();
       let base64 = req.files[i].buffer.toString("base64");
       let mimetype = req.files[i].mimetype;
+      const nameArr = req.files[i].originalname.split(".")
+      const fileLocation = `vehicle-types/${iconId}.${(nameArr.length !== 0) ? nameArr[nameArr.length - 1] : ""}`
+      const file = bucket.file(fileLocation)
+      await file.save(req.files[i].buffer, { contentType: mimetype })
+      await file.setMetadata({
+        firebaseStorageDownloadTokens: iconId
+      })
+      
       const icon = {
+        id: iconId,
         base64: base64,
+        dataUrl: `data:${mimetype};${base64}`,
+        url: `https://firebasestorage.googleapis.com/v0/b/${bucket.name}/o/${encodeURIComponent(fileLocation)}?alt=media&token=${iconId}`,
         type: mimetype,
       };
       icons.push(icon);
