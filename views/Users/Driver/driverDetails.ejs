@@ -149,6 +149,12 @@
                 <label for="driverIsDeleted" class="col-sm-2 col-form-label"
                   >Deleted</label
                 >
+
+                value="<%= driver.driverData.first_name %>"
+                  value="<%= driver.driverData.age %>"
+                    value="<%= driver.driverData.phone_number %>"
+                      value="<%= driver.driverData.email %>"
+                       value="<%= driver.driverData.last_name %>"
                 <div class="col-sm-10">
                   <input class="form-control" type="text" id="driverIsDeleted"
                   name="isDeleted" <% if( driver.driverData.is_deleted === false
@@ -233,6 +239,8 @@
                 type="button"
                 class="btn btn-danger btn-group waves-effect"
                 onclick="location.href='/dashboard'"
+
+                  
               >
                 Cancel
               </button> -->
