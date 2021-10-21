@@ -24,7 +24,7 @@ var contactRouter = require("./routes/contactRouter");
 
 var app = express();
 
-app.use("/", Authrouter);
+app.use("/", Authrouter)
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
