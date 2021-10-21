@@ -175,7 +175,7 @@ exports.removeVehicleType = async (req, res) => {
       await db.collection("deletion_logs").add(deletedData);
 
       return res.redirect("back");
-      // return res.redirect("/vehicle-type/displayVehicleTypes");
+      // return res.redirect("/vehicle-type/displayVehicleTypes") ;
     }
     // req.flash(
     //   "error_msg",
@@ -261,6 +261,8 @@ exports.updatedVehicleType = async (req, res) => {
 
     const rates = await vehicleRates(data.kmFrom, data.kmTo, data.price);
 
+    
+
     const vehicleData = {
       vehicle_type: data.name,
       vahicle_capacity: data.capacity,
@@ -270,6 +272,7 @@ exports.updatedVehicleType = async (req, res) => {
         v_height: data.vehicleHeight,
       },
       rates: rates,
+      
     };
 
     // console.log("*****VEHICLE DATA*****", vehicleData);
