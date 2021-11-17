@@ -6,10 +6,6 @@ const userService = require("./auth.services");
 exports.signup = async (req, res, next) => {
   try {
     let user = new User(req.body);
-    let salt = await bcrypt.genSalt(10);
-    let hash = await bcrypt.hash(user.password, salt);
-    if (!hash) throw err;
-    user.password = hash;
     let already_exist = await userService.getUserByPhoneNumber(
       user.phone_number
     );
