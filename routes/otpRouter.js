@@ -3,8 +3,8 @@ const router = require('express').Router();
 
 
 
-router.get('/otp', async (req, res) => {
-    res.render('otp')
+router.get('/', async (req, res) => {
+    res.render('./Payment/otp')
 });
 router.post('/otp', async (req, res) => {
     const otp = req.body

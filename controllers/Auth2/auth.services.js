@@ -1,4 +1,5 @@
 const User = require("../../models/users");
+const Transporter = require("../../models/transporter");
 const accountID = process.env.ACCOUNTID;
 const authToken = process.env.AUTHTOKEN;
 const serviceID = process.env.SERVICEID;
@@ -8,6 +9,12 @@ const twilioClient = require("twilio")(accountID, authToken);
 exports.creatNewUser = async (cat) => {
   return await User.create(cat);
 };
+
+/* Create New User */
+exports.creatNewTransporter = async (cat) => {
+  return await Transporter.create(cat);
+};
+
 
 /* Get User By Phone */
 exports.getUserByPhoneNumber = async (phone_number) => {
