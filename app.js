@@ -23,6 +23,10 @@ var contactRouter = require("./routes/contactRouter");
 var Auth2router = require("./routes/auth2router");
 // var passwordRouter = require("./routes/passwordRouter");
 
+var loginRouter = require('./routes/loginRouter');
+var optRouter = require('./routes/otpRouter');
+var transporterpaymentRouter = require('./routes/transpoterpaymentRouter');
+
 var app = express();
 
 /* db connection */
@@ -76,6 +80,10 @@ app.use("/order", orderRouter);
 app.use("/contact", contactRouter);
 app.use("/auth", Auth2router);
 // app.use("/password", passwordRouter);
+
+app.use("/login",loginRouter);
+app.use("/otp",optRouter);
+app.use("/transporterpayment",transporterpaymentRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
