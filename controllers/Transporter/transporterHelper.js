@@ -139,33 +139,33 @@ exports.validateTransporterData = (data) => {
   };
 };
 
-// Validating Trasporter data
-// exports.validateTransporterDocuments = (files) => {
-//   let fileErrors = [];
+//Validating Trasporter data
+exports.validateTransporterDocuments = (files) => {
+  let fileErrors = [];
 
-//   if (!files.profile) {
-//     fileErrors.push({
-//       msg: "Please upload your profile image",
-//     });
-//   }
-//   if (!files.AddressProof) {
-//     fileErrors.push({
-//       msg: "Please upload PAN Card/Aadhar Card/Voter ID as a proof of address",
-//     });
-//   }
-//   if (!files.IdentityProof) {
-//     fileErrors.push({
-//       msg: "Please upload Driving License as a proof of Identity",
-//     });
-//   }
-//   if (!files.icons) {
-//     fileErrors.push({
-//       msg: "Please upload vehicle images",
-//     });
-//   }
+  if (!files.profile) {
+    fileErrors.push({
+      msg: "Please upload your profile image",
+    });
+  }
+  if (!files.AddressProof) {
+    fileErrors.push({
+      msg: "Please upload PAN Card/Aadhar Card/Voter ID as a proof of address",
+    });
+  }
+  if (!files.IdentityProof) {
+    fileErrors.push({
+      msg: "Please upload Driving License as a proof of Identity",
+    });
+  }
+  if (!files.icons) {
+    fileErrors.push({
+      msg: "Please upload vehicle images",
+    });
+  }
 
-//   return {
-//     fileErrors,
-//     fileValid: fileErrors.length == 0 ? true : false,
-//   };
-// };
+  return {
+    fileErrors,
+    fileValid: fileErrors.length == 0 ? true : false,
+  };
+};

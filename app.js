@@ -30,8 +30,6 @@ var transporterpaymentRouter = require('./routes/transpoterpaymentRouter');
 
 var app = express();
 
-/* db connection */
-require("./config/dbconnection");
 
 app.use("/", Authrouter)
 //app.use("/", optRouter);
@@ -45,9 +43,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
-app.use("/", RegisterRouter);
 
-app.use(expressLayouts);
 
 // Session
 app.use(
@@ -69,7 +65,9 @@ app.use(async (req, res, next) => {
   res.locals.error = req.flash("error");
   next();
 });
+app.use("/", RegisterRouter);
 
+app.use(expressLayouts);
 app.use(cors());
 
 app.use("/", router);

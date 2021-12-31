@@ -1,43 +1,105 @@
-<!DOCTYPE html>
-<html lang="en">
+<% include ../Partials/HeaderRoot %>
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verify</title>
-    <link rel="stylesheet" href="/css/style.css">
-</head>
+<div id="preloader">
+  <div id="status"><div class="spinner"></div></div>
+</div>
 
-
-<body>
-    <form action="/otp" method="post">
-        <div class="d-flex justify-content-center align-items-center container">
-            <header>
-                <div class="otppng">
-                    <img src="/icon/sms.png" alt="svg" style="margin: -10px; height: 50px; width: 50px;">
-                </div>
-            </header>
-            <div class="card py-5 px-3">
-                <h3 class="m-0">Mobile Phone verification</h3>
-                <span class="mobile-text">Enter the code we just send on your
-                    Mobile Number</span>
-                <input name="name" type="text" class="text-danger" value=<%=name %> >
-                <input name="phone_number" type="text" class="text-danger" readonly value=<%=phone_number %> >
-                <!-- <input name="name" type="hidden" class="text-danger"  >
-                <input name="phone" type="text" class="text-danger"  > -->
-
-                <input style="margin-top: 2px;" name="code" type="number" minlength="6" maxlength="6"
-                    placeholder="Enter OTP" required="required" />
-                <div class="box" style="text-align: -webkit-center;">
-                    <button type="submit" class="button confirm">confirm</button>
-                </div>
-                <div class="text-center mt-5"><span class="d-block mobile-text">Don't receive the code?</span>
-                    <span class="font-weight-bold text-danger cursor"><a href="#">Resend</a></span>
-                </div>
-            </div>
+<!-- Begin page -->
+<div class="accountbg"></div>
+<div class="wrapper-page">
+  <div class="card">
+    <div class="card-body">
+      <h3 class="text-center m-0">
+        <a href="#" class="logo logo-admin"
+          ><img src="/icon/sms.png" height="70" alt="logo"
+        /></a>
+      </h3>
+    
+      <div class="p-3">
+        <h4 class="font-18 m-b-5 text-center">Mobile Phone verification</h4>
+        <p class="text-muted text-center">Enter the code we just send on your Mobile Number</p>
+        <% include ../Partials/errorMessages %>
+        <form class="form-horizontal m-t-30" action="/otp" method="post">
+          <div class="form-group">
+          <input
+              type="text"
+              class="form-control"
+              name="name"
+              readonly
+              value=<%=name %> />
+          </div>
+          <div class="form-group">
+           <input
+              type="number"
+              class="form-control"
+              name="phone_number"
+              min="10"
+              readonly
+              value=<%=phone_number %> />
+           </div>
+           <div class="form-group">
+           <input
+           name="code"
+           class="form-control"
+           type="number"
+           minlength="6"
+           maxlength="6"
+           placeholder="Enter OTP"
+           required="required"
+         />
         </div>
-    </form>
-</body>
+        
+            </div>
+            <div class="col-sm-8 text-right">
+              <button
+                class="btn btn-primary w-md waves-effect waves-light"
+                type="submit"
+              >
+                Confirm
+              </button>
+            </div>
+            <div class="text-center mt-3">
+               <span class="d-block mobile-text">Don't receive the code?</span>
+                <!-- <span class="font-weight-bold text-danger cursor"><a id="button1" >Resend</span> -->
+                    <button
+                    class="btn btn-danger w-md waves-effect waves-light"
+                    id = "button1"
+                   >
+                    Resend
+                  </button>
+                  
+              </div>
+          </div>
 
-</html>
+        
+        </form>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+        <script>
+            $(document).ready(function() {
+            $("#button1").click(function () {
+                $.ajax({
+                  type: "POST",
+                  url:`/resend`,
+                  data:{ name: '<%=name%>', phone_number: '<%=phone_number%>' },
+                });
+        
+           });
+        });
+            </script>
+    
+      </div>
+    </div>
+  </div>
+
+  <div class="m-t-40 text-center">
+  
+    <p class="text-white">
+      © <%= new Date().getFullYear() - 1; %> - <%= new Date().getFullYear(); %>
+      Road Ferry. 
+    </p>
+  </div>
+</div>
+
+<% include ../Partials/FooterRoot %>
+
+

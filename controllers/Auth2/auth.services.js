@@ -4,21 +4,23 @@ const accountID = process.env.ACCOUNTID;
 const authToken = process.env.AUTHTOKEN;
 const serviceID = process.env.SERVICEID;
 const twilioClient = require("twilio")(accountID, authToken);
+const { db } = require("../../config/admin");
 
 /* Create New User */
 exports.creatNewUser = async (cat) => {
-  return await User.create(cat);
+  return await db.collection("anonymous").doc().set(cat);
+  //return await User.create(cat);
 };
 
 /* Create New User */
 exports.creatNewTransporter = async (cat) => {
-  return await Transporter.create(cat);
+  return await db.collection("users").doc().set(cat);
 };
-
 
 /* Get User By Phone */
 exports.getUserByPhoneNumber = async (phone_number) => {
-  return await User.findOne({ phone_number: phone_number });
+  // return await User.findOne({ phone_number: phone_number });
+ 
 };
 
 /* Verify Otp Phone */

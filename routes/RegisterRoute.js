@@ -7,20 +7,22 @@ RegisterRouter.post(
   authController.signup,
   authController.sendOtp,
   (req, res) => {
-    // console.log("otp")
-    // console.log(req);
-    // console.log(req.body,"Bodyyyyy");
-
     const name = req.body.name;
     const phone_number = req.body.phone_number;
-
     res.render("Payment/otp", { phone_number, name });
-    // res.render('Payment/otp')
   }
 );
 
+RegisterRouter.post("/resend", authController.sendOtp, (req, res) => {
+  console.log("resend");
+  console.log(req.body, "Bodyyyyy");
+  const name = req.body.name;
+  const phone_number = req.body.phone_number;
+  res.render("Payment/otp", { phone_number, name });
+});
+
 RegisterRouter.get("/register", (req, res) => {
-  res.render("Payment/login2");
+  res.render("Payment/login");
 });
 
 RegisterRouter.post("/otp", authController.verifyOtp, async (req, res) => {
@@ -28,5 +30,17 @@ RegisterRouter.post("/otp", authController.verifyOtp, async (req, res) => {
 
   res.render("Payment/transporterdetails", otp);
 });
+
+RegisterRouter.post(
+  "/updatetransporter",
+  authController.updateTransporter
+
+  // authController.sendOtp,
+  // (req, res) => {
+  //   const name = req.body.name;
+  //   const phone_number = req.body.phone_number;
+  //   res.render("Payment/otp", { phone_number, name });
+  // }
+);
 
 module.exports = RegisterRouter;

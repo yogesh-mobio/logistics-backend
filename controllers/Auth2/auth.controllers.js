@@ -1,38 +1,46 @@
-const bcrypt = require("bcryptjs");
-const User = require("../../models/users");
 const userService = require("./auth.services");
+const { db, firebase } = require("../../config/admin");
+const { validateData, validateData2, validateData3 } = require("./validations");
+
 
 // Sign Up
 exports.signup = async (req, res, next) => {
   try {
-    let user = new User(req.body);
-    let already_exist = await userService.getUserByPhoneNumber(
-      user.phone_number
-    );
-    if (already_exist) {
-      return res.status(400).json({
-        status: "Error",
-        statusCode: 400,
-        error: "User Already Exist",
+    const user = {
+      name: req.body.name,
+      phone_number: req.body.phone_number,
+      is_verified: "pending",
+    };
+    const { valid, errors } = validateData(user);
+    if (!valid) {
+      return res.render("Payment/login", {
+        errors,
       });
     }
+    const data = await db
+      .collection("anonymous")
+      .where("phone_number", "==", req.body.phone_number);
+    const mydata = await data.get();
+    let foundData = null;
+    mydata.forEach((doc) => {
+      foundData = doc.data();
+    });
 
-    let created_user = await userService.creatNewUser(user);
-    console.log(created_user);
-    if (!created_user) {
-      return res.status(400).json({
-        status: "Error",
-        statusCode: 400,
-        error: "User Not Registered",
+    if (foundData) {
+      errors.push({ msg: "User already exists!" });
+      return res.render("Payment/login", {
+        errors,
       });
     }
+    await userService.creatNewUser(user);
 
     next();
-  } catch (errors) {
-    res.status(500).json({
-      status: "Error",
-      statusCode: 500,
-      error: errors.message,
+  } catch (error) {
+    const errors = [];
+    console.log(error);
+    errors.push({ msg: error.message });
+    return res.render("Errors/errors", {
+      errors: errors,
     });
   }
 };
@@ -42,33 +50,30 @@ exports.sendOtp = async (req, res, next) => {
     if (req.body.phone_number) {
       const data = await userService.sendOtpPhone(req.body.phone_number);
       if (data) {
-        // return res.status(200).json({
-        //   status: "Success",
-        //   statusCode: 400,
-        //   message: "OTP Send Successfully",
-        //   data: data,
-        // });
         next();
       }
     } else {
-      return res.status(400).json({
-        status: "Error",
-        statusCode: 400,
-        error: "OTP NOT Send Successfully",
-        data: data,
+      errors.push({ msg: "OTP NOT Send Successfully" });
+      return res.render("Payment/login", {
+        errors,
       });
     }
-  } catch (errors) {
-    res.status(500).json({
-      status: "Error",
-      statusCode: 500,
-      error: errors.message,
+  } catch (error) {
+    const errors = [];
+    console.log(error);
+    errors.push({ msg: error.message });
+    return res.render("Payment/otp", {
+      errors: errors,
     });
   }
 };
 
 exports.verifyOtp = async (req, res, next) => {
   try {
+    let id, full_name, phone;
+    const name = req.body.name;
+    const phone_number = req.body.phone_number;
+    const { errors } = validateData2();
     if (req.body.phone_number && req.body.code.length === 6) {
       const data = await userService.verifyOtpPhone(
         req.body.phone_number,
@@ -76,63 +81,109 @@ exports.verifyOtp = async (req, res, next) => {
       );
 
       if (data.status === "approved") {
-        let user_details = await userService.getUserByPhoneNumber(
-          req.body.phone_number
-        );
-        if (!user_details) {
-          return res.status(400).json({
-            status: "Error",
-            statusCode: 400,
-            error: "USER NOT FOUND",
+        const data = await db
+          .collection("anonymous")
+          .where("phone_number", "==", req.body.phone_number);
+        await data.get().then(function (querySnapshot) {
+          querySnapshot.forEach(function (doc) {
+            console.log(doc.id, " => ", doc.data());
+            id = doc.id;
+            (full_name = doc.data().name), (phone = doc.data().phone_number);
           });
-        }
+        });
 
-        await userService.updateStatus(user_details);
-        let fullname = user_details.name;
+        const users = {
+          is_verified: "verified",
+        };
+        const my_data = await db.collection("anonymous").doc(id);
+        await my_data.update(users);
+        let fullname = full_name;
         let firstName = fullname.split(" ").slice(0, -1).join(" ");
         let lastName = fullname.split(" ").slice(-1).join(" ");
-        let user = {
+        const user = {
           first_name: firstName,
           last_name: lastName,
-          phone_number: user_details.phone_number,
-          is_verified: true,
+          phone_number: phone_number,
+          user_type: "transporter",
+          is_verified: "verified",
         };
-        let create_transporter = await userService.creatNewTransporter(user);
-        if (!create_transporter) {
-          return res.status(400).json({
-            status: "Error",
-            statusCode: 400,
-            error: "User Not Registered",
-          });
-        }
-        //await userService.updateStatus(user_);
-        // return res.status(200).json({
-        //   status: "Success",
-        //   statusCode: 200,
-        //   message: "OTP VERIFY SUCCESSFULL",
-        // });
+        await userService.creatNewTransporter(user);
         next();
       } else {
-        return res.status(400).json({
-          status: "Error",
-          statusCode: 400,
-          error: "OTP NOT VERIFY Successfully",
-          data: data,
+        errors.push({ msg: "OTP NOT VERIFY Successfully" });
+        return res.render("Payment/otp", {
+          phone_number,
+          name,
+          errors,
         });
       }
     } else {
-      return res.status(400).json({
-        status: "Error",
-        statusCode: 400,
-        error: "OTP NOT VERIFY Successfully",
-        data: data,
+      errors.push({ msg: "OTP NOT VERIFY Successfully" });
+      return res.render("Payment/otp", {
+        phone_number,
+        name,
+        errors,
       });
     }
-  } catch (errors) {
-    res.status(500).json({
-      status: "Error",
-      statusCode: 500,
-      error: errors.message,
+  } catch (error) {
+    const errors = [];
+    errors.push({ msg: error.message });
+    return res.render("Payment/otp", {
+      errors: errors,
+      phone_number,
+      name,
     });
+  }
+};
+
+exports.updateTransporter = async (req, res, next) => {
+  let name = req.body.name;
+  let phone_number = req.body.phone_number;
+  try {
+    
+    let id;
+    const user = {
+      email: req.body.email,
+      gst_number: req.body.gst_number,
+    };
+    const data = await db
+      .collection("users")
+      .where("phone_number", "==", req.body.phone_number);
+    await data.get().then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
+        console.log(doc.id, " => ", doc.data());
+        id = doc.id;
+      });
+    });
+    const my_data = await db.collection("users").doc(id);
+    await my_data.update(user);
+    // await firebase
+    //   .auth()
+    //   .createUserWithEmailAndPassword(user.email, req.body.password);
+    
+    return res.render("Payment/transporterdetails", {
+      id,
+      name,
+      phone_number
+    });
+  } catch (error) {
+    const errors = [];
+    if (error.code == "auth/email-already-in-use") {
+      errors.push({ msg: "Email already exists!" });
+    }
+    if (error.code == "auth/weak-password") {
+      errors.push({ msg: "Password should be at least 6 Characters!" });
+    }
+    return res.render("Payment/transporterdetails", {
+      errors,
+      name,
+      phone_number,
+     
+    });
+    // const errors = [];
+    // errors.push({ msg: error.message });
+    // return res.render("Errors/errors", {
+    //   errors: errors,
+    // });
   }
 };
