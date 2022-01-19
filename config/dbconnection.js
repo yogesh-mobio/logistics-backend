@@ -1,5 +1,3 @@
-const mongoose = require("mongoose");
-
 if (process.env.MONGO_DATABASE) {
   // DB Connection Start
   mongoose.Promise = global.Promise;
@@ -16,3 +14,4 @@ if (process.env.MONGO_DATABASE) {
     .catch((err) => console.log(err));
   // DB Connection End
 }
+

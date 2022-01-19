@@ -34,6 +34,8 @@ const {
   transporterDetails,
   verifyTransporter,
   verifiedTransporter,
+  updatedTransporter,
+  updateTransporter,
   // transporterDriversList,
   // transporterVehiclesList,
 } = require("../controllers/Transporter/transporter");
@@ -61,6 +63,10 @@ transporterRouter.get(
   "/transporterDetails/:transporter_id",
   transporterDetails
 );
+
+transporterRouter.get("/updateTransporter/:transporter_id", updateTransporter);
+
+transporterRouter.post("/updateTransporter/:transporter_id", updatedTransporter);
 
 transporterRouter.post("/status/:transporter_id", changeTransporterStatus);
 

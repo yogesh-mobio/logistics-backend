@@ -33,6 +33,80 @@ const { sendAdminNotification } = require("../Notification/notification");
 //   }
 // };
 
+
+/* Update Driver Controller --> GET */
+exports.updateDriver = async (req, res) => {
+  try {
+    const errors = [];
+    const driver_id = req.params.driver_id;
+    const transporter_id = req.params.transporter_id;
+    const transporter = await db.collection("users").doc(transporter_id);
+    const getDriver = await transporter
+      .collection("driver_details")
+      .doc(driver_id)
+      .get();
+    const data = await getDriver.data();
+    //const data = await db.collection("users").doc(id).get();
+    if (data === undefined) {
+      errors.push({ msg: "Driver not found...!!" });
+      return res.render("Errors/errors", { errors: errors });
+    }
+    //const vehicle = { id: data.id, vehicleData: data };
+    const driver = {
+      id: driver_id,
+      driverData: data,
+      transporterId: transporter_id,
+    };
+    return res.render("Users/Driver/editDriver", { driver: driver });
+  } catch (error) {
+    const errors = [];
+    errors.push({ msg: error.message });
+    return res.render("Errors/errors", { errors: errors });
+  }
+};
+/* Update Driver Controller --> POST */
+exports.updatedDriver = async (req, res) => {
+  try {
+  
+    const driver_id = req.params.driver_id;
+    const transporter_id = req.params.transporter_id;
+    const data = req.body;
+   
+    //  const { valid, errors } = validateTransporterData(data);
+
+    // if (!valid) {
+    //   if (errors.length > 0) {
+    //     for (var i = 0; i <= errors.length; i++) {
+    //       req.flash("error_msg", errors[i].msg);
+    //       return res.redirect(`/transporter/updateTransporter/${id}`);
+    //      }
+    //   }
+    // }
+    const driverData = {
+      first_name: data.firstname,
+      last_name: data.lastname,
+      email: data.email,
+      phone_number: data.phone,
+      age: data.age,
+      // address_proof: addressProofPublicUrl,
+      // identity_proof: identityProofPublicUrl,
+      // created_at: new Date(),
+      // driver_photo: profilePublicUrl,
+    };
+   
+    const transporter = await db.collection("users").doc(transporter_id);
+    const getDriver = await transporter
+      .collection("driver_details")
+      .doc(driver_id);
+    await getDriver.update(driverData);
+    return res.redirect(`/transporter/transporterDetails/${transporter_id}`);
+  } catch (error) {
+    const errors = [];
+    errors.push({ msg: error.code });
+    return res.render("Errors/errors", { errors: errors });
+  }
+};
+
 // Get driver details
 exports.driverDetails = async (req, res) => {
   const transporter_id = req.params.transporter_id;

@@ -1,21 +1,22 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const userSchema = new Schema(
+const transporterSchema = new Schema(
   {
     phone_number: {
       type: String,
       required: true,
     },
-    name: {
+    first_name: {
       type: String,
       default: "",
     },
+    last_name: {
+      type:String,
+      default:"",
+    },
     email: {
       type: String,
-    },
-    dob: {
-      type: Date,
     },
     password: {
       type: String,
@@ -36,4 +37,4 @@ const userSchema = new Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("User", userSchema);
+module.exports = mongoose.model("Transporter", transporterSchema);

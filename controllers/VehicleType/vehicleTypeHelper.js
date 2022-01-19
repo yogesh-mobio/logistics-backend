@@ -18,6 +18,15 @@ const isEmptyArray = (ary) => {
   return false;
 };
 
+const isValidPrice = (ary) => {
+  for (let i = 0; i <= ary.length; i++) {
+    if (ary[i] <= 0) {
+      return true;
+    }
+  }
+  return false;
+};
+
 // for checking input value is numeric or not
 const isNumeric = (string) => {
   var numbers = /^[0-9]+$/;
@@ -60,6 +69,9 @@ exports.validateVehicleTypeData = (data) => {
     if (isEmpty(data.price)) {
       errors.push({ msg: "Please enter price" });
     }
+    if (data.price<10) {
+      errors.push({ msg: "Please Enter Price above 10" });
+    }
   } else {
     if (isEmptyArray(data.kmFrom)) {
       errors.push({ msg: "Please enter Starting kilometers." });
@@ -69,6 +81,9 @@ exports.validateVehicleTypeData = (data) => {
     }
     if (isEmptyArray(data.price)) {
       errors.push({ msg: "Please enter price" });
+    }
+    if (isValidPrice(data.price)) {
+      errors.push({ msg: "Please Enter Price above 10" });
     }
   }
 

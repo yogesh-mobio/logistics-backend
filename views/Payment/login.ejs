@@ -1,48 +1,108 @@
-<!DOCTYPE html>
-<html lang="en">
+<% include ../Partials/HeaderRoot %>
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <link rel="stylesheet" href="/css/style.css">
-</head>
+<div id="preloader">
+  <div id="status"><div class="spinner"></div></div>
+</div>
 
-<body>
+<!-- Begin page -->
+<div class="accountbg"></div>
+<div class="wrapper-page">
+  <div class="card">
+    <div class="card-body">
+      <h3 class="text-center m-0">
+        <a href="#" class="logo logo-admin"
+          ><img src="/assets/images/capture1.png" height="150" alt="logo"
+        /></a>
+      </h3>
+    
+      <div class="p-3">
+        <h4 class="font-18 m-b-5 text-center">Welcome Back !</h4>
+        <p class="text-muted text-center">Sign in to continue to Road Ferry.</p>
+        <% include ../Partials/errorMessages %>
+        <form class="form-horizontal m-t-30" action="/register" method="post">
+          <div class="form-group">
+            <label for="">Name</label>
+            <input
+              type="text"
+              class="form-control"
+              name="name"
+              id="name"
+              placeholder="Enter Your name"
+              required
+            />
+          </div>
 
-    <div class="container">
-        <header>
-            <div class="compass-icon">
-                <img src="/icon/user.png" alt="svg" style="margin: -16px;">
+          <div class="form-group">
+            <label for="">Phone Number</label>
+            <input
+              type="number"
+              class="form-control"
+              name="phone_number"
+              id="phone_number"
+              min="10"
+              placeholder="Enter Phone Number"
+              required
+            />
+          </div>
+
+          <!-- <div class="form-group row m-t-20">
+            <div class="col-sm-6">
+              <div class="form-group m-t-10 mb-0 row">
+                <a href="/forget-password" class="text-muted"
+                  ><i class="mdi mdi-lock"></i> Forgot your password?</a
+                >
+              </div> -->
+
+              <!-- <div class="custom-control custom-checkbox">
+              <input
+                  type="checkbox"
+                  class="custom-control-input"
+                  id="customControlInline"
+                />
+                <label class="custom-control-label" for="customControlInline"
+                  >Remember me</label
+                >
+              </div> -->
             </div>
-        </header>
-        <div class="weather-title">
-            <h4 class="font-18 m-b-5 text-center">Welcome Back !</h4>
-            <p class="text-muted text-center" style="color: #707070;">Sign in to continue to Road Ferry.</p>
-        </div>
-        <div class="loginform">
-            <form action="/" method="post">
-                <label for="">Name</label>
-                <input type="text" name="name" placeholder="Enter Your Name" required />
-                <label for="">Phone Number</label>
-                <input type="phone" name="phone" placeholder="Enter Your Phone Number" maxlength="10" required />
-                <div class="box" style="text-align: -webkit-center;">
-                    <div class="btn">
-                        <button class="button login" type="submit">Genrate OTP</button>
-                    </div>
-                </div>
+            <div class="col-sm-8 text-right">
+              <button
+                class="btn btn-primary w-md waves-effect waves-light"
+                type="submit"
+              >
+                Generate OTP
+              </button>
+            </div>
+          </div>
 
-        </div>
-        <!-- <div class="col-sm-6">
-                <div class="form-group m-t-10 mb-0 row"  style="margin-top: 28px;">
-                    <a href="/forget-password" class="text-muted">Forgot
-                        your password?</a>
-                </div> -->
-
+          <!-- <div class="form-group m-t-10 mb-0 row">
+            <div class="col-12 m-t-20">
+              <a href="pages-recoverpw" class="text-muted"
+                ><i class="mdi mdi-lock"></i> Forgot your password?</a
+              >
+            </div>
+          </div> -->
         </form>
+      </div>
     </div>
-    </div>
-</body>
+  </div>
 
-</html>
+  <div class="m-t-40 text-center">
+    <!-- <p class="text-white">
+      Don't have an account ?
+      <a
+        href="pages-register"
+        class="font-500 font-14 text-white font-secondary"
+      >
+        Signup Now
+      </a>
+    </p> -->
+    <p class="text-white">
+      © <%= new Date().getFullYear() - 1; %> - <%= new Date().getFullYear(); %>
+      Road Ferry. 
+    </p>
+  </div>
+</div>
+
+<% include ../Partials/FooterRoot %>
+
+

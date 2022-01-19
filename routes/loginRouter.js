@@ -4,7 +4,7 @@ var router = express.Router();
 
 
 router.get('/', async (req, res) => {
-    res.render('./Payment/login')
+    res.render("Pages/pages-login");
 });
 
 router.post('/',async(req,res)=>{

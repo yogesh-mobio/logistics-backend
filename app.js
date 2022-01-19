@@ -12,6 +12,7 @@ var flash = require("connect-flash"); //
 var router = require("./routes/router");
 var Authrouter = require("./routes/Authrouter");
 var AdminRouter = require("./routes/adminRouter");
+var RegisterRouter = require("./routes/RegisterRoute");
 var VehicleTypeRouter = require("./routes/vehicleTypeRouter");
 var customerRouter = require("./routes/customerRouter");
 var transporterRouter = require("./routes/transporterRouter");
@@ -29,21 +30,20 @@ var transporterpaymentRouter = require('./routes/transpoterpaymentRouter');
 
 var app = express();
 
-/* db connection */
-require("./config/dbconnection");
 
 app.use("/", Authrouter)
-
+//app.use("/", optRouter);
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
-app.use(expressLayouts);
 
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
+
+
 
 // Session
 app.use(
@@ -65,7 +65,9 @@ app.use(async (req, res, next) => {
   res.locals.error = req.flash("error");
   next();
 });
+app.use("/", RegisterRouter);
 
+app.use(expressLayouts);
 app.use(cors());
 
 app.use("/", router);
@@ -81,7 +83,7 @@ app.use("/contact", contactRouter);
 app.use("/auth", Auth2router);
 // app.use("/password", passwordRouter);
 
-app.use("/login",loginRouter);
+//app.use("/register",loginRouter);
 app.use("/otp",optRouter);
 app.use("/transporterpayment",transporterpaymentRouter);
 
