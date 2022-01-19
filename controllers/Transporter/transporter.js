@@ -1,10 +1,14 @@
 var NodeGeocoder = require("node-geocoder");
 require("dotenv").config();
+//const { getAuth, signInWithPhoneNumber } = require("firebase/firebase-auth");
 const { v4: uuidv4 } = require('uuid');
 const {
   db,
   firebaseSecondaryApp,
   firebase,
+  getAuth,
+  signInWithPhoneNumber,
+  RecaptchaVerifier,
   bucket,
 } = require("../../config/admin");
 const {
@@ -137,8 +141,8 @@ exports.getNewTransporter = async (req, res) => {
   }
 };
 
-/* Create a new Transporter Controller --> POST */
-exports.newTransporter = async (req, res) => {
+/* Add a new Transporter Controller --> POST */
+exports.addTransporter = async (req, res) => {
   const vehicleTypes = [];
   const data = await db.collection("vehicles").get();
   data.forEach((doc) => {
@@ -182,6 +186,7 @@ exports.newTransporter = async (req, res) => {
         last_name: data.lastname,
         email: data.email,
         phone_number: data.phone,
+        country_code:"+91",
         user_type: "transporter",
         register_number: data.registerNo,
         is_verified: "pending",
@@ -212,6 +217,7 @@ exports.newTransporter = async (req, res) => {
         last_name: data.LastName,
         email: data.Email,
         phone_number: data.Phone,
+        country_code:"+91",
         // user_type: "transporter",
         age: data.Age,
         address_proof: addressProofPublicUrl,
@@ -277,6 +283,13 @@ exports.newTransporter = async (req, res) => {
       const newTransporter = await firebaseSecondaryApp
         .auth()
         .createUserWithEmailAndPassword(data.email, data.password);
+      // const newTransporters = await firebaseSecondaryApp
+      //   .auth()
+      //   .createUser({ 
+      //   phone_number: data.phone,
+      //   password:data.password,
+      // });
+      // console.log(newTransporters);
 
       let transporter = await db
         .collection("users")
@@ -395,6 +408,276 @@ exports.newTransporter = async (req, res) => {
   }
 };
 
+/* Create a new Transporter Controller --> POST */
+exports.newTransporter = async (req, res) => {
+  console.log("api called")
+  console.log(req.body);
+  const vehicleTypes = [];
+  const data = await db.collection("vehicles").get();
+  data.forEach((doc) => {
+    // const vehicleType = { id: doc.id, vehicleTypeData: doc.data() };
+    vehicleTypes.push(doc.data().vehicle_type);
+  });
+  try {
+    const data = req.body;
+    // console.log("***************", data);
+
+    const files = req.files;
+    // console.log("***************", files);
+
+    /**Add document type whenever its required. It is not added yet. */
+    const { valid, errors } = validateTransporterData(data);
+    const { fileValid, fileErrors } = validateTransporterDocuments(files);
+    if (!fileValid || !valid) {
+      return res.render("Users/Transporter/addTransporter", {
+        vehicleTypes: vehicleTypes,
+        fileErrors,
+        errors,
+      });
+    } else {
+      const address = {
+        area: data.area,
+        city: data.city,
+        pincode: data.pincode,
+      };
+     // const stringAddress = JSON.stringify(Object.values(address));
+      //const latLong = await getLatLong(stringAddress);
+
+      let status = await isBoolean(data.status);
+      // let registered = await isBoolean(data.registered);
+      const profilePublicUrl = await imagePublicUrl(files.profile);
+      const addressProofPublicUrl = await imagePublicUrl(files.AddressProof);
+      const identityProofPublicUrl = await imagePublicUrl(files.IdentityProof);
+      const icons = await imagePublicUrl(files.icons);
+
+      let transporterData = {
+        first_name: data.firstname,
+        last_name: data.lastname,
+        email: data.email,
+        phone_number: data.phone,
+        country_code:"+91",
+        user_type: "transporter",
+        register_number: data.registerNo,
+        is_verified: "pending",
+        gst_number: data.gstNo,
+        status: status,
+        // registered: registered,
+        registered: true,
+        is_deleted: false,
+        reason: "",
+        created_at: new Date(),
+        priority: 0,
+        is_request: false,
+        driver_count: 1,
+        address: {
+          coordinates: 5.565656,
+          flatNumber: data.address,
+          area: data.area,
+          city: data.city,
+          pincode: data.pincode,
+          state: data.state,
+          country: data.country,
+          // title: data.city,
+        },
+      };
+
+      let driverData = {
+        first_name: data.FirstName,
+        last_name: data.LastName,
+        email: data.Email,
+        phone_number: data.Phone,
+        country_code:"+91",
+        // user_type: "transporter",
+        age: data.Age,
+        address_proof: addressProofPublicUrl,
+        identity_proof: identityProofPublicUrl,
+        created_at: new Date(),
+        driver_photo: profilePublicUrl,
+        is_assign: false,
+        is_deleted: false,
+        is_verified: "pending",
+        status: status,
+        // user_uid: newTransporter.user.uid,
+      };
+      // console.log(req.files,"req files*****");
+      // let iconss = [];
+      // for (var i = 0; i < req.files.length; i++) {
+      //   console.log(req.files,"req files1****");
+      //   const iconId = uuidv4();
+      //   let base64 = req.files[i].buffer.toString("base64");
+      //   let mimetype = req.files[i].mimetype;
+      //   const nameArr = req.files[i].originalname.split(".")
+      //   const fileLocation = `vehicle-details/${iconId}.${(nameArr.length !== 0) ? nameArr[nameArr.length - 1] : ""}`
+      //   const file = bucket.file(fileLocation)
+      //   await file.save(req.files[i].buffer, { contentType: mimetype })
+      //   await file.setMetadata({
+      //     firebaseStorageDownloadTokens: iconId
+      //   })
+        
+      //   const icon = {
+      //     id: iconId,
+      //     base64: base64,
+      //     dataUrl: `data:${mimetype};${base64}`,
+      //     url: `https://firebasestorage.googleapis.com/v0/b/${bucket.name}/o/${encodeURIComponent(fileLocation)}?alt=media&token=${iconId}`,
+      //     type: mimetype,
+      //   };
+      //   iconss.push(icon);
+      // }
+
+      const vehicleData = {
+        vehicle_type: data.vehicleTypeName,
+        vehicle_number: data.VehicleNumber,
+        comment: data.Comments,
+        chassis_number: data.ChassisNumber,
+        vehicle_photos: typeof icons === "string" ? [icons] : icons,
+        created_at: new Date(),
+        is_assign: false,
+        is_deleted: false,
+        is_verified: "pending",
+        status: status,
+        //vehicle_photos: icons,
+      };
+
+      const notification = {
+        // type: req.body.type,
+        type: "new_driver",
+        is_read: false,
+        text: `${transporterData.first_name} ${transporterData.last_name} has added ${driverData.first_name} ${driverData.last_name} to his profile, please verify its details at earliest.`,
+        created_at: new Date(),
+        // user_id: userId,
+        title: "New Driver Added",
+        // orderId: orderId,
+      };
+
+      // const newTransporter = await firebaseSecondaryApp
+      //   .auth()
+      //   .createUserWithEmailAndPassword(data.email, data.password);
+     
+     
+
+
+
+
+     const userUid = data.userUid;
+//        console.log(newTransporter,"new Transpoeter****");
+
+      let transporter = await db
+        .collection("users")
+        .doc(userUid);
+      await transporter.set(transporterData);
+
+      const vehicle = await transporter.collection("vehicle_details").doc();
+      await vehicle.set(vehicleData);
+
+      let transporterDriverData = {};
+      let newDriverData = {};
+
+      if (data.TransporterAsDriver === "checked") {
+        transporterDriverData = {
+          ...driverData,
+          user_uid: userUid,
+        };
+
+        const transporterDriver = await transporter
+          .collection("driver_details")
+          .doc();
+        await transporterDriver.set(transporterDriverData);
+      } else {
+        let driverPassword = Math.random().toString(36).slice(-8);
+
+        const newDriver = await firebaseSecondaryApp
+          .auth()
+          .createUserWithEmailAndPassword(data.Email, driverPassword);
+
+        transporterDriverData = {
+          ...driverData,
+          temp_password: driverPassword,
+          user_uid: newDriver.user.uid,
+        };
+
+        newDriverData = {
+          ...driverData,
+          temp_password: driverPassword,
+          transporter_uid: userUid,
+          user_type: "driver",
+        };
+
+        let driver = await db.collection("users").doc(newDriver.user.uid);
+        await driver.set(newDriverData);
+
+        const transporterDriver = await transporter
+          .collection("driver_details")
+          .doc();
+        await transporterDriver.set(transporterDriverData);
+
+        firebaseSecondaryApp.auth().signOut();
+      }
+
+      firebaseSecondaryApp.auth().signOut();
+
+      await db.collection("notification").add(notification);
+
+      const getAllUsers = await db.collection("users");
+      const getUsers = await getAllUsers.get();
+      getUsers.forEach(async (user) => {
+        if (
+          user.data().user_type === "admin" ||
+          user.data().user_type === "Admin"
+        ) {
+          await getAllUsers
+            .doc(user.id)
+            .update({ noti_count: user.data().noti_count + 1 });
+        }
+      });
+
+      return res.render("Users/Transporter/addTransporter", {
+        message: "Transporter is created...!!",
+        vehicleTypes: vehicleTypes,
+      });
+
+      // const address = {
+      //   flatNumber: data.address,
+      //   area: data.area,
+      //   city: data.city,
+      //   pincode: data.pincode,
+      //   state: data.state,
+      //   country: data.country,
+      //   // title: data.city,
+      // };
+
+      // await db
+      //   .collection("users")
+      //   .doc(newTransporter.user.uid)
+      //   .collection("address")
+      //   .add(address);
+
+      // const transporter = await db.collection("users").doc();
+      // await transporter.set(transporterData);
+
+      // await db
+      //   .collection("users")
+      //   .doc(transporter.id)
+      //   .collection("address")
+      //   .add(address);
+    }
+    // return res.redirect("/transporter/createTransporter");
+  } catch (error) {
+    const errors = [];
+    if (error.code == "auth/email-already-in-use") {
+      errors.push({ msg: "Email already exists!" });
+      return res.render("Users/Transporter/addTransporter", {
+        vehicleTypes: vehicleTypes,
+        errors,
+      });
+    }
+    errors.push({ msg: error.message });
+    return res.render("Users/Transporter/addTransporter", {
+      vehicleTypes: vehicleTypes,
+      errors,
+    });
+  }
+};
+
 /* Get all the Transporter Controller */
 exports.listTransporters = async (req, res) => {
   try {
@@ -421,6 +704,67 @@ exports.listTransporters = async (req, res) => {
     });
   }
 };
+/* Update Transporter Controller --> GET */
+exports.updateTransporter = async (req, res) => {
+  try {
+    const errors = [];
+    const id = req.params.transporter_id;
+    const data = await db.collection("users").doc(id).get();
+    if (data.data() === undefined) {
+      errors.push({ msg: "Transporter not found...!!" });
+      return res.render("Errors/errors", { errors: errors });
+    }
+    const TransporterData = data.data();
+    return res.render("Users/Transporter/editTransporters", { transporter: TransporterData });
+  } catch (error) {
+    const errors = [];
+    errors.push({ msg: error.message });
+    return res.render("Errors/errors", { errors: errors });
+  }
+};
+/* Update Transporter Controller --> POST */
+exports.updatedTransporter = async (req, res) => {
+  try {
+    const id = req.params.transporter_id;
+    const data = req.body;
+    const { valid, errors } = validateTransporterData(data);
+
+    if (!valid) {
+      if (errors.length > 0) {
+        for (var i = 0; i <= errors.length; i++) {
+          req.flash("error_msg", errors[i].msg);
+          return res.redirect(`/transporter/updateTransporter/${id}`);
+         }
+      }
+    }
+    const transporterData = {
+      first_name: data.firstname,
+      last_name: data.lastname,
+      email: data.email,
+      phone_number: data.phone,
+      register_number: data.registerNo,
+       gst_number: data.gstNo,
+      
+      address: {
+        flatNumber: data.address,
+        area: data.area,
+        city: data.city,
+        pincode: data.pincode,
+        state: data.state,
+        country: data.country,
+      },
+    };
+    const updateTransporter = db.collection("users").doc(id);
+    await updateTransporter.update(transporterData);
+    return res.redirect("/transporter/displayTransporters");
+    
+  } catch (error) {
+    const errors = [];
+    errors.push({ msg: error.code });
+    return res.render("Errors/errors", { errors: errors });
+  }
+};
+
 
 /* Change Status of the Transporter Controller */
 exports.changeTransporterStatus = async (req, res) => {

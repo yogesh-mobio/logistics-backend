@@ -29,9 +29,9 @@ exports.validateTransporterData = (data) => {
   if (isEmpty(data.phone)) {
     errors.push({ msg: "Phone is required" });
   }
-  if (isEmpty(data.password)) {
-    errors.push({ msg: "Phone is required" });
-  }
+  // if (isEmpty(data.password)) {
+  //   errors.push({ msg: "Phone is required" });
+  // }
   // if (isEmpty(data.email)) {
   //   errors.push({ msg: "Email is required" });
   // }
@@ -58,9 +58,9 @@ exports.validateTransporterData = (data) => {
   // if (data.pincode.length !== 6) {
   //   errors.push({ msg: "Pincode should be exact 6 digits long" });
   // }
-  // if (data.phone.length !== 10) {
-  //   errors.push({ msg: "Phone number should be exact 10 digits long" });
-  // }
+  if (data.phone.length !== 10) {
+    errors.push({ msg: "Phone number should be exact 10 digits long" });
+  }
   // if (!isNumeric(data.pincode)) {
   //   errors.push({ msg: "Pincode should be numbers only." });
   // }

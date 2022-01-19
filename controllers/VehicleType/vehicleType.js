@@ -51,7 +51,6 @@ exports.newVehicleType = async (req, res) => {
 
     // console.log("*****DATA*****", data);
     // console.log("FILE", req.files);
-
     const { valid, errors } = validateVehicleTypeData(data);
 
     if (!valid) {

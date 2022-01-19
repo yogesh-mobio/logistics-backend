@@ -66,6 +66,67 @@ exports.vehicleDetails = async (req, res) => {
   }
 };
 
+/* Update Vehicle Controller --> GET */
+exports.updateVehicle = async (req, res) => {
+  try {
+    const errors = [];
+    const vehicle_id = req.params.vehicle_id;
+    const transporter_id = req.params.transporter_id;
+    const transporter = await db.collection("users").doc(transporter_id);
+    const getVehicle = await transporter
+      .collection("vehicle_details")
+      .doc(vehicle_id)
+      .get();
+    const data = await getVehicle.data();
+    //const data = await db.collection("users").doc(id).get();
+    if (data === undefined) {
+      errors.push({ msg: "Vehicle not found...!!" });
+      return res.render("Errors/errors", { errors: errors });
+    }
+    const vehicle = { id: data.id, vehicleData: data };
+    return res.render("Vehicle/editVehicle", { id: data.id, vehicle: vehicle });
+  } catch (error) {
+    const errors = [];
+    errors.push({ msg: error.message });
+    return res.render("Errors/errors", { errors: errors });
+  }
+};
+/* Update Vehicle Controller --> POST */
+exports.updatedVehicle = async (req, res) => {
+  try {
+  
+    const vehicle_id = req.params.vehicle_id;
+    const transporter_id = req.params.transporter_id;
+    const data = req.body;
+    //  const { valid, errors } = validateTransporterData(data);
+
+    // if (!valid) {
+    //   if (errors.length > 0) {
+    //     for (var i = 0; i <= errors.length; i++) {
+    //       req.flash("error_msg", errors[i].msg);
+    //       return res.redirect(`/transporter/updateTransporter/${id}`);
+    //      }
+    //   }
+    // }
+    const vehicleData = {
+      vehicle_type: data.vehicleType,
+      vehicle_number: data.vehicleNumber,
+      comment: data.Comments,
+      chassis_number: data.chassisNumber,
+    };
+    const transporter = await db.collection("users").doc(transporter_id);
+    const getVehicle = await transporter
+      .collection("vehicle_details")
+      .doc(vehicle_id);
+    await getVehicle.update(vehicleData);
+    return res.redirect(`/transporter/transporterDetails/${transporter_id}`);
+  } catch (error) {
+    const errors = [];
+    errors.push({ msg: error.code });
+    return res.render("Errors/errors", { errors: errors });
+  }
+};
+
 // Change Vehicle Status Controller
 exports.changeVehicleStatus = async (req, res) => {
   const errors = [];

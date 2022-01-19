@@ -4,17 +4,24 @@ var driverRouter = express.Router();
 const {
   changeDriverStatus,
   removeDriver,
+  updateDriver,
+  updatedDriver,
   transporterDriversList,
   driverDetails,
   verifyDriver,
   rejectDriver,
 } = require("../controllers/Driver/driver");
+
 const { isAuthenticated } = require("../middleware/authGaurd");
 
 // Routes for Drivers
 // driverRouter.get("/:transporter_id/displayDrivers", transporterDriversList);
 
 driverRouter.get("/:transporter_id/driverDetails/:driver_id", driverDetails);
+
+driverRouter.get("/:transporter_id/editDriver/:driver_id", updateDriver);
+
+driverRouter.post("/:transporter_id/editDriver/:driver_id", updatedDriver);
 
 driverRouter.post("/:transporter_id/removeDriver/:driver_id", removeDriver);
 

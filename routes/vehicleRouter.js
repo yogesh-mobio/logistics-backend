@@ -3,6 +3,8 @@ var vehicleRouter = express.Router();
 
 const {
   transporterVehiclesList,
+  updateVehicle,
+  updatedVehicle,
   vehicleDetails,
   removeVehicle,
   changeVehicleStatus,
@@ -16,6 +18,15 @@ const { isAuthenticated } = require("../middleware/authGaurd");
 vehicleRouter.get(
   "/:transporter_id/vehicleDetails/:vehicle_id",
   vehicleDetails
+);
+vehicleRouter.get(
+  "/:transporter_id/editvehicle/:vehicle_id",
+  updateVehicle
+);
+
+vehicleRouter.post(
+  "/:transporter_id/editvehicle/:vehicle_id",
+  updatedVehicle
 );
 
 vehicleRouter.post("/:transporter_id/removeVehicle/:vehicle_id", removeVehicle);
