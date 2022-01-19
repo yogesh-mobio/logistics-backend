@@ -14,7 +14,7 @@ exports.signIn = async (req, res) => {
       password: req.body.password,
     };
 
-    const { valid, errors } = validateSignInData(user);
+    const { valid, errors } = validateSignInData(user)
 
     if (!valid) {
       return res.status(400).json(errors);
