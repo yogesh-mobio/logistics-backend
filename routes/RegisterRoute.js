@@ -5,11 +5,12 @@ const authController = require("../controllers/Auth2/auth.controllers");
 RegisterRouter.post(
   "/register",
   authController.signup,
-  authController.sendOtp,
+  //authController.sendOtp,
   (req, res) => {
-    const name = req.body.name;
-    const phone_number = req.body.phone_number;
-    res.render("Payment/otp", { phone_number, name });
+    // const name = req.body.name;
+    // const phone_number = req.body.phone_number;
+    const data = req.body;
+    res.render("Payment/transporterdetails",data);
   }
 );
 
