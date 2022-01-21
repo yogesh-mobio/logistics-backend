@@ -9,7 +9,9 @@ exports.signup = async (req, res, next) => {
     const user = {
       name: req.body.name,
       phone_number: req.body.phone_number,
-      is_verified: "pending",
+      is_verified: "verified",
+      is_registered: false,
+      user_type: "transporter",
     };
     const { valid, errors } = validateData(user);
     if (!valid) {
@@ -32,7 +34,20 @@ exports.signup = async (req, res, next) => {
         errors,
       });
     }
+    let fullname = req.body.name;
+    let firstName = fullname.split(" ").slice(0, -1).join(" ");
+    let lastName = fullname.split(" ").slice(-1).join(" ");
+    const transporter = {
+      first_name: firstName,
+      last_name: lastName,
+      phone_number: req.body.phone_number,
+      country_code:"+91",
+      is_verified: "verified",
+      is_registered: false,
+      user_type: "transporter",
+    };
     await userService.creatNewUser(user);
+    await userService.creatNewTransporter(transporter);
 
     next();
   } catch (error) {
@@ -137,6 +152,7 @@ exports.verifyOtp = async (req, res, next) => {
 };
 
 exports.updateTransporter = async (req, res, next) => {
+  console.log(req.body,"mydata")
   let name = req.body.name;
   let phone_number = req.body.phone_number;
   try {
@@ -145,6 +161,7 @@ exports.updateTransporter = async (req, res, next) => {
     const user = {
       email: req.body.email,
       gst_number: req.body.gst_number,
+      is_registered:true,
     };
     const data = await db
       .collection("users")
@@ -176,7 +193,6 @@ exports.updateTransporter = async (req, res, next) => {
     }
     return res.render("Payment/transporterdetails", {
       errors,
-      name,
       phone_number,
      
     });
