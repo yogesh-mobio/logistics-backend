@@ -10,6 +10,7 @@ RegisterRouter.post(
     // const name = req.body.name;
     // const phone_number = req.body.phone_number;
     const data = req.body;
+    console.log(data,"data")
     res.render("Payment/transporterdetails",data);
   }
 );
@@ -35,13 +36,6 @@ RegisterRouter.post("/otp", authController.verifyOtp, async (req, res) => {
 RegisterRouter.post(
   "/updatetransporter",
   authController.updateTransporter
-
-  // authController.sendOtp,
-  // (req, res) => {
-  //   const name = req.body.name;
-  //   const phone_number = req.body.phone_number;
-  //   res.render("Payment/otp", { phone_number, name });
-  // }
 );
 
 module.exports = RegisterRouter;
