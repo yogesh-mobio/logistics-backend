@@ -45,6 +45,8 @@ exports.signup = async (req, res, next) => {
       is_verified: "verified",
       is_registered: false,
       user_type: "transporter",
+      email:"",
+      gst_number:"",
     };
     await userService.creatNewUser(user);
     await userService.creatNewTransporter(transporter);
@@ -153,15 +155,16 @@ exports.verifyOtp = async (req, res, next) => {
 
 exports.updateTransporter = async (req, res, next) => {
   console.log(req.body,"mydata")
+  let user_data= req.body;
   let name = req.body.name;
   let phone_number = req.body.phone_number;
+  let userUid = req.body.userUid;
   try {
     
     let id;
     const user = {
       email: req.body.email,
-      gst_number: req.body.gst_number,
-      is_registered:true,
+      gst_number: req.body.gstNo
     };
     const data = await db
       .collection("users")
@@ -173,28 +176,26 @@ exports.updateTransporter = async (req, res, next) => {
       });
     });
     const my_data = await db.collection("users").doc(id);
-    await my_data.update(user);
-    // await firebase
-    //   .auth()
-    //   .createUserWithEmailAndPassword(user.email, req.body.password);
     
-    return res.render("Payment/transporterdetails", {
-      id,
-      name,
-      phone_number
+    await my_data.update(user);
+    
+    next();
+    
+    
+    return res.render("Payment/appUrl", {
+     user_data
     });
   } catch (error) {
     const errors = [];
+    console.log(error,"errorrs")
     if (error.code == "auth/email-already-in-use") {
       errors.push({ msg: "Email already exists!" });
-    }
-    if (error.code == "auth/weak-password") {
-      errors.push({ msg: "Password should be at least 6 Characters!" });
     }
     return res.render("Payment/transporterdetails", {
       errors,
       phone_number,
-     
+      name,
+      userUid
     });
     // const errors = [];
     // errors.push({ msg: error.message });
