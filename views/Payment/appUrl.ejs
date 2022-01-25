@@ -7,123 +7,60 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Application Link</title>
   <link rel="stylesheet" href="/css/bootstrap.min.css">
-
 </head>
 
-<body>
-  <div class="container" style="padding-top: 34px; padding-left: 0px;">
-    <div class="page-content-wrapper">
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-12" style="display: flex; justify-content: space-around;">
+<% include ../Partials/HeaderRoot %>
 
-            <div class="col-6">
+<div id="preloader">
+  <div id="status"><div class="spinner"></div></div>
+</div>
 
-
-              <div class="card m-b-20">
-                <div class="card-body" style="height: 530px;">
-                  <h4 class="mt-0 header-title" style="padding-top: 15px; padding-bottom: 25px;">Successfully Register</h4>
-                  <h5 class="mt-0 header-title" style="padding-top: 15px; padding-bottom: 25px;">Open transporter mobile appilication and complete your profile.</h5>
-
-                  <form class="form-horizontal" method="post" action="#">
-
-                    <div class="form-group row">
-                  
-                      <div class="col-sm-10">
-                        <input
-                          class="form-control"
-                          type="hidden"
-                          id="deep_link"
-                          name="userUid" 
-                          value="com.ms.logistics://road_ferry/<%=user_data.userUid%>"
-                        />
-                      </div>
-                    </div>
-                </div>
-               
-                <div class="form-group">
-                  <button class="btn btn-group btn-primary waves-effect" type="button" id="deep_link_button">
-                    Open App
-                  </button>
-                  </div>
-                <!-- <button type="button" class="btn btn-primary" onclick="location.href='/update-profile'">
-                     value="com.ms.logistics://road_ferry?id=<%=user_data.userUid %>"
-                </button> -->
-
-
-              </div>
+<!-- Begin page -->
+<div class="accountbg"></div>
+<div class="wrapper-page">
+  <div class="card" style=" margin-top: 35%; margin-bottom: 35%; margin-left: 13%; margin-right: 13%;">
+    <div class="card-body">
+      <h3 class="text-center m-0">
+        <a href="#" class="logo logo-admin"
+          ><img src="/assets/images/tick.png" height="100" alt="logo"
+        /></a>
+      </h3>
+    
+      <div class="p-3">
+        <h2 class="font-18 m-b-5 text-center">Successfully Register</h2>
+        <p class="text-muted text-center">Open transporter mobile appilication and complete your profile.</p>
+        <% include ../Partials/errorMessages %>
+        <form class="form-horizontal m-t-30">
+          <div class="form-group">
+            <div class="form-group row">
+                <div class="col-sm-10">
+                 <input
+                   class="form-control"
+                   type="hidden"
+                   id="deep_link"
+                   name="userUid" 
+                   value="com.ms.logistics://road_ferry/<%=user_data.userUid%>"
+                 />
+               </div>
+             </div>
+           
             </div>
-            <!-- <div class="clo-6"> -->
-
-              <!-- <div class="form-group row">
-                <div class="col-sm-12">
-                  <div class="padding">
-                    <div class="row">
-                      <div class="container-fluid d-flex justify-content-start">
-                        <div class="col-sm-12 col-md-12">
-                          <div class="card">
-                            <div class="card-header">
-                              <div class="row">
-                                <div class="col-md-12"> <span>CREDIT/DEBIT CARD PAYMENT</span> </div>
-
-                                <div class="col-md-12 text-right" style="margin-top: -5px;">
-                                  <img src="icon/r.png">
-                                  <img src="https://img.icons8.com/color/36/000000/visa.png">
-                                  <img src="https://img.icons8.com/color/36/000000/mastercard.png">
-                                  <img src="https://img.icons8.com/color/36/000000/amex.png">
-                                </div>
-                              </div>
-                            </div>
-                            <div class="card-body" style="height: auto">
-                              <div class="form-group"> <label for="cc-number" class="control-label">CARD
-                                  NUMBER</label>
-                                <input id="cc-number" type="tel" class="input-lg form-control cc-number"
-                                  autocomplete="cc-number" placeholder="•••• •••• •••• ••••" maxlength="12"
-                                  minlength="12" required>
-                              </div>
-                              <div class="row">
-                                <div class="col-md-12">
-                                  <div class="form-group"> <label for="cc-exp" class="control-label">CARD
-                                      EXPIRY</label>
-                                    <input id="cc-exp" type="tel" class="input-lg form-control cc-exp"
-                                      autocomplete="cc-exp" placeholder="MM / YY" minlength="5" maxlength="5"
-                                      required />
-                                  </div>
-                                </div>
-                                <div class="col-md-12">
-                                  <div class="form-group"> <label for="cc-cvc" class="control-label">CARD
-                                      CVC</label>
-                                    <input id="cc-cvc" type="tel" class="input-lg form-control cc-cvc"
-                                      autocomplete="off" placeholder="•••" maxlength="3" minlength="3" required>
-                                  </div>
-                                </div>
-                              </div>
-                              <div class="form-group"> <label for="numeric" class="control-label">CARD HOLDER
-                                  NAME</label>
-                                <input type="text" class="input-lg form-control" required="required">
-                              </div>
-                              <div class="form-group">
-
-                                <button class="btn btn-group btn-primary waves-effect" type="submit">
-                                  MAKE PAYMENT
-                                </button>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div> -->
-            <!-- </div> -->
-            </form>
+            <div class="col-sm-12 text-center">
+              <button
+                class="btn btn-primary w-md waves-effect waves-light"
+                type="submit"
+                id="deep_link_button"
+              >
+             Open App
+              </button>
+            </div>
           </div>
-        </div>
+        </form>
       </div>
     </div>
+
   </div>
-</body>
+</div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script>
   
@@ -135,7 +72,7 @@
            // let url = document.getElementById('ios_deep_link');
             let url = $("#deep_link").val();
             console.log(url,"url")
-            alert(`Your URL`+url)
+            alert(`Your URL `+url)
             if(url) {
                 window.location.replace(url)
             }
@@ -143,3 +80,4 @@
   });
 });
 </script>
+<% include ../Partials/FooterRoot %>

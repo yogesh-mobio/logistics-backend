@@ -6,6 +6,7 @@ const { validateData, validateData2, validateData3 } = require("./validations");
 // Sign Up
 exports.signup = async (req, res, next) => {
   try {
+    let user_uid = req.body.userUid;
     const user = {
       name: req.body.name,
       phone_number: req.body.phone_number,
@@ -48,8 +49,8 @@ exports.signup = async (req, res, next) => {
       email:"",
       gst_number:"",
     };
-    await userService.creatNewUser(user);
-    await userService.creatNewTransporter(transporter);
+    await userService.creatNewUser(user,user_uid);
+    await userService.creatNewTransporter(transporter,user_uid);
 
     next();
   } catch (error) {
@@ -161,27 +162,22 @@ exports.updateTransporter = async (req, res, next) => {
   let userUid = req.body.userUid;
   try {
     
-    let id;
+    //let id;
     const user = {
       email: req.body.email,
       gst_number: req.body.gstNo
     };
-    const data = await db
-      .collection("users")
-      .where("phone_number", "==", req.body.phone_number);
-    await data.get().then(function (querySnapshot) {
-      querySnapshot.forEach(function (doc) {
-        console.log(doc.id, " => ", doc.data());
-        id = doc.id;
-      });
-    });
-    const my_data = await db.collection("users").doc(id);
-    
+    // const data = await db
+    //   .collection("users")
+    //   .where("phone_number", "==", req.body.phone_number);
+    // await data.get().then(function (querySnapshot) {
+    //   querySnapshot.forEach(function (doc) {
+    //     console.log(doc.id, " => ", doc.data());
+    //     id = doc.id;
+    //   });
+    // });
+    const my_data = await db.collection("users").doc(userUid);
     await my_data.update(user);
-    
-    next();
-    
-    
     return res.render("Payment/appUrl", {
      user_data
     });

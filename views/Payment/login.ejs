@@ -9,15 +9,16 @@
 <div class="wrapper-page">
   <div class="card">
     <div class="card-body">
-      <h3 class="text-center m-0">
+      <h3 class="text-center">
         <a href="#" class="logo logo-admin"
-          ><img src="/assets/images/capture1.png" height="150" alt="logo"
+          ><img src="/assets/images/mylogo.png" height="130" alt="logo"
         /></a>
       </h3>
     
       <div class="p-3">
         <h4 class="font-18 m-b-5 text-center">Welcome Back !</h4>
         <p class="text-muted text-center">Sign in to continue to Road Ferry.</p>
+     
         <% include ../Partials/errorMessages %>
         <form class="form-horizontal m-t-30" action="/register" method="post">
           <div class="form-group">
@@ -49,53 +50,13 @@
             class="btn btn-group btn-danger waves-effect"
             id="codeButton"
           >
-            Recaptcha
+            Send Verification
           </button>
         </div>
           <div id="recaptcha-container"></div>
-         
-          <div class="form-group">
-            <label for="code">Verification</label>
-            <div class="col-sm-10">
-              <input
-                class="form-control"
-                type="text"
-                id="code"
-                name="code"
-                placeholder="Enter your Verification Code"
-              
-              />
+          <div class="form-group verification_input_div">
             </div>
-          </div>
-          <div>
-          <button
-          type="button"
-          class="btn btn-group btn-danger waves-effect"
-          id="verifyButton"
-        >
-          Verify Transporter
-        </button>
-      </div>
-
-          <!-- <div class="form-group row m-t-20">
-            <div class="col-sm-6">
-              <div class="form-group m-t-10 mb-0 row">
-                <a href="/forget-password" class="text-muted"
-                  ><i class="mdi mdi-lock"></i> Forgot your password?</a
-                >
-              </div> -->
-
-              <!-- <div class="custom-control custom-checkbox">
-              <input
-                  type="checkbox"
-                  class="custom-control-input"
-                  id="customControlInline"
-                />
-                <label class="custom-control-label" for="customControlInline"
-                  >Remember me</label
-                >
-              </div> -->
-              <div class="form-group row">
+         <div class="form-group row">
                 <div class="col-sm-10">
                   <input
                     class="form-control"
@@ -106,7 +67,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-sm-8 text-right">
+            <div class="col-sm-12 text-center">
               <button
                 class="btn btn-primary w-md waves-effect waves-light"
                 type="submit"
@@ -115,34 +76,11 @@
               </button>
             </div>
           </div>
-
-          <!-- <div class="form-group m-t-10 mb-0 row">
-            <div class="col-12 m-t-20">
-              <a href="pages-recoverpw" class="text-muted"
-                ><i class="mdi mdi-lock"></i> Forgot your password?</a
-              >
-            </div>
-          </div> -->
         </form>
       </div>
     </div>
   </div>
 
-  <div class="m-t-40 text-center">
-    <!-- <p class="text-white">
-      Don't have an account ?
-      <a
-        href="pages-register"
-        class="font-500 font-14 text-white font-secondary"
-      >
-        Signup Now
-      </a>
-    </p> -->
-    <p class="text-white">
-      © <%= new Date().getFullYear() - 1; %> - <%= new Date().getFullYear(); %>
-      Road Ferry. 
-    </p>
-  </div>
 </div>
 
 <% include ../Partials/FooterRoot %>
@@ -169,25 +107,61 @@ $(document).ready(function() {
       console.log(confirmationResult,"result1");
       window.confirmationResult = confirmationResult;
       myResult = confirmationResult;
+      var html =
+        `  <div class="form-group verification_msg">
+            <label for="code">Enter Verification code</label>
+              <input
+                class="form-control"
+                type="text"
+                id="code"
+                name="code"
+                placeholder="Enter your Verification Code"
+              
+              />
+          </div>
+          <div>
+          <button
+          type="button"
+          class="btn btn-group btn-danger waves-effect verify_number"
+          id="verifyButton"
+        >
+          Verify Transporter
+        </button>
+      </div>`;
+      $(".verification_input_div").append(html);
     })
     .catch(function (error) {
       console.error("SMS not sent", error);
    });
   });
 });
-$(document).ready(function() {
-  $("#verifyButton").click(function () {
-    const code = $("#code").val();
+$(document).on("click", ".verify_number", function () {
+  const code = $("#code").val();
     myResult.confirm(code).then((result) => {
-    console.log(result,'data')
+    console.log(result,'data');
     user_uid = result.user.uid;
     console.log(user_uid,"UserData");
     $("#codeHidden").val(user_uid);
+    alert("Number Verified");
+    var html = `<div class="alert alert-success alert-dismissible fade show" role="alert">
+      <p>Phone number verified</p>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+      </button>
+    </div>`;
+   $(".verification_msg").append(html);
   }).catch((error) => {
+    var html = `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <p>Phone number not verified</p>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+    </button>
+  </div>`;
+    $(".verification_msg").append(html);
     console.error("Verification not completed", error);
     });
-  });
 });
+
 
 
 </script>
