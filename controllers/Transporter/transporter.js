@@ -1,4 +1,4 @@
-var NodeGeocoder = require("node-geocoder");
+const fetchdata = require('node-fetch');
 require("dotenv").config();
 //const { getAuth, signInWithPhoneNumber } = require("firebase/firebase-auth");
 const { v4: uuidv4 } = require('uuid');
@@ -413,6 +413,20 @@ exports.newTransporter = async (req, res) => {
   console.log("api called")
   console.log(req.body);
   const vehicleTypes = [];
+  let coordinates;
+  var API_KEY = process.env.GOOGLE_API;
+  var BASE_URL = "https://maps.googleapis.com/maps/api/geocode/json?address=";
+  var address = req.body.address + "," +req.body.area + "," + req.body.city + "," + req.body.state + "," + req.body.country;
+  var url = BASE_URL + address + "&key=" + API_KEY;
+  fetchdata(url)
+  .then(res => res.json())
+  .then(json => {
+      console.log("data");
+      console.log(json.results[0]);
+      coordinates = json.results[0].geometry.location;
+      console.log(latitude,"lat")
+    //  console.log(latitude,"latitude")
+})
   const data = await db.collection("vehicles").get();
   data.forEach((doc) => {
     // const vehicleType = { id: doc.id, vehicleTypeData: doc.data() };
@@ -470,7 +484,7 @@ exports.newTransporter = async (req, res) => {
         is_request: false,
         driver_count: 1,
         address: {
-          coordinates: 5.565656,
+          coordinates: coordinates,
           flatNumber: data.address,
           area: data.area,
           city: data.city,
@@ -559,6 +573,7 @@ exports.newTransporter = async (req, res) => {
 
 
      const userUid = data.userUid;
+     const driverUid = data.driverUid;
 //        console.log(newTransporter,"new Transpoeter****");
 
       let transporter = await db
@@ -583,16 +598,16 @@ exports.newTransporter = async (req, res) => {
           .doc();
         await transporterDriver.set(transporterDriverData);
       } else {
-        let driverPassword = Math.random().toString(36).slice(-8);
+        // let driverPassword = Math.random().toString(36).slice(-8);
 
-        const newDriver = await firebaseSecondaryApp
-          .auth()
-          .createUserWithEmailAndPassword(data.Email, driverPassword);
+        // const newDriver = await firebaseSecondaryApp
+        //   .auth()
+        //   .createUserWithEmailAndPassword(data.Email, driverPassword);
 
         transporterDriverData = {
           ...driverData,
           temp_password: driverPassword,
-          user_uid: newDriver.user.uid,
+          user_uid: driverUid,
         };
 
         newDriverData = {
@@ -602,7 +617,7 @@ exports.newTransporter = async (req, res) => {
           user_type: "driver",
         };
 
-        let driver = await db.collection("users").doc(newDriver.user.uid);
+        let driver = await db.collection("users").doc(driverUid);
         await driver.set(newDriverData);
 
         const transporterDriver = await transporter

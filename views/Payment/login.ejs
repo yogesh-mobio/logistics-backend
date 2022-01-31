@@ -11,7 +11,7 @@
     <div class="card-body">
       <h3 class="text-center">
         <a href="#" class="logo logo-admin"
-          ><img src="/assets/images/mylogo.png" height="130" alt="logo"
+          ><img src="/assets/images/mylogo.PNG" height="130" alt="logo"
         /></a>
       </h3>
     
@@ -44,7 +44,7 @@
               required
             />
           </div>
-          <div>
+          <!-- <div>
             <button
             type="button"
             class="btn btn-group btn-danger waves-effect"
@@ -66,13 +66,13 @@
                   />
                 </div>
               </div>
-            </div>
+            </div> -->
             <div class="col-sm-12 text-center">
               <button
                 class="btn btn-primary w-md waves-effect waves-light"
                 type="submit"
               >
-              Register
+              Send Verification
               </button>
             </div>
           </div>
@@ -84,85 +84,3 @@
 </div>
 
 <% include ../Partials/FooterRoot %>
-<script src="https://www.gstatic.com/firebasejs/4.8.1/firebase.js"></script>
-<script>
-  var config = {
-  apiKey: "AIzaSyALoyUbKfKhksdyblkTeucUUr6o-yhKbMA",
-  authDomain: "logistics-ondemand-app.firebaseapp.com",
-  databaseURL: "https://logistics-ondemand-app.firebaseio.com",
-  projectId: "logistics-ondemand-app",
-  storageBucket: "logistics-ondemand-app.appspot.com",
-  messagingSenderId: "335686843365",
-  appId: "335686843365:web:d4bb2a7c82af72fcdf8d0c",
-  measurementId: "G-7WPCXTQJ8N"
-  };
-firebase.initializeApp(config);
-window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container');
-var myResult;
-$(document).ready(function() {
-  $("#codeButton").click(function () {
-    const phoneNumberString = "+91"+ $("#phone_number").val();
-    firebase.auth().signInWithPhoneNumber(phoneNumberString, window.recaptchaVerifier)
-    .then( confirmationResult => {
-      console.log(confirmationResult,"result1");
-      window.confirmationResult = confirmationResult;
-      myResult = confirmationResult;
-      var html =
-        `  <div class="form-group verification_msg">
-            <label for="code">Enter Verification code</label>
-              <input
-                class="form-control"
-                type="text"
-                id="code"
-                name="code"
-                placeholder="Enter your Verification Code"
-              
-              />
-          </div>
-          <div>
-          <button
-          type="button"
-          class="btn btn-group btn-danger waves-effect verify_number"
-          id="verifyButton"
-        >
-          Verify Transporter
-        </button>
-      </div>`;
-      $(".verification_input_div").append(html);
-    })
-    .catch(function (error) {
-      console.error("SMS not sent", error);
-   });
-  });
-});
-$(document).on("click", ".verify_number", function () {
-  const code = $("#code").val();
-    myResult.confirm(code).then((result) => {
-    console.log(result,'data');
-    user_uid = result.user.uid;
-    console.log(user_uid,"UserData");
-    $("#codeHidden").val(user_uid);
-    alert("Number Verified");
-    var html = `<div class="alert alert-success alert-dismissible fade show" role="alert">
-      <p>Phone number verified</p>
-      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
-      </button>
-    </div>`;
-   $(".verification_msg").append(html);
-  }).catch((error) => {
-    var html = `<div class="alert alert-danger alert-dismissible fade show" role="alert">
-    <p>Phone number not verified</p>
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-    <span aria-hidden="true">&times;</span>
-    </button>
-  </div>`;
-    $(".verification_msg").append(html);
-    console.error("Verification not completed", error);
-    });
-});
-
-
-
-</script>
-

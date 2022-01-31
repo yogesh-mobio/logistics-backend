@@ -65,7 +65,7 @@
                         </div>
                       </div>
 
-                      <div class="form-group row">
+                      <div class="form-group row verification_msg">
                         <label
                           for="transporterPhoneNumber"
                           class="col-sm-2 col-form-label"
@@ -87,9 +87,53 @@
                               placeholder="Enter your Phone Number"
                               
                             />
+                            <span data-toggle="modal" data-target="#removeModal"><button type="button" id="verification_button" data-toggle="tooltip" data-original-title="Verification" class="btn btn-danger">Verification</button></span>
                           </div>
                         </div>
-                        <div>
+                      </div>
+                      <!-- <div class="modal fade" id="removeModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="modalLabel">
+                                Enter Verification Code
+                              </h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                              <div role="form" id="modalForm" class="remove_form">
+                                <div>
+                                  <div id="recaptcha-container"></div>
+                                  </div>
+                                <div>
+                                  <br>
+                                  <div class="form-group row verification_msg">
+                                    
+                                    <div class="col-sm-10">
+                                      <input
+                                        class="form-control"
+                                        type="text"
+                                        id="code"
+                                        name="code"
+                                        placeholder="Enter Verification Code"
+                                        required
+                                      />
+                                    </div>
+                                  </div>
+                                </div>
+                              <div class="modal-footer">
+                                <button type="button" id="btnModalClose" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="button" id="verifyButton" data-dismiss="modal" class="btn btn-danger">submit</button>
+                              </div>
+                            </div>
+                          </div>
+                          </div>
+                        </div>
+                      </div> -->
+                      
+                        <!-- <div>
                           <button
                           type="button"
                           class="btn btn-group btn-danger waves-effect"
@@ -99,7 +143,7 @@
                         </button>
                       </div>
                         <div id="recaptcha-container"></div>
-                        </div>
+                        
                       
                         <div class="form-group row">
                           <label for="code" class="col-sm-2 col-form-label"
@@ -124,7 +168,7 @@
                       >
                         Verify Transporter
                       </button>
-                    </div>
+                    </div> -->
                    
                   <div class="form-group row">
                   
@@ -154,7 +198,7 @@
                         </div>
                       </div>
 
-                      <div class="form-group row">
+                      <!-- <div class="form-group row">
                         <label for="transporterPassword" class="col-sm-2 col-form-label"
                           >Password</label
                         >
@@ -168,7 +212,7 @@
                          
                           />
                         </div>
-                      </div>
+                      </div> -->
 
                       <div class="form-group row">
                         <label for="transporterAddress" class="col-sm-2 col-form-label"
@@ -463,12 +507,59 @@
                                       />
                                     </div>
                                   </div>
-
                                   <div class="form-group row">
+                  
+                                    <div class="col-sm-10">
+                                      <input
+                                        class="form-control"
+                                        type="hidden"
+                                        id="driverUid"
+                                        name="driverUid" 
+                                      />
+                                    </div>
+                                  </div>
+                                  
+                                  
+                      <div class="form-group row error_msg">
+                        <label
+                         for="driverPhone"
+                          class="col-sm-2 col-form-label"
+                          >Phone Number</label
+                        >
+                        <div class="col-sm-10">
+                          <div
+                            class="input-group bootstrap-touchspin bootstrap-touchspin-injected"
+                          >
+                            <span
+                              class="input-group-addon bootstrap-touchspin-prefix input-group-prepend"
+                              ><span class="input-group-text">+91</span></span
+                            >
+                            <input
+                            class="form-control"
+                            type="text"
+                            id="driverPhone"
+                            name="Phone"
+                            placeholder="Enter your phone number"
+                              
+                            />
+                            <span data-toggle="modal" data-target="#removeModal2"><button type="button" id="driverVerification_button" data-toggle="tooltip" data-original-title="driverVerification" class="btn btn-danger">Verification</button></span>
+                          </div>
+                        </div>
+                        </div>
+
+                                  <!-- <div class="form-group row">
+
                                     <label
                                       for="driverPhone"
                                       class="col-sm-2 col-form-label"
                                       >Phone Number</label
+                                    >
+                                    <div
+                                    class="input-group bootstrap-touchspin bootstrap-touchspin-injected"
+                                  >
+                                    <span
+                                      class="input-group-addon bootstrap-touchspin-prefix input-group-prepend"
+                                      ><span class="input-group-text">+91</span></span
                                     >
                                     <div class="col-sm-10">
                                       <input
@@ -479,9 +570,9 @@
                                         placeholder="Enter your phone number"
                                       
                                       />
-                             
+                                      </div>
                                     </div>
-                                  </div>
+                                  </div> -->
                                  
 
                                   <div class="form-group row">
@@ -678,7 +769,7 @@
                       <button
                         type="submit"
                         class="btn btn-group btn-primary waves-effect"
-                        id="sign-in-button"
+                        id="submit"
                       >
                         Add Transporter
                       </button>
@@ -691,6 +782,89 @@
                         Cancel
                       </button>
                     </form>
+                    <div class="modal fade" id="removeModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="modalLabel">
+                              Enter Verification Code
+                            </h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-body">
+                            <form role="form" id="modalForm" class="remove_form">
+                              <div>
+                                <div id="recaptcha-container"></div>
+                                </div>
+                              <div>
+                                <br>
+                                <div class="form-group row">
+                                  
+                                  <div class="col-sm-10">
+                                    <input
+                                      class="form-control"
+                                      type="text"
+                                      id="code"
+                                      name="code"
+                                      placeholder="Enter Verification Code"
+                                      required
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+                            <div class="modal-footer">
+                              <button type="button" id="btnModalClose" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                              <button type="button" id="verifyButton" data-dismiss="modal" class="btn btn-danger">submit</button>
+                            </div>
+                          </form>
+                        </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="modal fade" id="removeModal2" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="modalLabel">
+                              Enter Verification Code
+                            </h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-body">
+                            <form role="form" id="modalForm2" class="remove_form">
+                              <div>
+                                <div id="recaptcha-container"></div>
+                                </div>
+                              <div>
+                                <br>
+                                <div class="form-group row">
+                                  
+                                  <div class="col-sm-10">
+                                    <input
+                                      class="form-control"
+                                      type="text"
+                                      id="driverCode"
+                                      name="driverCode"
+                                      placeholder="Enter Verification Code"
+                                      required
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+                            <div class="modal-footer">
+                              <button type="button" id="btnModalClose" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                              <button type="button" id="driverVerifyButton" data-dismiss="modal" class="btn btn-danger">submit</button>
+                            </div>
+                          </form>
+                        </div>
+                        </div>
+                      </div>
+                    </div>
+
                   </div>
                 </div>
               </div>
@@ -719,13 +893,15 @@ firebase.initializeApp(config);
 window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container');
 var myResult;
 $(document).ready(function() {
-  $("#codeButton").click(function () {
+  $("#verification_button").click(function () {
     const phoneNumberString = "+91"+ $("#transporterPhoneNumber").val();
     firebase.auth().signInWithPhoneNumber(phoneNumberString, window.recaptchaVerifier)
     .then( confirmationResult => {
       console.log(confirmationResult,"result1");
       window.confirmationResult = confirmationResult;
       myResult = confirmationResult;
+      window.confirmationResult = null;
+      window.recaptchaVerifier.reset();
     })
     .catch(function (error) {
       console.error("SMS not sent", error);
@@ -741,6 +917,50 @@ $(document).ready(function() {
     console.log(user_uid,"UserData");
     $("#codeHidden").val(user_uid);
   }).catch((error) => {
+    var html = `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <p>Phone number not verified</p>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+    </button>
+  </div>`;
+    $(".verification_msg").append(html);
+    console.error("Verification not completed", error);
+    });
+  });
+});
+
+var myResult2;
+$(document).ready(function() {
+  $("#driverVerification_button").click(function () {
+   
+  const phoneNumber = "+91"+ $("#driverPhone").val();
+    firebase.auth().signInWithPhoneNumber(phoneNumber, window.recaptchaVerifier)
+    .then( confirmationResults => {
+      console.log(confirmationResults,"result");
+      window.confirmationResult = confirmationResults;
+      myResult2 = confirmationResults;
+    })
+    .catch(function (error) {
+      console.error("SMS not sent", error);
+   });
+  });
+});
+$(document).ready(function() {
+  $("#driverVerifyButton").click(function () {
+    const driver_code = $("#driverCode").val();
+    myResult2.confirm(driver_code).then((result) => {
+    console.log(result,'data2')
+    let driver_uid = result.user.uid;
+    console.log(user_uid,"UserData2");
+    $("#driverUid").val(driver_uid);
+  }).catch((error) => {
+    var html2 = `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <p>Phone number not verified</p>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+    </button>
+  </div>`;
+    $(".error_msg").append(html2);
     console.error("Verification not completed", error);
     });
   });
@@ -751,13 +971,27 @@ $(function(){
       if ($(this).is(":checked") == true) {
         const transporterEmail = $("#transporterEmail").val();
         const transporterPhone = $("#transporterPhoneNumber").val();
-      
+        const transporterLastName = $("#transporterLastName").val();
+        const transporterFirstName = $("#transporterFirstName").val();
+
+        $("#driverFirstName").val(transporterFirstName);
+        $("#driverFirstName").attr("readonly", true);
+
+        $("#driverLastName").val(transporterLastName);
+        $("#driverLastName").attr("readonly", true);
+
         $("#driverEmail").val(transporterEmail);
         $("#driverEmail").attr("readonly", true);
-
+        
         $("#driverPhone").val(transporterPhone);
         $("#driverPhone").attr("readonly", true);
       } else {
+        $("#driverFirstName").val("");
+        $("#driverFirstName").attr("readonly", false);
+
+        $("#driverLastName").val("");
+        $("#driverLastName").attr("readonly", false);
+
         $("#driverEmail").val("");
         $("#driverEmail").attr("readonly", false);
 
