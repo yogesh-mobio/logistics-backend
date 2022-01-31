@@ -1,17 +1,15 @@
 var express = require("express");
 var RegisterRouter = express.Router();
+var location = require("location-href");
 const authController = require("../controllers/Auth2/auth.controllers");
 
 RegisterRouter.post(
   "/register",
   authController.signup,
-  //authController.sendOtp,
   (req, res) => {
-    // const name = req.body.name;
-    // const phone_number = req.body.phone_number;
     const data = req.body;
     console.log(data,"data")
-    res.render("Payment/transporterdetails",data);
+    res.render("Payment/otp",data);
   }
 );
 
@@ -27,11 +25,23 @@ RegisterRouter.get("/register", (req, res) => {
   res.render("Payment/login");
 });
 
-RegisterRouter.post("/otp", authController.verifyOtp, async (req, res) => {
+RegisterRouter.post("/otp", 
+  authController.verifyOtp, 
+  async (req, res) => {
   const otp = req.body;
+ console.log("otp",otp);
+ location.set("Payment/transporterdetails",otp)
+//  res.render("Payment/transporterdetails", otp);
+}
+);
 
-  res.render("Payment/transporterdetails", otp);
-});
+RegisterRouter.get("/transporterdetails", 
+async (req, res) => {
+  const otp = req.body;
+ console.log("otp",otp)
+  res.render("Payment/transporterdetails", otp)
+}
+);
 
 RegisterRouter.post(
   "/updatetransporter",

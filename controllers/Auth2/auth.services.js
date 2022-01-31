@@ -7,8 +7,8 @@ const twilioClient = require("twilio")(accountID, authToken);
 const { db } = require("../../config/admin");
 
 /* Create New User */
-exports.creatNewUser = async (cat,user_uid) => {
-  return await db.collection("anonymous").doc(user_uid).set(cat);
+exports.creatNewUser = async (cat) => {
+  return await db.collection("anonymous").doc().set(cat);
   //return await User.create(cat);
 };
 

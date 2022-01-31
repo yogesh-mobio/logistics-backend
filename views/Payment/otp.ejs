@@ -16,8 +16,8 @@
       </h3>
     
       <div class="p-3">
-        <h4 class="font-18 m-b-5 text-center">Mobile Phone verification</h4>
-        <p class="text-muted text-center">Enter the code we just send on your Mobile Number</p>
+        <h4 class="font-18 m-b-5 text-center">Verification</h4>
+        <p class="text-muted text-center">An verification code has been sent to <%= phone_number %></p>
         <% include ../Partials/errorMessages %>
         <form class="form-horizontal m-t-30" action="/otp" method="post">
           <div class="form-group">
@@ -33,14 +33,29 @@
               type="number"
               class="form-control"
               name="phone_number"
+              id="phone_number"
               min="10"
               readonly
               value=<%=phone_number %> />
            </div>
+           <div id="recaptcha-container"></div>
+           <div class="form-group verification_input_div">
+             </div>
+          <div class="form-group row">
+                 <div class="col-sm-10">
+                   <input
+                     class="form-control"
+                     type="hidden"
+                     id="codeHidden"
+                     name="userUid" 
+                   />
+                 </div>
+               </div>
            <div class="form-group">
            <input
            name="code"
            class="form-control"
+           id="code"
            type="number"
            minlength="6"
            maxlength="6"
@@ -53,53 +68,90 @@
             <div class="col-sm-8 text-right">
               <button
                 class="btn btn-primary w-md waves-effect waves-light"
-                type="submit"
+                type="button"
+                id="registerButton"
               >
-                Confirm
+               Register
               </button>
             </div>
-            <div class="text-center mt-3">
-               <span class="d-block mobile-text">Don't receive the code?</span>
-                <!-- <span class="font-weight-bold text-danger cursor"><a id="button1" >Resend</span> -->
-                    <button
-                    class="btn btn-danger w-md waves-effect waves-light"
-                    id = "button1"
-                   >
-                    Resend
-                  </button>
-                  
-              </div>
+         
           </div>
 
         
         </form>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-        <script>
-            $(document).ready(function() {
-            $("#button1").click(function () {
-                $.ajax({
-                  type: "POST",
-                  url:`/resend`,
-                  data:{ name: '<%=name%>', phone_number: '<%=phone_number%>' },
-                });
-        
-           });
-        });
-            </script>
-    
+      
       </div>
     </div>
   </div>
 
-  <div class="m-t-40 text-center">
-  
-    <p class="text-white">
-      © <%= new Date().getFullYear() - 1; %> - <%= new Date().getFullYear(); %>
-      Road Ferry. 
-    </p>
-  </div>
 </div>
 
 <% include ../Partials/FooterRoot %>
+<script src="https://www.gstatic.com/firebasejs/4.8.1/firebase.js"></script>
+<script>
+  var config = {
+  apiKey: "AIzaSyALoyUbKfKhksdyblkTeucUUr6o-yhKbMA",
+  authDomain: "logistics-ondemand-app.firebaseapp.com",
+  databaseURL: "https://logistics-ondemand-app.firebaseio.com",
+  projectId: "logistics-ondemand-app",
+  storageBucket: "logistics-ondemand-app.appspot.com",
+  messagingSenderId: "335686843365",
+  appId: "335686843365:web:d4bb2a7c82af72fcdf8d0c",
+  measurementId: "G-7WPCXTQJ8N"
+  };
+firebase.initializeApp(config);
+window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container');
+var myResult;
+// $(document).ready(function() {
+//   $("#codeButton").click(function () {
+    const phoneNumberString = "+91"+ $("#phone_number").val();
+    firebase.auth().signInWithPhoneNumber(phoneNumberString, window.recaptchaVerifier)
+    .then( confirmationResult => {
+      console.log(confirmationResult,"result1");
+      window.confirmationResult = confirmationResult;
+      myResult = confirmationResult;
+    
+    })
+    .catch(function (error) {
+      console.error("SMS not sent", error);
+   });
+//   });
+// });
+//$(document).on("click", ".verify_number", function () {
+  $(document).ready(function() {
+  $("#registerButton").click(function () {
+  const code = $("#code").val();
+    myResult.confirm(code).then((result) => {
+    console.log(result,'data');
+    let user_uid = result.user.uid;
+    console.log(user_uid,"UserData");
+    $("#codeHidden").val(user_uid);
+    //alert("Number Verified");
+    const user_id = $("#codeHidden").val();
+    $.ajax({
+      type: "post",
+      url:"/otp",
+      data:{ name: '<%=name%>', phone_number: '<%=phone_number%>', userUid: user_id },
+      success:function(data){
+        //  location.href('/transporterdetails',data);
+          location.href = '/transporterdetails';
+        //  data
+      },
+    });
+ 
+  }).catch((error) => {
+    var html = `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <p>Phone number not verified</p>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+    </button>
+  </div>`;
+    $(".verification_msg").append(html);
+    console.error("Verification not completed", error);
+    });
+});
+});
+
+</script>
 
 
