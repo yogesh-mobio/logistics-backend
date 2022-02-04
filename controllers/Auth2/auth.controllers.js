@@ -31,12 +31,10 @@ exports.signup = async (req, res, next) => {
     });
 
     if (foundData) {
-      console.log("1234");
-      next();
-      //   errors.push({ msg: "User already exists!" });
-      //   return res.render("Payment/login", {
-      //     errors,
-      //   });
+      errors.push({ msg: "User already exists!" });
+      return res.render("Payment/login", {
+        errors,
+      });
     }
     // let fullname = req.body.name;
     // let firstName = fullname.split(" ").slice(0, -1).join(" ");
