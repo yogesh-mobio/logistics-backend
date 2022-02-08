@@ -32,9 +32,7 @@
     "node-fetch": "^2.0.0",
     "node-geocoder": "^3.27.0",
     "twilio": "^3.71.1",
-    "uuid": "^8.3.2"
-  },
-  "devDependencies": {
+    "uuid": "^8.3.2",
     "nodemon": "^2.0.15"
   }
 }
