@@ -794,19 +794,16 @@
                             </button>
                           </div>
                           <div class="modal-body">
-
                             <form role="form" id="modalForm" class="remove_form">
                               <div>
                                 <div id="recaptcha-container"></div>
                                 <div id="recaptcha-error"></div>
                                 </div>
                               <div>
-                                <!-- <br> -->
+                                <br>
                                 <div class="form-group row">
                                   
-                                  <div class="col-sm-12 col-md-12">
-                                    <button type="button" class="btn btn-link" id="transporter-resend-code" style="float: right; color: #007bff !important; padding-right: 0px !important; display: flex; justify-content: flex-end; width: 80%;">Resend Code</button>
-
+                                  <div class="col-sm-10">
                                     <input
                                       class="form-control"
                                       type="text"
@@ -820,7 +817,7 @@
                               </div>
                             <div class="modal-footer">
                               <button type="button" id="btnModalClose" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                              <button type="button" id="verifyButton" disabled="true" data-dismiss="modal" class="btn btn-danger">Submit</button>
+                              <button type="button" id="verifyButton" disabled="true" data-dismiss="modal" class="btn btn-danger">submit</button>
                             </div>
                           </form>
                         </div>
@@ -845,11 +842,10 @@
                                 <div id="driver-recaptcha-error"></div>
                                 </div>
                               <div>
-                                <!-- <br> -->
+                                <br>
                                 <div class="form-group row">
                                   
-                                  <div class="col-sm-10 col-md-12">
-                                    <button type="button" class="btn btn-link" id="driver-resend-code" style="float: right; color: #007bff !important; padding-right: 0px !important; display: flex; justify-content: flex-end; width: 80%;">Resend Code</button>
+                                  <div class="col-sm-10">
                                     <input
                                       class="form-control"
                                       type="text"
@@ -863,7 +859,7 @@
                               </div>
                             <div class="modal-footer">
                               <button type="button" id="driverBtnModalClose" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                              <button type="button" id="driverVerifyButton" disabled="true" data-dismiss="modal" class="btn btn-danger">Submit</button>
+                              <button type="button" id="driverVerifyButton" disabled="true" data-dismiss="modal" class="btn btn-danger">submit</button>
                             </div>
                           </form>
                         </div>
@@ -896,8 +892,8 @@
   measurementId: "G-7WPCXTQJ8N"
   };
 firebase.initializeApp(config);
-window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', { size: 'invisible' });
-window.driverRecaptchaVerifier = new firebase.auth.RecaptchaVerifier('driver-recaptcha-container', { size: 'invisible' });
+window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container');
+window.driverRecaptchaVerifier = new firebase.auth.RecaptchaVerifier('driver-recaptcha-container');
 var myResult;
 $(document).ready(function() {
    /* verification for phone number */ 
@@ -915,27 +911,6 @@ $(document).ready(function() {
         $("#verifyButton").attr("disabled", true)
        }
    })
-  $("#transporter-resend-code").click(function () {
-    const phoneNumberString = "+91"+ $("#transporterPhoneNumber").val();
-    firebase.auth().signInWithPhoneNumber(phoneNumberString, window.recaptchaVerifier)
-    .then( confirmationResult => {
-      console.log(confirmationResult,"result1");
-      window.confirmationResult = confirmationResult;
-      myResult = confirmationResult;
-      window.confirmationResult = null;
-    //   window.recaptchaVerifier.reset();
-    })
-    .catch(function (error) {
-    var html = `<div class="alert alert-danger alert-dismissible fade show" role="alert">
-    <p>${error.message}</p>
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-    <span aria-hidden="true">&times;</span>
-    </button>
-  </div>`;
-    $("#recaptcha-error").append(html);
-      console.error("SMS not sent", error);
-   });
-  })
   $("#verification_button").click(function () {
     const phoneNumberString = "+91"+ $("#transporterPhoneNumber").val();
     firebase.auth().signInWithPhoneNumber(phoneNumberString, window.recaptchaVerifier)
@@ -961,20 +936,13 @@ $(document).ready(function() {
       $("#code").val("")
       $('#recaptcha-error').remove();
       $("#modalForm div").append("<div id='recaptcha-error'></div>");
-      $("#verification_button").attr("title", "Re-Send")
-      $("#verification_button").attr("data-original-title", "Re-Send")
-      $("#verification_button").html("Re-Send")
-
-      // window.recaptchaVerifier.reset();
+      window.recaptchaVerifier.reset();
   })
   $("#close-button").click(function () {
       $("#code").val("")
       $('#recaptcha-error').remove();
       $("#modalForm div").append("<div id='recaptcha-error'></div>");
-      $("#verification_button").attr("title", "Re-Send")
-      $("#verification_button").attr("data-original-title", "Re-Send")
-      $("#verification_button").html("Re-Send")
-      // window.recaptchaVerifier.reset();
+      window.recaptchaVerifier.reset();
   })
   $("#verifyButton").click(function () {
     const code = $("#code").val();
@@ -985,11 +953,7 @@ $(document).ready(function() {
         console.log(user_uid,"UserData");
         $("#codeHidden").val(user_uid);
         $("#verification_button").attr("disabled", true)
-        $("#verification_button").attr("title", "Verified")
-        $("#verification_button").attr("data-original-title", "Verified")
-        $("#verification_button").css("background-color", "green");
-        $("#verification_button").html("Verified")
-        // window.recaptchaVerifier.reset();
+        window.recaptchaVerifier.reset();
     }).catch((error) => {
     let html = `<div class="alert alert-danger alert-dismissible fade show" role="alert">
         <p>Phone number not verified</p>
@@ -998,9 +962,6 @@ $(document).ready(function() {
         </button>
     </div>`;
     $(".verification_msg").append(html);
-    $("#verification_button").attr("title", "Re-Send")
-    $("#verification_button").attr("data-original-title", "Re-Send")
-    $("#verification_button").html("Re-Send")
         console.error("Verification not completed", error);
     });
     } else {
@@ -1012,9 +973,6 @@ $(document).ready(function() {
     </div>`;
         $("#verifyButton").attr("data-dismiss", "");
         $("#recaptcha-error").append(html)
-        $("#verification_button").attr("title", "Re-Send")
-        $("#verification_button").attr("data-original-title", "Re-Send")
-        $("#verification_button").html("Re-Send")
     }
   });
   
@@ -1032,26 +990,6 @@ $(document).ready(function() {
        } else {
         $("#driverVerifyButton").attr("disabled", true)
        }
-   })
-   $("#driver-resend-code").click(function () {
-    const phoneNumber = "+91"+ $("#driverPhone").val();
-    firebase.auth().signInWithPhoneNumber(phoneNumber, window.driverRecaptchaVerifier)
-    .then( confirmationResults => {
-      console.log(confirmationResults,"result");
-      window.confirmationResult = confirmationResults;
-      myResult2 = confirmationResults;
-    //   window.driverRecaptchaVerifier.reset();
-    })
-    .catch(function (error) {
-    var html = `<div class="alert alert-danger alert-dismissible fade show" role="alert">
-    <p>${error.message}</p>
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-    <span aria-hidden="true">&times;</span>
-    </button>
-  </div>`;
-    $("#driver-recaptcha-error").append(html);
-      console.error("SMS not sent", error);
-   });
    }) 
   $("#driverVerification_button").click(function () {
   const phoneNumber = "+91"+ $("#driverPhone").val();
@@ -1077,19 +1015,13 @@ $(document).ready(function() {
       $('#driver-recaptcha-error').remove();
       $("#modalForm2 div").append("<div id='driver-recaptcha-error'></div>");
       $("#driverCode").val("")
-      $("#driverVerification_button").attr("title", "Re-Send")
-      $("#driverVerification_button").attr("data-original-title", "Re-Send")
-      $("#driverVerification_button").html("Re-Send")
-      // window.driverRecaptchaVerifier.reset();
+      window.driverRecaptchaVerifier.reset();
   })
   $("#driver-close-button").click(function () {
       $('#driver-recaptcha-error').remove();
       $("#modalForm2 div").append("<div id='driver-recaptcha-error'></div>");
       $("#driverCode").val("")
-      $("#driverVerification_button").attr("title", "Re-Send")
-      $("#driverVerification_button").attr("data-original-title", "Re-Send")
-      $("#driverVerification_button").html("Re-Send")
-      // window.driverRecaptchaVerifier.reset();
+      window.driverRecaptchaVerifier.reset();
   })
   $("#driverVerifyButton").click(function () {
     const driver_code = $("#driverCode").val();
@@ -1100,11 +1032,7 @@ $(document).ready(function() {
     console.log(user_uid,"UserData2");
     $("#driverUid").val(driver_uid);
     $("#driverVerification_button").attr("disabled", true)
-    $("#driverVerification_button").attr("title", "Verified")
-    $("#driverVerification_button").attr("data-original-title", "Verified")
-    $("#driverVerification_button").css("background-color", "green");
-    $("#driverVerification_button").html("Verified")
-    // window.driverRecaptchaVerifier.reset();
+    window.driverRecaptchaVerifier.reset();
     }).catch((error) => {
     let html2 = `<div class="alert alert-danger alert-dismissible fade show" role="alert">
         <p>Phone number not verified</p>
@@ -1113,9 +1041,6 @@ $(document).ready(function() {
         </button>
     </div>`;
     $(".error_msg").append(html2);
-    $("#driverVerification_button").attr("title", "Re-Send")
-    $("#driverVerification_button").attr("data-original-title", "Re-Send")
-    $("#driverVerification_button").html("Re-Send")
     console.error("Verification not completed", error);
     });
     } else {
@@ -1127,9 +1052,6 @@ $(document).ready(function() {
     </div>`;
         $("#driverVerifyButton").attr("data-dismiss", "");
         $("#driver-recaptcha-error").append(html)
-        $("#driverVerification_button").attr("title", "Re-Send")
-        $("#driverVerification_button").attr("data-original-title", "Re-Send")
-        $("#driverVerification_button").html("Re-Send")
     }
   });
 });

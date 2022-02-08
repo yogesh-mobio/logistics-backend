@@ -29,19 +29,20 @@ RegisterRouter.post("/otp",
   authController.verifyOtp, 
   async (req, res) => {
   const otp = req.body;
- console.log("otp",otp);
- location.set("Payment/transporterdetails",otp)
-//  res.render("Payment/transporterdetails", otp);
+//  location.set("Payment/transporterdetails",otp)
+//  res.status(200).send(otp)
+console.log("OTP Resp", req.body)
+ res.render("Payment/transporterdetails", { ...otp });
 }
 );
 
-RegisterRouter.get("/transporterdetails", 
-async (req, res) => {
-  const otp = req.body;
- console.log("otp",otp)
-  res.render("Payment/transporterdetails", otp)
-}
-);
+// RegisterRouter.get("/transporterdetails", 
+// async (req, res) => {
+//   const otp = req.body;
+//  console.log("otp",otp)
+//   res.render("Payment/transporterdetails", otp)
+// }
+// );
 
 RegisterRouter.post(
   "/updatetransporter",

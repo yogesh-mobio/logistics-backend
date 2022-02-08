@@ -418,15 +418,18 @@ exports.newTransporter = async (req, res) => {
   var BASE_URL = "https://maps.googleapis.com/maps/api/geocode/json?address=";
   var address = req.body.address + "," +req.body.area + "," + req.body.city + "," + req.body.state + "," + req.body.country;
   var url = BASE_URL + address + "&key=" + API_KEY;
-  fetchdata(url)
-  .then(res => res.json())
-  .then(json => {
-      console.log("data");
-      console.log(json.results[0]);
-      coordinates = json.results[0].geometry.location;
-      console.log(latitude,"lat")
-    //  console.log(latitude,"latitude")
-})
+  const geoData = await fetchdata(url)
+  const geoJson = await geoData.json()
+  coordinates   = geoJson.results.length !== 0 ? geoJson.results[0].geometry.location : ""
+  console.log(coordinates)
+//   .then(res => res.json())
+//   .then(json => {
+//       console.log("data");
+//       console.log(json.results[0]);
+//       coordinates = json.results[0].geometry.location;
+//       console.log(latitude,"lat")
+//     //  console.log(latitude,"latitude")
+// })
   const data = await db.collection("vehicles").get();
   data.forEach((doc) => {
     // const vehicleType = { id: doc.id, vehicleTypeData: doc.data() };
@@ -606,13 +609,13 @@ exports.newTransporter = async (req, res) => {
 
         transporterDriverData = {
           ...driverData,
-          temp_password: driverPassword,
+          // temp_password: driverPassword,
           user_uid: driverUid,
         };
 
         newDriverData = {
           ...driverData,
-          temp_password: driverPassword,
+          // temp_password: driverPassword,
           transporter_uid: userUid,
           user_type: "driver",
         };
