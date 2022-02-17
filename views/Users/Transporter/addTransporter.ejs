@@ -248,14 +248,20 @@
                               class="input-group-addon bootstrap-touchspin-prefix input-group-prepend"
                               ><span class="input-group-text">City</span></span
                             >
-                            <input
+                            <!-- <input
                               class="form-control"
                               type="text"
                               id="city"
                               name="city"
                               placeholder="Enter the city"
                             
-                            />
+                            /> -->
+                            <select
+                              id="city"
+                              name="city"
+                              class="form-control"
+                            >
+                            </select>
                             &nbsp;
                             <span
                               class="input-group-addon bootstrap-touchspin-prefix input-group-prepend"
@@ -278,14 +284,21 @@
                               class="input-group-addon bootstrap-touchspin-prefix input-group-prepend"
                               ><span class="input-group-text">State</span></span
                             >
-                            <input
+                            <select
+                              id="state"
+                              name="state"
+                              class="form-control"
+                              onchange="print_city('city', this.selectedIndex);"
+                            >
+                            </select>
+                            <!-- <input
                               class="form-control"
                               type="text"
                               id="state"
                               name="state"
                               placeholder="Enter the State"
                             
-                            />
+                            /> -->
                             &nbsp;
                             <span
                               class="input-group-addon bootstrap-touchspin-prefix input-group-prepend"
@@ -297,7 +310,7 @@
                               id="country"
                               name="country"
                               placeholder="Enter the Country"
-                          
+                              value="India"
                             />
                           </div>
                         </div>
@@ -883,6 +896,9 @@
 </div>
 
 <%- contentFor('FooterJs') %>
+<script type="text/javascript">
+  print_state("state");
+</script>
 <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase.js"></script>
 <script>
   var config = {
