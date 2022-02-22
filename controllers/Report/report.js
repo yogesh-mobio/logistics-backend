@@ -14,10 +14,12 @@ exports.registerUserReport = async (req, res) => {
     let users = await getUsers.get();
 
     users.forEach((doc) => {
-      let userDate = doc.data().created_at.toDate();
-      let date = moment(userDate).format("MM-DD-YYYY");
-      if (date >= startDate && date <= endDate) {
-        counter++;
+      if (doc && doc.data() && doc.data().created_at) {
+        let userDate = doc.data().created_at.toDate();
+        let date = moment(userDate).format("MM-DD-YYYY");
+        if (date >= startDate && date <= endDate) {
+          counter++;
+        }
       }
     });
     return res.json({ counter: counter });
