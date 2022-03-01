@@ -46,21 +46,25 @@ const userCounter = async () => {
       counter: transporters.length,
       heading: "Transporters",
       icon: "mdi mdi-truck",
+      link:'/transporter/displayTransporters'
     };
     cntDriver = {
       counter: drivers.length,
       heading: "Drivers",
       icon: "mdi mdi-seat-recline-normal",
+      link:"/driver/displayDrivers" // TODO: page is not ready Date : 01/03/2022
     };
     cntCustomer = {
       counter: customers.length,
       heading: "Customers",
       icon: "mdi mdi-account-multiple",
+      link:"customer/displayCustomers"
     };
     cntAdmin = {
       counter: admins.length,
       heading: "Admins",
       icon: "mdi mdi-account-star-variant",
+      link:"/admin/displayAdmins"
     };
 
     return { cntAdmin, cntTransporter, cntDriver, cntCustomer };
@@ -108,21 +112,25 @@ const orderCounter = async () => {
       counter: pendingOrder.length,
       heading: "Pending  Orders",
       icon: "mdi mdi-cart",
+      link:"/order/displayOrders"
     };
     cntOnGoingOrder = {
       counter: onGoingOrder.length,
       heading: "Ongoing Orders",
       icon: "mdi mdi-cart",
+      link:"/order/displayOrders"
     };
     cntCompleteOrder = {
       counter: completeOrder.length,
       heading: "Completed Orders",
       icon: "mdi mdi-cart",
+      link:"/order/displayOrders"
     };
     cntRejectedOrder = {
       counter: rejectedOrder.length,
       heading: "Rejected Orders",
       icon: "mdi mdi-cart-off",
+      link:"/order/displayOrders"
     };
 
     return {
