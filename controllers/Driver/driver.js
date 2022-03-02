@@ -33,6 +33,196 @@ const { sendAdminNotification } = require("../Notification/notification");
 //   }
 // };
 
+/* list of all drivers */
+
+exports.listDrivers = async (req, res) => {
+  try {
+    const drivers = [];
+    const id = req.params.transporter_id;
+
+    // const data = await db.collection("users").doc();
+    const getDrivers = await db.collection("users").get();
+
+    // getDrivers.forEach((doc) => {
+    //    if (
+    //     (doc.data().user_type == "driver" && doc.data().is_deleted == false)
+        
+    //   ) {
+    //     drivers.push(doc.data());
+    //   }
+    // });
+    getDrivers.forEach(async (doc) => {
+      if ((doc.data().user_type == "driver"  && doc.data().is_deleted == false)) {
+        const driver = {
+          id: doc.id,
+          driverData: doc.data(),
+          transporter_id: doc.data()["transporter_uid"],
+        };
+
+        drivers.push(driver);
+      }
+
+    });
+    // console.log("console",drivers)
+    return res.render("Users/Driver/displayDrivers", {
+      drivers: drivers,
+    });
+  } catch (error) {
+    const errors = [];
+    errors.push({ msg: error.message });
+    return res.render("Users/Driver/displayDrivers", {
+      errors: errors,
+    });
+  }
+};
+exports.dDetails = async (req, res) => {
+  
+  const transporter_id = req.params.transporter_id;
+  const driver_id = req.params.id;
+  // console.log(transporter_id,driver_id,"...........................")
+  const errors = [];
+  let driver = {};
+  try {
+    if (transporter_id !== driver_id) {
+      const user = await db.collection("users").doc(driver_id);
+      const driverData = await user.get();
+      const data = await driverData.data();
+
+      if (data === undefined) {
+        errors.push({ msg: "Driver not found...!!" });
+        return res.render("Errors/errors", {
+          errors: errors,
+        });
+      }
+
+      driver = {
+        id: driver_id,
+        driverData: data,
+        transporterId: transporter_id,
+      };
+      
+    } else {
+      const transporter = await db.collection("users").doc(transporter_id);
+      const drivers = await transporter.collection("driver_details");
+      const driversData = await drivers.get();
+      let id = null;
+      driversData.forEach((doc) => {
+        if (driver_id == doc.data().user_uid) {
+          id = doc.id;
+        }
+      });
+      const getDriver = await drivers.doc(id).get();
+      const data = await getDriver.data();
+      driver = {
+        id: driver_id,
+        driverData: data,
+        transporterId: transporter_id,
+      };
+      // console.log("DRIVER DETAILS*************", driver);
+    }
+    return res.render("User/Driver/driverDetails", {
+      driver: driver,
+    });
+  } catch (error) {
+    console.log(error);
+    const errors = [];
+    errors.push({ msg: error });
+    return res.render("Errors/errors", {
+      errors: errors,
+    });
+  }
+};
+/* update driver test*/
+exports.up = async (req, res) => {
+  
+  const transporter_id = req.params.transporter_id;
+  const driver_id = req.params.driver_id;
+  const errors = [];
+  let driver = {};
+  try {
+    if (transporter_id !== driver_id) {
+      const user = await db.collection("users").doc(driver_id);
+      const driverData = await user.get();
+      const data = await driverData.data();
+      // console.log(data,"data1")
+      if (data === undefined) {
+        errors.push({ msg: "Driver not found...!!" });
+        return res.render("Errors/errors", {
+          errors: errors,
+        });
+      }
+
+      driver = {
+        id: driver_id,
+        driverData: data,
+        transporterId: transporter_id,
+      };
+      
+    } else {
+      const transporter = await db.collection("users").doc(transporter_id);
+      const drivers = await transporter.collection("driver_details");
+      const driversData = await drivers.get();
+      let id = null;
+      driversData.forEach((doc) => {
+        if (driver_id == doc.data().user_uid) {
+          id = doc.id;
+        }
+      });
+      const getDriver = await drivers.doc(id).get();
+      const data = await getDriver.data();
+      driver = {
+        id: driver_id,
+        driverData: data,
+        transporterId: transporter_id,
+      };
+      // console.log("DRIVER DETAILS*************", driver);
+    }
+    return res.render("Driver/editDriver", {
+      driver: driver,
+    });
+  } catch (error) {
+    console.log(error);
+    const errors = [];
+    errors.push({ msg: error });
+    return res.render("Errors/errors", {
+      errors: errors,
+    });
+  }
+};
+/* upd Driver test */
+exports.updDriver = async (req, res) => {
+  try {
+  const driver_id = req.params.driver_id;
+  const transporter_id = req.params.transporter_id;
+
+console.log(transporter_id,driver_id,"...........id....")
+
+  const da = req.body;
+  const updateData = {
+    first_name: da.firstname,
+    last_name: da.lastname,
+    email: da.email,
+    phone_number: da.phone,
+    age: da.age,
+    // address_proof: addressProofPublicUrl,
+    // identity_proof: identityProofPublicUrl,
+    // created_at: new Date(),
+    // driver_photo: profilePublicUrl,
+  };
+  
+    const transporter = await db.collection("users").doc(driver_id);
+    // const getDriver = await transporter
+    //   .collection("driver_details")
+    //   .doc(transporter_id)
+      await transporter.update(updateData);
+      console.log( transporter,"................ get driver..............")
+    return res.redirect(`/driver/${transporter_id}/updateDriver/${driver_id}`);
+
+  } catch (error) {
+    
+  }
+
+}
 
 /* Update Driver Controller --> GET */
 exports.updateDriver = async (req, res) => {
