@@ -117,13 +117,14 @@ exports.verifyOtp = async (req, res, next) => {
     let firstName = fullname.split(" ").slice(0, -1).join(" ");
     let lastName = fullname.split(" ").slice(-1).join(" ");
     const user = {
-      first_name: firstName,
+      first_name: fullname,
       last_name: lastName,
       phone_number: phone_number,
       is_registered: false,
       user_type: "transporter",
       is_verified: "verified",
     };
+    // console.log(user,"/////////////////user/////////////////")
     await userService.creatNewTransporter(user, user_id);
     //  return res.render("Payment/transporterdetails", user_data);
     next();
