@@ -581,11 +581,31 @@ exports.newTransporter = async (req, res) => {
 
       let transporter = await db
         .collection("users")
-        .doc(userUid);
+        .doc();
       await transporter.set(transporterData);
 
+      let vh = await db
+      .collection("vehicle_details")
+      .where("chassis_number","==",vehicleData.chassis_number)    
+      .where("vehicle_number","==",vehicleData.vehicle_number)
+      // console.log(vh,"vh");
+    const v = await vh.get();
+    let foundData = null;
+    v.forEach((doc)=>{
+      foundData = doc.data();   
+    })
+
+    if(foundData){
+      errors.push({ msg: "Vehical already exists!" });
+      return res.render("Users/Transporter/addTransporter", {
+        vehicleTypes: vehicleTypes,
+        errors,
+      });
+    }
       const vehicle = await transporter.collection("vehicle_details").doc();
       await vehicle.set(vehicleData);
+      const vehicledetails = await db.collection("vehicle_details").doc();
+      await vehicledetails.set(vehicleData);
 
       let transporterDriverData = {};
       let newDriverData = {};
@@ -620,7 +640,7 @@ exports.newTransporter = async (req, res) => {
           user_type: "driver",
         };
 
-        let driver = await db.collection("users").doc(driverUid);
+        let driver = await db.collection("users").doc();
         await driver.set(newDriverData);
 
         const transporterDriver = await transporter
