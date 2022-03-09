@@ -565,10 +565,10 @@ exports.newTransporter = async (req, res) => {
         title: "New Driver Added",
         // orderId: orderId,
       };
-
-      // const newTransporter = await firebaseSecondaryApp
-      //   .auth()
-      //   .createUserWithEmailAndPassword(data.email, data.password);
+      let trpassword = Math.random().toString(36).slice(-8);
+      const newTransporter = await firebaseSecondaryApp
+        .auth()
+        .createUserWithEmailAndPassword(data.email, trpassword);
      
      
 
@@ -577,11 +577,17 @@ exports.newTransporter = async (req, res) => {
 
      const userUid = data.userUid;
      const driverUid = data.driverUid;
+
+     console.log(newTransporter.user.uid,"useruid");
+     console.log(driverUid,"driverUid")
+
+
 //        console.log(newTransporter,"new Transpoeter****");
 
       let transporter = await db
         .collection("users")
-        .doc();
+        .doc(newTransporter.user.uid);
+        // .doc();
       await transporter.set(transporterData);
 
       let vh = await db
@@ -613,7 +619,7 @@ exports.newTransporter = async (req, res) => {
       if (data.TransporterAsDriver === "checked") {
         transporterDriverData = {
           ...driverData,
-          user_uid: userUid,
+          user_uid: newTransporter.user.uid,
         };
 
         const transporterDriver = await transporter
@@ -621,26 +627,27 @@ exports.newTransporter = async (req, res) => {
           .doc();
         await transporterDriver.set(transporterDriverData);
       } else {
-        // let driverPassword = Math.random().toString(36).slice(-8);
+        let driverPassword = Math.random().toString(36).slice(-8);
 
-        // const newDriver = await firebaseSecondaryApp
-        //   .auth()
-        //   .createUserWithEmailAndPassword(data.Email, driverPassword);
+        const newDriver = await firebaseSecondaryApp
+          .auth()
+          .createUserWithEmailAndPassword(data.Email, driverPassword);
 
         transporterDriverData = {
           ...driverData,
-          // temp_password: driverPassword,
-          user_uid: driverUid,
+          temp_password: driverPassword,
+          user_uid: newDriver.user.uid,
         };
 
         newDriverData = {
           ...driverData,
-          // temp_password: driverPassword,
-          transporter_uid: userUid,
+          temp_password: driverPassword,
+          transporter_uid: newTransporter.user.uid,
           user_type: "driver",
         };
 
-        let driver = await db.collection("users").doc();
+        let driver = await db.collection("users").doc(newDriver.user.uid);
+        // let driver = await db.collection("users").doc();
         await driver.set(newDriverData);
 
         const transporterDriver = await transporter

@@ -321,6 +321,7 @@
                         <div class="col-12">
                           <div class="card m-b-20">
                             <div class="card-body">
+                              <% if( drivers.length !== 0) { %> 
                               <!-- <div class="form-group row">
                                 <label
                                   for="driverPhoto"
@@ -514,6 +515,8 @@
                                   />
                                 </div>
                               </div>
+                              <% } else { %> <p>No driver found!</p>
+                                <% } %> 
                             </div>
                           </div>
                         </div>
@@ -525,6 +528,7 @@
                         <div class="col-12">
                           <div class="card m-b-20">
                             <div class="card-body">
+                              <% if( drivers.length !== 0) { %> 
                               <div class="form-group row">
                                 <label
                                   for="vehicle_type"
@@ -667,6 +671,8 @@
                                     </div>
                                   </div>
                                   <% } %> -->
+                                  <% } else { %> <p>No vehicle found!</p>
+                                    <% } %> 
                             </div>
                           </div>
                         </div>

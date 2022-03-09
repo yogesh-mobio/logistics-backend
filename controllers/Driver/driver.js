@@ -63,7 +63,7 @@ exports.listDrivers = async (req, res) => {
       }
 
     });
-    // console.log("console",drivers)
+    console.log(drivers,"driverlist")
     return res.render("Users/Driver/displayDrivers", {
       drivers: drivers,
     });
@@ -120,7 +120,7 @@ exports.dDetails = async (req, res) => {
       };
       // console.log("DRIVER DETAILS*************", driver);
     }
-    return res.render("User/Driver/driverDetails", {
+    return res.render("Driver/driverDetails", {
       driver: driver,
     });
   } catch (error) {
@@ -301,6 +301,7 @@ exports.updatedDriver = async (req, res) => {
 exports.driverDetails = async (req, res) => {
   const transporter_id = req.params.transporter_id;
   const driver_id = req.params.driver_id;
+  console.log("call")
   const errors = [];
   let driver = {};
   try {
@@ -308,7 +309,7 @@ exports.driverDetails = async (req, res) => {
       const user = await db.collection("users").doc(driver_id);
       const driverData = await user.get();
       const data = await driverData.data();
-
+console.log(data,"this is data...")
       if (data === undefined) {
         errors.push({ msg: "Driver not found...!!" });
         return res.render("Errors/errors", {
@@ -339,7 +340,7 @@ exports.driverDetails = async (req, res) => {
         driverData: data,
         transporterId: transporter_id,
       };
-      // console.log("DRIVER DETAILS*************", driver);
+      console.log("DRIVER DETAILS*************", driver);
     }
 
     return res.render("Users/Driver/driverDetails", {
