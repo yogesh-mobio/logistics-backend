@@ -84,9 +84,20 @@ exports.dDetails = async (req, res) => {
   let driver = {};
   try {
     if (transporter_id !== driver_id) {
-      const user = await db.collection("users").doc(driver_id);
-      const driverData = await user.get();
-      const data = await driverData.data();
+      // const user = await db.collection("users").doc(driver_id);
+      // const driverData = await user.get();
+      // const data = await driverData.data();
+      const transporter = await db.collection("users").doc(transporter_id);
+      const drivers = await transporter.collection("driver_details");
+      const driversData = await drivers.get();
+      let id = null;
+      driversData.forEach((doc) => {
+        if (driver_id == doc.data().user_uid) {
+          id = doc.id;
+        }
+      });
+      const getDriver = await drivers.doc(id).get();
+      const data = await getDriver.data();
 
       if (data === undefined) {
         errors.push({ msg: "Driver not found...!!" });
@@ -120,7 +131,7 @@ exports.dDetails = async (req, res) => {
       };
       // console.log("DRIVER DETAILS*************", driver);
     }
-    return res.render("Driver/driverDetails", {
+    return res.render("Users/Driver/driverDetails", {
       driver: driver,
     });
   } catch (error) {
@@ -141,6 +152,22 @@ exports.up = async (req, res) => {
   let driver = {};
   try {
     if (transporter_id !== driver_id) {
+      // const transporter = await db.collection("users").doc(transporter_id);
+      // const drivers = await transporter.collection("driver_details");
+      // const driversData = await drivers.get();
+      // let id = null;
+      // driversData.forEach((doc) => {
+      //   if (driver_id == doc.data().user_uid) {
+      //     id = doc.id;
+      //   }
+      // });
+      // const getDriver = await drivers.doc(id).get();
+      // const data = await getDriver.data();
+      // driver = {
+      //   id: driver_id,
+      //   driverData: data,
+      //   transporterId: transporter_id,
+      // };
       const user = await db.collection("users").doc(driver_id);
       const driverData = await user.get();
       const data = await driverData.data();
@@ -210,12 +237,38 @@ console.log(transporter_id,driver_id,"...........id....")
     // driver_photo: profilePublicUrl,
   };
   
+  // TODO : Checking 
+
+  // const tr = await db.collection("users").doc(transporter_id);
+  // const dt = await tr
+  //   .collection("driver_details")
+  //   .where("user_uid","==",driver_id)
+  //   .then((res)=>{
+  //     console.log("....loading")
+  //   })
+
+    const tr = await db.collection("users").doc(transporter_id);
+    const dt = await tr.collection("driver_details");
+    const dd = await dt.get();
+
+    let id = null;
+    dd.forEach((doc)=>{
+      if (driver_id == doc.data().user_uid) {
+        id = doc.id;
+      }
+    })
+  const fd = await dt.doc(id);
+  // const final = await fd.data();
+            await  fd.update(updateData)
+            console.log("done")
+            //  console.log(final,"dt./././././././././././.")
+    // await dt.update(updateData)
     const transporter = await db.collection("users").doc(driver_id);
     // const getDriver = await transporter
     //   .collection("driver_details")
     //   .doc(transporter_id)
       await transporter.update(updateData);
-      console.log( transporter,"................ get driver..............")
+      // console.log( transporter,"................ get driver..............")
     return res.redirect(`/driver/${transporter_id}/updateDriver/${driver_id}`);
 
   } catch (error) {
@@ -247,6 +300,7 @@ exports.updateDriver = async (req, res) => {
       driverData: data,
       transporterId: transporter_id,
     };
+    console.log(driver.driverData.user_uid,"consolecheck")
     return res.render("Users/Driver/editDriver", { driver: driver });
   } catch (error) {
     const errors = [];
@@ -261,7 +315,7 @@ exports.updatedDriver = async (req, res) => {
     const driver_id = req.params.driver_id;
     const transporter_id = req.params.transporter_id;
     const data = req.body;
-   
+   console.log(data,"datauser_uid??????????????")
     //  const { valid, errors } = validateTransporterData(data);
 
     // if (!valid) {
@@ -278,12 +332,25 @@ exports.updatedDriver = async (req, res) => {
       email: data.email,
       phone_number: data.phone,
       age: data.age,
+      // user_uid:data.user_uid
       // address_proof: addressProofPublicUrl,
       // identity_proof: identityProofPublicUrl,
       // created_at: new Date(),
       // driver_photo: profilePublicUrl,
     };
-   
+    // const tr = await db.collection("user").doc(driver_id);
+    // await tr.update(driverData)
+   if(transporter_id == data.uid){
+     const trp = await db.collection("users").doc(transporter_id);
+     const drp = await trp
+     .collection("driver_details")
+     .doc(driver_id);
+     await drp.update(driverData);
+
+   }else{
+    const tr = await db.collection("users").doc(data.uid);
+    await tr.update(driverData)
+  }
     const transporter = await db.collection("users").doc(transporter_id);
     const getDriver = await transporter
       .collection("driver_details")
@@ -335,6 +402,7 @@ console.log(data,"this is data...")
       });
       const getDriver = await drivers.doc(id).get();
       const data = await getDriver.data();
+      console.log(data,"same id data")
       driver = {
         id: driver_id,
         driverData: data,

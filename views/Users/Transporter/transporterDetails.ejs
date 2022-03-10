@@ -405,6 +405,7 @@
                             <tbody>
                             <% for(var i=0;i<drivers.length;i++) { %>
                               <tr>
+                                <td hidden><%= drivers[i].driverData.user_uid %></td>
                                 <td><%= i+1 %></td>
                                 <td><%= drivers[i].driverData.first_name %></td>
                                 <td><%= drivers[i].driverData.last_name %></td>
@@ -490,7 +491,7 @@
                                     type="button" 
                                     class="btn btn-info waves-effect waves-light m-r-5" 
                                     data-toggle="tooltip" data-original-title="View"
-                                    onclick="location.href='/driver/<%= drivers[i].transporter_id %>/driverDetails/<%= drivers[i].driverData.user_uid %>'"
+                                    onclick="location.href='/driver/<%= drivers[i].transporter_id %>/details/<%= drivers[i].driverData.user_uid %>'"
                                     >
                                     <i class="mdi mdi-file-document"></i>
                                     <!-- <span> View </span> -->

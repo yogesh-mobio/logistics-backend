@@ -957,7 +957,7 @@ exports.transporterDetails = async (req, res) => {
           orders.push(order);
         }
       });
-
+console.log(drivers,"drivers setails")
       let transporter = { id: data.id, transporterData: data.data() };
       return res.render("Users/Transporter/transporterDetails", {
         transporter: transporter,
