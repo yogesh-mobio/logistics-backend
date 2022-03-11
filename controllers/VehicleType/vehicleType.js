@@ -59,6 +59,19 @@ exports.newVehicleType = async (req, res) => {
 
     const rates = await vehicleRates(data.kmFrom, data.kmTo, data.price);
 
+  let Totals =[];
+      for(var j = 0; j < rates.length; j++){
+        let totalrate =0
+        totalrate = totalrate +(rates[j].end-rates[j].start)*rates[j].rate;
+        Totals.push(totalrate);
+      }
+  let sum = 0;
+    for (let k = 0; k < Totals.length; k++) {
+      sum += Totals[k];
+    }
+  const TotalBill =   sum + Number.parseInt(data.minimumRate);
+    console.log(TotalBill,"Total mali gayu");
+
     let icons = [];
     for (var i = 0; i < req.files.length; i++) {
       const iconId = uuidv4();
@@ -90,6 +103,7 @@ exports.newVehicleType = async (req, res) => {
         v_width: data.vehicleWidth,
         v_height: data.vehicleHeight,
       },
+      minimumRate:data.minimumRate,
       rates: rates,
       icons: icons,
       is_deleted: false,
