@@ -38,7 +38,17 @@
           <div class="card-body">
             <h4 class="mt-0 header-title">List of all the orders</h4>
             <% include ../Partials/errorMessages %>
-
+            <form method="POST" class="form-horizontal">
+            <input type="date" id="startDateDetails" name="start" />
+            <input type="date" id="endDateDetails" name="end" />
+            
+              <button
+              type="submit"
+              class="btn btn-primary btn-group waves-effect"
+              onclick="location.href='/order/displayOrders'"
+              >Export to Excel</button
+            >
+            </form>
             <table
               id="datatable"
               class="table table-bordered dt-responsive nowrap"
