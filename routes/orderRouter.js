@@ -11,5 +11,5 @@ orderRouter.post("/displayOrders", filterOrder);
 orderRouter.get("/orderDetails/:order_id", orderDetails);
 
 // orderRouter.post("/neel",exportDetails)
-orderRouter.get("/exportDetails/startDateDetails/endDateDetails",exportDetails)
+// orderRouter.get("/exportDetails/startDateDetails/endDateDetails",exportDetails)
 module.exports = orderRouter;
