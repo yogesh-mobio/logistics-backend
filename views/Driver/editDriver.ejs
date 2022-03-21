@@ -21,7 +21,7 @@
               Edit the details of a particular Driver
             </h4>
             <br /><br />
-            <% include ../../Partials/errorMessages %>
+            <% include ../Partials/errorMessages %>
             <form method="POST" class="form-horizontal">
               <div class="form-group row">
                 <label for="driverPhoto" class="col-sm-2 col-form-label"
@@ -52,16 +52,7 @@
                   />
                 </div>
               </div>
-    
-                  <input
-                  hidden
-                    class="form-control"
-                    type="text"
-                    id="user_uid"
-                    name="uid"
-                    placeholder="user_uid"
-                    value="<%= driver.driverData.user_uid %>"
-                  />
+
               <div class="form-group row">
                 <label for="driverLastName" class="col-sm-2 col-form-label"
                   >Last Name</label

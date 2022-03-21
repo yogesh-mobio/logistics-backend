@@ -25,6 +25,7 @@ const {
   registerUserReport,
   orderReport,
 } = require("../controllers/Report/report");
+const driverRouter = require("./driverRouter");
 
 // Router For Notification
 router.post("/api/sendNotification", sendNotification);
@@ -34,6 +35,8 @@ router.post("/api/sendAdminNotification", sendAdminNotification);
 router.post("/", signIn);
 
 router.get("/logout", signOut);
+router.get("/driver",driverRouter);
+router.post("/driver",driverRouter);
 
 // Routes for Forget Password
 router.post("/forget-password", forgetPassword);

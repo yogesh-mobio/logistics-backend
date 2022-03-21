@@ -6,7 +6,7 @@
     </button>
   </li>
   <li class="hide-phone list-inline-item app-search">
-    <h3 class="page-title">Edit Driver</h3>
+    <h3 class="page-title">Driver's Details</h3>
   </li>
 </ul>
 
@@ -18,10 +18,10 @@
         <div class="card m-b-20">
           <div class="card-body">
             <h4 class="mt-0 header-title">
-              Edit the details of a particular Driver
+              See all the details of a particular Driver
             </h4>
             <br /><br />
-            <% include ../../Partials/errorMessages %>
+            <% include ../Partials/errorMessages %>
             <form method="POST" class="form-horizontal">
               <div class="form-group row">
                 <label for="driverPhoto" class="col-sm-2 col-form-label"
@@ -48,20 +48,11 @@
                     name="firstname"
                     placeholder="Enter your First Name"
                     value="<%= driver.driverData.first_name %>"
-                    
+                    readonly
                   />
                 </div>
               </div>
-    
-                  <input
-                  hidden
-                    class="form-control"
-                    type="text"
-                    id="user_uid"
-                    name="uid"
-                    placeholder="user_uid"
-                    value="<%= driver.driverData.user_uid %>"
-                  />
+
               <div class="form-group row">
                 <label for="driverLastName" class="col-sm-2 col-form-label"
                   >Last Name</label
@@ -74,7 +65,7 @@
                     name="lastname"
                     value="<%= driver.driverData.last_name %>"
                     placeholder="Enter your Last Name"
-                    
+                    readonly
                   />
                 </div>
               </div>
@@ -91,7 +82,7 @@
                     name="email"
                     placeholder="Enter your Email"
                     value="<%= driver.driverData.email %>"
-                    
+                    readonly
                   />
                 </div>
               </div>
@@ -108,7 +99,7 @@
                     name="phone"
                     placeholder="Enter your Phone Number"
                     value="<%= driver.driverData.phone_number %>"
-                    
+                    readonly
                   />
                 </div>
               </div>
@@ -125,12 +116,12 @@
                     name="age"
                     placeholder="Enter your Age"
                     value="<%= driver.driverData.age %>"
-                    
+                    readonly
                   />
                 </div>
               </div>
 
-              <!-- <div class="form-group row">
+              <div class="form-group row">
                 <label for="verifyDriver" class="col-sm-2 col-form-label"
                   >Verified</label
                 >
@@ -152,13 +143,12 @@
                   value="Active" <% } else { %> value="In-Active" <% } %>
                   readonly />
                 </div>
-              </div> -->
+              </div>
 
               <!-- <div class="form-group row">
                 <label for="driverIsDeleted" class="col-sm-2 col-form-label"
                   >Deleted</label
                 >
-
                 value="<%= driver.driverData.first_name %>"
                   value="<%= driver.driverData.age %>"
                     value="<%= driver.driverData.phone_number %>"
@@ -217,29 +207,6 @@
                 </div>
               </div>
 
-              <button
-              type="button"
-              class="btn btn-primary btn-group waves-effect"
-              onclick="window.history.back()"
-            >
-              Display Driver
-            </button>
-            <button
-            type="submit"
-            class="btn btn-primary btn-group waves-effect"
-            >
-            Update Driver
-           </button>
-            <button
-              id="btnCancel"
-              name="btnCancel"
-              type="button"
-              class="btn btn-danger btn-group waves-effect"
-              onclick="location.href='/dashboard'"
-            >
-              Cancel
-            </button>
-
               <!-- <% if(driver.driverData.is_verified === "pending") { %>
               <button
                 type="button"
@@ -259,7 +226,7 @@
               <button
                 type="button"
                 class="btn btn-primary btn-group waves-effect"
-                onclick="location.href='/transporter/transporterDetails/<%= driver.transporterId %>'"
+                onclick="location.href='/driver/driverDisplay'"
               >
                 Display Drivers
               </button>
@@ -271,7 +238,6 @@
                 type="button"
                 class="btn btn-danger btn-group waves-effect"
                 onclick="location.href='/dashboard'"
-
                   
               >
                 Cancel

@@ -52,7 +52,7 @@ const userCounter = async () => {
       counter: drivers.length,
       heading: "Drivers",
       icon: "mdi mdi-seat-recline-normal",
-      link:"/driver/displayDrivers" // TODO: page is not ready Date : 01/03/2022
+      link:"driver/displayDrivers" 
     };
     cntCustomer = {
       counter: customers.length,

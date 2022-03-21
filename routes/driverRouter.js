@@ -7,6 +7,10 @@ const {
   updateDriver,
   updatedDriver,
   transporterDriversList,
+  listDrivers,
+  dDetails,
+  up,
+  updDriver,
   driverDetails,
   verifyDriver,
   rejectDriver,
@@ -16,6 +20,13 @@ const { isAuthenticated } = require("../middleware/authGaurd");
 
 // Routes for Drivers
 // driverRouter.get("/:transporter_id/displayDrivers", transporterDriversList);
+
+driverRouter.get("/displayDrivers",listDrivers);
+
+driverRouter.get("/:transporter_id/details/:id",dDetails);
+
+driverRouter.get("/:transporter_id/updateDriver/:driver_id",up);
+driverRouter.post("/:transporter_id/updateDriver/:driver_id",updDriver)
 
 driverRouter.get("/:transporter_id/driverDetails/:driver_id", driverDetails);
 

@@ -7,6 +7,7 @@ exports.signup = async (req, res, next) => {
   try {
     console.log(req.body, "All data");
     //let user_uid = req.body.userUid;
+    let user_data = req.body;
     const login_data = req.body;
     const user = {
       name: req.body.name,
@@ -29,13 +30,45 @@ exports.signup = async (req, res, next) => {
     mydata.forEach((doc) => {
       foundData = doc.data();
     });
+    // console.log(foundData,"check")
+    if(foundData === null){
+      await userService.creatNewUser(user);
+      next();
+    }
 
-    if (foundData) {
-      errors.push({ msg: "User already exists!" });
-      return res.render("Payment/login", {
+    if(foundData.is_registered === false && foundData.is_verified === "verified"){
+      return res.render("Payment/appUrl", {
         errors,
+        user_data
       });
     }
+    else if(foundData.is_verified === "pending"){
+      errors.push({ msg: "User verification pending!" });
+        return res.render("Payment/otp", {
+          errors,
+          phone_number:user.phone_number,
+          name:user.name
+        });
+    }
+    else{
+      errors.push({ msg: "User already exists!" });
+        return res.render("Payment/login", {
+          errors,
+        });
+    }
+    // const check = await db
+    // .collection("anonymous")
+    // .where("is_registered","==",false);
+    // const checkData = await check.get();
+    // console.log(foundData,"founddata")
+    // console.log(checkData,"......CheckData.....")
+
+    // if (foundData) {
+    //   errors.push({ msg: "User already exists!" });
+    //   return res.render("Payment/login", {
+    //     errors,
+    //   });
+    // }
     // let fullname = req.body.name;
     // let firstName = fullname.split(" ").slice(0, -1).join(" ");
     // let lastName = fullname.split(" ").slice(-1).join(" ");
@@ -50,10 +83,10 @@ exports.signup = async (req, res, next) => {
     //   email:"",
     //   gst_number:"",
     // };
-    await userService.creatNewUser(user);
+    
     //await userService.creatNewTransporter(transporter,user_uid);
     //  return res.render("Payment/otp", login_data);
-    next();
+    
   } catch (error) {
     const errors = [];
     console.log(error);
@@ -117,13 +150,14 @@ exports.verifyOtp = async (req, res, next) => {
     let firstName = fullname.split(" ").slice(0, -1).join(" ");
     let lastName = fullname.split(" ").slice(-1).join(" ");
     const user = {
-      first_name: firstName,
+      first_name: fullname,
       last_name: lastName,
       phone_number: phone_number,
       is_registered: false,
       user_type: "transporter",
       is_verified: "verified",
     };
+    // console.log(user,"/////////////////user/////////////////")
     await userService.creatNewTransporter(user, user_id);
     //  return res.render("Payment/transporterdetails", user_data);
     next();
