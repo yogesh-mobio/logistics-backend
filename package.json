@@ -23,6 +23,7 @@
     "firebase-admin": "^9.4.2",
     "fs": "0.0.1-security",
     "http-errors": "~1.6.3",
+    "json2xls": "^0.1.2",
     "jsonwebtoken": "^8.5.1",
     "lightbox2": "^2.11.3",
     "location-href": "^1.0.0",

@@ -21,7 +21,7 @@ adminRouter.get("/createAdmin", (req, res) => {
 
 adminRouter.post("/createAdmin", newAdmin);
 
-adminRouter.get("/displayAdmins", listAdmins);
+adminRouter.get("/list", listAdmins);
 
 adminRouter.post("/removeAdmin/:admin_id", removeAdmin);
 

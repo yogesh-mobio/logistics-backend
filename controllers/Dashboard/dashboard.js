@@ -46,25 +46,25 @@ const userCounter = async () => {
       counter: transporters.length,
       heading: "Transporters",
       icon: "mdi mdi-truck",
-      link:'/transporter/displayTransporters'
+      link:'/transporter/list'
     };
     cntDriver = {
       counter: drivers.length,
       heading: "Drivers",
       icon: "mdi mdi-seat-recline-normal",
-      link:"driver/displayDrivers" 
+      link:"driver/list" 
     };
     cntCustomer = {
       counter: customers.length,
       heading: "Customers",
       icon: "mdi mdi-account-multiple",
-      link:"customer/displayCustomers"
+      link:"customer/list"
     };
     cntAdmin = {
       counter: admins.length,
       heading: "Admins",
       icon: "mdi mdi-account-star-variant",
-      link:"/admin/displayAdmins"
+      link:"/admin/list"
     };
 
     return { cntAdmin, cntTransporter, cntDriver, cntCustomer };
@@ -112,25 +112,25 @@ const orderCounter = async () => {
       counter: pendingOrder.length,
       heading: "Pending  Orders",
       icon: "mdi mdi-cart",
-      link:"/order/displayOrders"
+      link:"/order/list"
     };
     cntOnGoingOrder = {
       counter: onGoingOrder.length,
       heading: "Ongoing Orders",
       icon: "mdi mdi-cart",
-      link:"/order/displayOrders"
+      link:"/order/list"
     };
     cntCompleteOrder = {
       counter: completeOrder.length,
       heading: "Completed Orders",
       icon: "mdi mdi-cart",
-      link:"/order/displayOrders"
+      link:"/order/list"
     };
     cntRejectedOrder = {
       counter: rejectedOrder.length,
       heading: "Rejected Orders",
       icon: "mdi mdi-cart-off",
-      link:"/order/displayOrders"
+      link:"/order/list"
     };
 
     return {

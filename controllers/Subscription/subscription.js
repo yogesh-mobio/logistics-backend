@@ -146,7 +146,7 @@ exports.subscriptionDetails = async (req, res) => {
     const data = await getSubscriptionById.get();
     if (data.data() == undefined) {
       req.flash("error_msg", "Subscription Plan not found...!!");
-      return res.redirect("/subscription/displaySubscriptions");
+      return res.redirect("/subscription/list");
     } else {
       let subscription = { id: data.id, subscriptionData: data.data() };
       return res.render("Subscription/subscriptionDetails", {
@@ -155,7 +155,7 @@ exports.subscriptionDetails = async (req, res) => {
     }
   } catch (error) {
     req.flash("error_msg", error.message);
-    return res.redirect("/subscription/displaySubscriptions");
+    return res.redirect("/subscription/list");
   }
 };
 
@@ -209,7 +209,7 @@ exports.updatedSubscription = async (req, res) => {
 
     const newSubscription = await db.collection("subscription_plan").doc(id);
     await newSubscription.update(subscriptionData);
-    return res.redirect("/subscription/displaySubscriptions");
+    return res.redirect("/subscription/list");
   } catch (error) {
     const errors = [];
     errors.push({ msg: error.code });

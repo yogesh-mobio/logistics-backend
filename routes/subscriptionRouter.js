@@ -17,7 +17,7 @@ subscriptionRouter.get("/createSubscription", addSubscription);
 
 subscriptionRouter.post("/createSubscription", addedSubscription);
 
-subscriptionRouter.get("/displaySubscriptions", listSubscriptions);
+subscriptionRouter.get("/list", listSubscriptions);
 
 subscriptionRouter.get(
   "/removeSubscription/:subscription_id",

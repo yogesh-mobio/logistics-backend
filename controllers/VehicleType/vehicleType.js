@@ -70,7 +70,7 @@ exports.newVehicleType = async (req, res) => {
       sum += Totals[k];
     }
   const TotalBill =   sum + Number.parseInt(data.minimumRate);
-    console.log(TotalBill,"Total mali gayu");
+    // console.log(TotalBill,"Total mali gayu");
 
     let icons = [];
     for (var i = 0; i < req.files.length; i++) {
@@ -279,6 +279,7 @@ exports.updatedVehicleType = async (req, res) => {
     const vehicleData = {
       vehicle_type: data.name,
       vahicle_capacity: data.capacity,
+      minimumRate:data.minimumRate,
       dimensions: {
         v_length: data.vehicleLength,
         v_width: data.vehicleWidth,
@@ -292,7 +293,7 @@ exports.updatedVehicleType = async (req, res) => {
 
     const newVehicle = db.collection("vehicles").doc(id);
     await newVehicle.update(vehicleData);
-    return res.redirect("/vehicle-type/displayVehicleTypes");
+    return res.redirect("/vehicle-type/list");
     // return res.render("VehicleType/displayVehicleTypes", {
     //   message: "Vehicle is Added...!!",
     // });

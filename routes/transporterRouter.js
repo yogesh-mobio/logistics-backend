@@ -55,7 +55,7 @@ transporterRouter.post(
   newTransporter
 );
 
-transporterRouter.get("/displayTransporters", listTransporters);
+transporterRouter.get("/list", listTransporters);
 
 transporterRouter.post("/removeTransporter/:transporter_id", removeTransporter);
 

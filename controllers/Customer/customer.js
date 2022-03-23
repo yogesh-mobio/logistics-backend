@@ -79,7 +79,7 @@ exports.changeCustomerStatus = async (req, res) => {
       status = !data.status;
     }
     await userData.update({ status });
-    res.redirect("/customer/displayCustomers");
+    res.redirect("/customer/list");
   } catch (error) {
     console.log(error);
   }
@@ -129,7 +129,7 @@ exports.removeCustomer = async (req, res) => {
 
     await db.collection("deletion_logs").add(deletedData);
 
-    res.redirect("/customer/displayCustomers");
+    res.redirect("/customer/list");
   } catch (error) {
     console.log(error);
   }
