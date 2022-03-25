@@ -588,7 +588,7 @@ exports.newTransporter = async (req, res) => {
         .collection("users")
         .doc(newTransporter.user.uid);
         // .doc();
-      await transporter.set(transporterData);
+      // await transporter.set(transporterData);
 
       let vh = await db
       .collection("vehicle_details")
@@ -603,13 +603,18 @@ exports.newTransporter = async (req, res) => {
 
     if(foundData){
       errors.push({ msg: "Vehical already exists!" });
+      // alert("error")
+      // req.flash("error_msg",errors);
       return res.render("Users/Transporter/addTransporter", {
         vehicleTypes: vehicleTypes,
         errors,
       });
+    }else{
+        await transporter.set(transporterData);
     }
       const vehicle = await transporter.collection("vehicle_details").doc();
       await vehicle.set(vehicleData);
+      
       const vehicledetails = await db.collection("vehicle_details").doc();
       await vehicledetails.set(vehicleData);
 
@@ -801,7 +806,7 @@ exports.updatedTransporter = async (req, res) => {
     };
     const updateTransporter = db.collection("users").doc(id);
     await updateTransporter.update(transporterData);
-    return res.redirect("/transporter/displayTransporters");
+    return res.redirect("/transporter/list");
     
   } catch (error) {
     const errors = [];
@@ -843,7 +848,7 @@ exports.changeTransporterStatus = async (req, res) => {
     await transporterData.update(Status);
     await db.collection("status_logs").add(updateData);
 
-    return res.redirect("/transporter/displayTransporters");
+    return res.redirect("/transporter/list");
   } catch (error) {
     console.log(error);
   }
@@ -894,7 +899,7 @@ exports.removeTransporter = async (req, res) => {
 
     await db.collection("deletion_logs").add(deletedData);
 
-    return res.redirect("/transporter/displayTransporters");
+    return res.redirect("/transporter/list");
   } catch (error) {
     console.log(error);
   }
@@ -909,7 +914,7 @@ exports.transporterDetails = async (req, res) => {
     const data = await getTransporterById.get();
     if (data.data() == undefined) {
       req.flash("error_msg", "Transporter not found...!!");
-      return res.redirect("/transporter/displayTransporters");
+      return res.redirect("/transporter/list");
     } else {
       const drivers = [];
       const vehicles = [];
@@ -968,7 +973,7 @@ console.log(drivers,"drivers setails")
     }
   } catch (error) {
     req.flash("error_msg", error.message);
-    return res.redirect("/transporter/displayTransporters");
+    return res.redirect("/transporter/list");
   }
 };
 
@@ -981,7 +986,7 @@ exports.verifyTransporter = async (req, res) => {
     const data = await getTransporterById.get();
     if (data.data() == undefined) {
       req.flash("error_msg", "Transporter not found...!!");
-      return res.redirect("/transporter/displayTransporters");
+      return res.redirect("/transporter/list");
     }
     {
       const drivers = [];
@@ -1026,7 +1031,7 @@ exports.verifyTransporter = async (req, res) => {
     }
   } catch (error) {
     req.flash("error_msg", error.message);
-    return res.redirect("/transporter/displayTransporters");
+    return res.redirect("/transporter/list");
   }
 };
 
@@ -1110,15 +1115,15 @@ exports.verifiedTransporter = async (req, res) => {
         await transporterVehicleData.update({ is_verified: "verified" });
       } else {
         req.flash("error_msg", "There are multile Vehicles to verify..!!");
-        res.redirect("/transporter/displayTransporters");
+        res.redirect("/transporter/list");
       }
     }
 
     await getTransporterById.update({ is_verified: "verified" });
-    return res.redirect("/transporter/displayTransporters");
+    return res.redirect("/transporter/list");
   } catch (error) {
     req.flash("error_msg", error.message);
-    return res.redirect("/transporter/displayTransporters");
+    return res.redirect("/transporter/list");
   }
 };
 

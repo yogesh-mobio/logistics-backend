@@ -10,7 +10,7 @@ const {
 const { isAuthenticated } = require("../middleware/authGaurd");
 
 // Routes for Customers
-customerRouter.get("/displayCustomers", listCustomers);
+customerRouter.get("/list", listCustomers);
 
 // customerRouter.delete("/removeCustomer/:customer_id", removeCustomer);
 customerRouter.post("/removeCustomer/:customer_id", removeCustomer);

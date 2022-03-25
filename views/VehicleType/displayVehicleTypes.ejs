@@ -49,6 +49,7 @@
                   <th>ID</th>
                   <th>Vehicle Type Name</th>
                   <th>Capacity</th>
+                  <th>Minimum Rate</th>
                   <th>Dimensions <b>(L * W * H)</b></th>
                   <th>Actions</th>
                 </tr>
@@ -60,6 +61,7 @@
                   <td><%= i+1 %></td>
                   <td><%= vehicles[i].vehicleData.vehicle_type %></td>
                   <td><%= vehicles[i].vehicleData.vahicle_capacity %></td>
+                  <td><%= vehicles[i].vehicleData.minimumRate %></td>
                   <td>
                     <%= vehicles[i].vehicleData.dimensions.v_length %> <b>*</b> <%=
                     vehicles[i].vehicleData.dimensions.v_width %> <b>*</b> <%=

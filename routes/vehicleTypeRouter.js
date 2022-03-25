@@ -46,7 +46,7 @@ vehicleTypeRouter.post(
   newVehicleType
 );
 
-vehicleTypeRouter.get("/displayVehicleTypes", listVehicleTypes);
+vehicleTypeRouter.get("/list", listVehicleTypes);
 
 // Make temporarily delete still left to add a subscription part
 vehicleTypeRouter.post("/removeVehicleType/:vehicleType_id", removeVehicleType);

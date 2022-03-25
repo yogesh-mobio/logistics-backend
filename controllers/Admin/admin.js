@@ -243,7 +243,7 @@ exports.changeAdminStatus = async (req, res) => {
     await getAdminById.update(Status);
     await db.collection("status_logs").add(updateData);
 
-    return res.redirect("/transporter/displayTransporters");
+    return res.redirect("/transporter/list");
   } catch (error) {
     console.log(error);
     errors.push({ msg: error.message });

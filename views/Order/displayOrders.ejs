@@ -43,9 +43,10 @@
             <input type="date" id="endDateDetails" name="end" />
             
               <button
-              type="submit"
+              
+              id="datebtn"
               class="btn btn-primary btn-group waves-effect"
-              onclick="location.href='/order/displayOrders'"
+              
               >Export to Excel</button
             >
             </form>
@@ -119,5 +120,53 @@
 
 <!-- Datatable init js -->
 <script src="/assets/pages/datatables.init.js"></script>
+<script>
+  // $(function() {
+  //   $( "#startDateDetails" ).datepicker({  maxDate: new Date() });
+  // });
+  $(function(e){
+    var dtToday = new Date();
+
+    var month = dtToday.getMonth() + 1;
+    var day = dtToday.getDate();
+    var year = dtToday.getFullYear();
+    if(month < 10)
+        month = '0' + month.toString();
+    if(day < 10)
+        day = '0' + day.toString();
+    
+    var maxDate = year + '-' + month + '-' + day;
+    // or instead:
+    // var maxDate = dtToday.toISOString().substr(0, 10);
+    const data = {
+      reason:$("#startDateDetails").val()
+    }
+      // alert(maxDate);
+    $("datebtn").click(function(e){
+      // e.preventDefault();
+      const code = $("#startDateDetails").val();
+      console.log(code,"clicked")
+      
+    })
+    
+    // console.log(data,"")
+    $('#startDateDetails').attr('max', maxDate);
+    $('#endDateDetails').attr('max', maxDate);
+    // console.log(data,"daatra")
+    $.ajax({
+        url:`/order/list`,
+        type:"POST",
+        data:data,
+        success:function(){
+          location.reload();
+        },
+        error:function(){
+          alert(`There is some issue to this`);
+        }
+      });
+    
+});
+  
+</script>
 
 <%- contentFor('BottomJs') %>

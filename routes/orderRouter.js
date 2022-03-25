@@ -5,8 +5,8 @@ const { listOrders, orderDetails, exportDetails,filterOrder } = require("../cont
 const { isAuthenticated } = require("../middleware/authGaurd");
 
 // Routes for Orders
-orderRouter.get("/displayOrders", listOrders);
-orderRouter.post("/displayOrders", filterOrder);
+orderRouter.get("/list", listOrders);
+orderRouter.post("/list", filterOrder);
 
 orderRouter.get("/orderDetails/:order_id", orderDetails);
 
