@@ -272,8 +272,10 @@ exports.filterOrder = async (req, res) => {
         // console.log(filename)
         return res.download(filename, (err) => {
           if (err) {
+            fs.unlinkSync(exceloutput)
             console.log(err)
           }
+          fs.unlinkSync(exceloutput)
         })
         // var filestream = fs.createReadStream(exceloutput)
         // return res.status(200).json({
