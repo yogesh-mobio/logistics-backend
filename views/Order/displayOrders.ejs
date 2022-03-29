@@ -46,7 +46,7 @@
               <button
               
               id="datebtn"
-              type="button"
+              type="submit"
               class="btn btn-primary btn-group waves-effect"
               
               >Export to Excel</button
@@ -508,7 +508,11 @@ console.log(jsObject,"jsobject")
 // }
 
 
-  $('#datebtn').click(function(e){
+  $('.form-horizontal').submit(function(e){
+    e.preventDefault()
+      e.stopPropagation()
+      e.stopImmediatePropagation()
+      // return false
     // $(document).on('click', '#datebtn', function(e) {
     // e.preventDefault();
     const start = $('#startDateDetails').val();
@@ -532,37 +536,74 @@ console.log(jsObject,"jsobject")
         url:`/order/list`,
         type:"POST",
         data:{start:start,end:end},
-        success:function(data, status, xhr){
-          var fileName = "Sample.xlsx"
-          // console.log(status)
-          // var url = window.URL || window.webkitURL;
-          // var link = url.createObjectURL(data);
-          // var a = $("<a />");
-          // console.log(link)
-          // var fileName = data.filename
-          //Convert the Byte Data to BLOB object.
-          var blob = new Blob(data, { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
-          //Check the Browser type and download the File.
-          var isIE = false || !!document.documentMode;
-          if (isIE) {
-              window.navigator.msSaveBlob(blob, fileName);
-          } else {
-              var url = window.URL || window.webkitURL;
-              link = url.createObjectURL(blob);
-              var a = $("<a />");
-              a.attr("download", fileName);
-              a.attr("href", link);
-              $("body").append(a);
-              a[0].click();
-              $("body").remove(a);
+        xhrFields: {
+            responseType: 'blob' // to avoid binary data being mangled on charset conversion
+        },
+        success:function(blob, status, xhr){
+          console.log("Success")
+          var filename = "";
+          var disposition = xhr.getResponseHeader('Content-Disposition');
+          if (disposition && disposition.indexOf('attachment') !== -1) {
+              var filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+              var matches = filenameRegex.exec(disposition);
+              if (matches != null && matches[1]) filename = matches[1].replace(/['"]/g, '');
           }
+
+          if (typeof window.navigator.msSaveBlob !== 'undefined') {
+            // IE workaround for "HTML7007: One or more blob URLs were revoked by closing the blob for which they were created. These URLs will no longer resolve as the data backing the URL has been freed."
+            window.navigator.msSaveBlob(blob, filename);
+          } 
+          else {
+            var URL = window.URL || window.webkitURL;
+            var downloadUrl = URL.createObjectURL(blob);
+
+            if (filename) {
+                // use HTML5 a[download] attribute to specify filename
+                var a = document.createElement("a");
+                // safari doesn't support this yet
+                if (typeof a.download === 'undefined') {
+                    window.location.href = downloadUrl;
+                } else {
+                    a.href = downloadUrl;
+                    a.download = filename;
+                    document.body.appendChild(a);
+                    a.click();
+                }
+            } else {
+                window.location.href = downloadUrl;
+            }
+
+            setTimeout(function () { URL.revokeObjectURL(downloadUrl); }, 100);
+          }
+          // var fileName = "Sample.xlsx"
+          // // console.log(status)
+          // // var url = window.URL || window.webkitURL;
+          // // var link = url.createObjectURL(data);
+          // // var a = $("<a />");
+          // // console.log(link)
+          // // var fileName = data.filename
+          // //Convert the Byte Data to BLOB object.
+          // var blob = new Blob(data, { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+          // //Check the Browser type and download the File.
+          // var isIE = false || !!document.documentMode;
+          // if (isIE) {
+          //     window.navigator.msSaveBlob(blob, fileName);
+          // } else {
+          //     var url = window.URL || window.webkitURL;
+          //     link = url.createObjectURL(blob);
+          //     var a = $("<a />");
+          //     a.attr("download", fileName);
+          //     a.attr("href", link);
+          //     $("body").append(a);
+          //     a[0].click();
+          //     $("body").remove(a);
+          // }
           // return false
         },
         error:function(data,status,xhr){
-          
           console.log(data,"Error")
           var html = `Please Check Date!`
-        $("#dateerror").add().append(`<div id="datenestederror">${html}</div>`);
+          $("#dateerror").add().append(`<div id="datenestederror">${html}</div>`);
         }
       });
   });
