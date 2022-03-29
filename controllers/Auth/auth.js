@@ -8,6 +8,7 @@ const {
 
 /* SignIn Controller */
 exports.signIn = async (req, res) => {
+  console.log(req.body)
   try {
     const user = {
       email: req.body.email,
@@ -17,6 +18,7 @@ exports.signIn = async (req, res) => {
     const { valid, errors } = validateSignInData(user)
 
     if (!valid) {
+      console.log("error1")
       return res.status(400).json(errors);
     }
 
@@ -48,20 +50,27 @@ exports.signIn = async (req, res) => {
 
       res.redirect("/dashboard");
     } else {
-      res.redirect("/");
+      console.log("error2")
+      const errors = "Wrong credentials"      
+            // return res.render('Pages/pages-login', { errors:errors } );
+      // res.redirect("/");
+      return res.status(400).send( errors);
     }
   } catch (error) {
     if (error.code == "auth/invalid-email") {
+      console.log("error3")
       return res.status(403).json("Please enter the valid email ID");
     }
     if (
       error.code == "auth/wrong-password" ||
       error.code == "auth/user-not-found"
     ) {
+      console.log("error4")
       return res
         .status(403)
         .json({ message: "Wrong credentials, Please try again" });
     }
+    console.log("error5")
     return res.status(500).json({ error: error.code });
   }
 };
