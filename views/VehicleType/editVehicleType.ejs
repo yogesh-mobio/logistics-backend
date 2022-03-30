@@ -6,7 +6,7 @@
     </button>
   </li>
   <li class="hide-phone list-inline-item app-search">
-    <h3 class="page-title">Update Vehicle-Type</h3>
+    <h3 class="page-title">Update Vehicle Type</h3>
   </li>
 </ul>
 
@@ -153,6 +153,9 @@
                 <div class="col-sm-10 rates_input_div">
                   <% for(var i=0;i<vehicle.rates.length;i++) { %>
                     <!-- <div> -->
+                      <div id="error" style="color: red;">
+                        <div id="errormessage"></div>
+                      </div>
                     <div class="rates" id="newRate_<%= i %>">
                         <br />
                         <div
@@ -271,6 +274,25 @@
       e.preventDefault();
       let cnt = $(".rates").length;
       let id = "newRate_" + cnt;
+// console.log( "#kmFrom_"+`${id}`,"id")
+      let startValue0 = $(".rates_input_div").find("#kmFrom_newRate_0").attr("name", "kmFrom").val();
+      let startValue1 = $(".rates_input_div").find("#kmFrom_newRate_1").attr("name", "kmFrom").val();
+      let startValue2 = $(".rates_input_div").find("#kmFrom_newRate_2").attr("name", "kmFrom").val();
+      let startValue3 = $(".rates_input_div").find("#kmFrom_newRate_3").attr("name", "kmFrom").val();
+      let startValue4 = $(".rates_input_div").find("#kmFrom_newRate_4").attr("name", "kmFrom").val();
+      let startValue5 = $(".rates_input_div").find("#kmFrom_newRate_5").attr("name", "kmFrom").val();
+      let startValue6 = $(".rates_input_div").find("#kmFrom_newRate_6").attr("name", "kmFrom").val();
+      let startValue7 = $(".rates_input_div").find("#kmFrom_newRate_7").attr("name", "kmFrom").val();
+      let startValue8 = $(".rates_input_div").find("#kmFrom_newRate_8").attr("name", "kmFrom").val();
+      let startValue9 = $(".rates_input_div").find("#kmFrom_newRate_9").attr("name", "kmFrom").val();
+      let startValue10 = $(".rates_input_div").find("#kmFrom_newRate_10").attr("name", "kmFrom").val();
+      let startValue11 = $(".rates_input_div").find("#kmFrom_newRate_11").attr("name", "kmFrom").val();
+      let startValue12 = $(".rates_input_div").find("#kmFrom_newRate_12").attr("name", "kmFrom").val();
+      let startValue13 = $(".rates_input_div").find("#kmFrom_newRate_13").attr("name", "kmFrom").val();
+      let startValue14 = $(".rates_input_div").find("#kmFrom_newRate_14").attr("name", "kmFrom").val();
+      let startValue15 = $(".rates_input_div").find("#kmFrom_newRate_15").attr("name", "kmFrom").val();
+      let startValue16 = $(".rates_input_div").find("#kmFrom_newRate_16").attr("name", "kmFrom").val();
+
 
       let endValue = $(".rates_input_div")
         .find(".km-to:last")
@@ -278,6 +300,13 @@
         .val();
       let convertEndValue = parseInt(endValue, 10);
       let newValue = convertEndValue + 1;
+
+      $(".rates_input_div").find(".km-to:last").attr("name", "kmTo").change(function(){
+      // $("#numbercss").css("margin-bottom", "16px");
+       $("#errormessage").hide();   
+       $("#error").empty();
+      // $("#vehicalerror").hide();
+    });
 
       var html =
         `<div class="rates" id=` +
@@ -353,7 +382,61 @@
           </div>
         </div>
       </div>`;
-      $(".rates_input_div").append(html);
+      if(startValue0>endValue){
+        var html = ` Please Check Date`;
+                      $("#error").add().append(`<div id="errormessage">Check kilometer</div>`);
+      }else if(Number(startValue1)>endValue){
+        var html = ` Please Check Date`;
+                      $("#error").add().append(`<div id="errormessage">Check kilometer</div>`); 
+      }else if(Number(startValue2)>endValue){
+        var html = ` Please Check Date`;
+                      $("#error").add().append(`<div id="errormessage">Check kilometer</div>`);
+      }else if(Number(startValue3)>endValue){
+        var html = ` Please Check Date`;
+                      $("#error").add().append(`<div id="errormessage">Check kilometer</div>`);
+      }else if(Number(startValue4)>endValue){
+        var html = ` Please Check Date`;
+                      $("#error").add().append(`<div id="errormessage">Check kilometer</div>`);
+      }else if(Number(startValue5)>endValue){
+        var html = ` Please Check Date`;
+                      $("#error").add().append(`<div id="errormessage">Check kilometer</div>`);
+      }else if(Number(startValue6)>endValue){
+        var html = ` Please Check Date`;
+                      $("#error").add().append(`<div id="errormessage">Check kilometer</div>`);
+      }else if(Number(startValue7)>endValue){
+        var html = ` Please Check Date`;
+                      $("#error").add().append(`<div id="errormessage">Check kilometer</div>`);
+      }else if(Number(startValue8)>endValue){
+        var html = ` Please Check Date`;
+                      $("#error").add().append(`<div id="errormessage">Check kilometer</div>`);
+      }else if(Number(startValue9)>endValue){
+        var html = ` Please Check Date`;
+                      $("#error").add().append(`<div id="errormessage">Check kilometer</div>`);
+      }else if(Number(startValue10)>endValue){
+        var html = ` Please Check Date`;
+                      $("#error").add().append(`<div id="errormessage">Check kilometer</div>`);
+      }else if(Number(startValue11)>endValue){
+        var html = ` Please Check Date`;
+                      $("#error").add().append(`<div id="errormessage">Check kilometer</div>`);
+      }else if(Number(startValue12)>endValue){
+        var html = ` Please Check Date`;
+                      $("#error").add().append(`<div id="errormessage">Check kilometer</div>`);
+      }else if(Number(startValue13)>endValue){
+        var html = ` Please Check Date`;
+                      $("#error").add().append(`<div id="errormessage">Check kilometer</div>`);
+      }else if(Number(startValue14)>endValue){
+        var html = ` Please Check Date`;
+                      $("#error").add().append(`<div id="errormessage">Check kilometer</div>`);
+      }else if(Number(startValue15)>endValue){
+        var html = ` Please Check Date`;
+                      $("#error").add().append(`<div id="errormessage">Check kilometer</div>`);
+      }else if(Number(startValue16)>endValue){
+        var html = ` Please Check Date`;
+                      $("#error").add().append(`<div id="errormessage">Check kilometer</div>`);
+      }
+      else{
+        $(".rates_input_div").append(html);
+      }
 
       if($(".rates").length == 1){
             $(".rates").find("#kmFrom_"+id).attr("readonly", false);
@@ -370,6 +453,8 @@
     });
 
     $(document).on("click", ".remove_rate", function (e) {
+      $("#errormessage").hide();   
+       $("#error").empty();
         let id = $(this).attr("id");
         let split_id = id.split("_");
         let removeId = "#newRate_" + split_id[2];
