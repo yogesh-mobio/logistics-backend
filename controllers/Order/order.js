@@ -99,7 +99,7 @@ exports.filterOrder = async (req, res) => {
       const errors = "Please Check "+"Start Date " + `${date.start}`+"And  End Date "+`${date.end}`
       // req.flash("error_msg", errors);
       // return res.redirect("/order/list");
-      return res.status(400).send( errors);
+      return res.status(400).send({ message: errors });
     }
     var st = new Date(date.start);
     var e = new Date(date.end);
@@ -272,8 +272,10 @@ exports.filterOrder = async (req, res) => {
         // console.log(filename)
         return res.download(filename, (err) => {
           if (err) {
+            fs.unlinkSync(exceloutput)
             console.log(err)
           }
+          fs.unlinkSync(exceloutput)
         })
         // var filestream = fs.createReadStream(exceloutput)
         // return res.status(200).json({
