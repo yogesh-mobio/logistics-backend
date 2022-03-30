@@ -33,6 +33,7 @@
                     name="name"
                     placeholder="Enter your Name of the Vehicle"
                     value="<%= vehicle.vehicle_type %>"
+                    readonly
                   />
                 </div>
               </div>
@@ -247,7 +248,7 @@
                 name="btnCancel"
                 type="button"
                 class="btn btn-danger btn-group waves-effect"
-                onclick="location.href='/dashboard'"
+                onclick="location.href='/vehicle-type/list'"
               >
                 Cancel
               </button>

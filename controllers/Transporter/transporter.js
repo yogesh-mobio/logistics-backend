@@ -568,7 +568,7 @@ exports.newTransporter = async (req, res) => {
       let trpassword = Math.random().toString(36).slice(-8);
       const newTransporter = await firebaseSecondaryApp
         .auth()
-        .createUserWithEmailAndPassword(data.email, trpassword);
+        .createUserWithEmailAndPassword(data.email+trpassword, trpassword);
      
      
 
@@ -579,7 +579,7 @@ exports.newTransporter = async (req, res) => {
      const driverUid = data.driverUid;
 
      console.log(newTransporter.user.uid,"useruid");
-     console.log(driverUid,"driverUid")
+    //  console.log(driverUid,"driverUid")
 
 
 //        console.log(newTransporter,"new Transpoeter****");
@@ -592,23 +592,45 @@ exports.newTransporter = async (req, res) => {
 
       let vh = await db
       .collection("vehicle_details")
-      .where("chassis_number","==",vehicleData.chassis_number)    
       .where("vehicle_number","==",vehicleData.vehicle_number)
-      // console.log(vh,"vh");
+
     const v = await vh.get();
     let foundData = null;
     v.forEach((doc)=>{
-      foundData = doc.data();   
+      foundData = doc.data(); 
+      
     })
 
-    if(foundData){
-      errors.push({ msg: "Vehical already exists!" });
-      // alert("error")
-      // req.flash("error_msg",errors);
-      return res.render("Users/Transporter/addTransporter", {
-        vehicleTypes: vehicleTypes,
-        errors,
-      });
+    let fc = await db
+    .collection("vehicle_details")
+    .where("chassis_number","==",vehicleData.chassis_number)
+    const c = await fc.get()
+    let foundChessis = null;
+    c.forEach((doc)=>{
+      foundChessis = doc.data();
+      // console.log(foundChessis,"chessis")
+    })
+
+    if( foundData ){
+      console.log("number found")
+      return res.status(400).send({
+        data: {},
+        message: "Vehical already exists!"
+      })
+      // errors.push({ msg: "Vehical already exists!" });
+      // // alert("error")
+      // // req.flash("error_msg",errors);
+      // return res.render("Users/Transporter/addTransporter", {
+      //   vehicleTypes: vehicleTypes,
+      //   errors,
+      // });
+    }
+    if(foundChessis){
+      console.log("found chessis")
+      return res.status(400).send({
+        data: {},
+        message: "Chessis number already exists!"
+      })
     }else{
         await transporter.set(transporterData);
     }
@@ -721,7 +743,7 @@ exports.newTransporter = async (req, res) => {
       });
     }
     errors.push({ msg: error.message });
-    return res.render("Users/Transporter/addTransporter", {
+    return res.json("Users/Transporter/addTransporter", {
       vehicleTypes: vehicleTypes,
       errors,
     });

@@ -234,8 +234,12 @@
             url: `/notificationCount`,
           }).done(function (res) {
             // console.log("RESPONSE******", res.admin);
+            if(res.admin.userAdmin.noti_count == 0 || res.admin.userAdmin.noti_count == "undefined"){
+              $("#notiCount").hide();
+            }else{
             document.getElementById("notiCount").innerHTML =
               res.admin.userAdmin.noti_count;
+            }
           });
         });
   

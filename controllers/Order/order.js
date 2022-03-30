@@ -3,6 +3,8 @@ var express = require('express')
 const moment = require("moment");
 const json2xls = require('json2xls');
 const app = express()
+var path = require('path');
+var mime = require('mime');
 const fs = require('fs');
 var bodyParser = require('body-parser')
 app.use(bodyParser.json())
@@ -81,19 +83,36 @@ exports.listOrders = async (req, res) => {
 
 exports.filterOrder = async (req, res) => {
   const date = req.body;
-    
-    if(date.start == "" || date.end == ""){
-      req.flash("error_msg", "Please Check date!");
-      return res.redirect("/order/list");
+    console.log(date,"date backend")
+    // if(date.start == "" || date.end == "" || (date.start > date.end)){
+      if(date.start == "" || date.end == ""){
+      // req.flash("error_msg", "Please Check date!");
+      // return res.redirect("/order/list");
+      const errors = "Please Check Date!"
+      return res.status(400).send( errors);
+      // return res.status(400).send({
+      //   data: {},
+      //   message: "Please Check Date!"
+      // })
+    }
+    if(date.start > date.end){
+      const errors = "Please Check "+"Start Date " + `${date.start}`+"And  End Date "+`${date.end}`
+      // req.flash("error_msg", errors);
+      // return res.redirect("/order/list");
+      return res.status(400).send( errors);
     }
     var st = new Date(date.start);
     var e = new Date(date.end);
     let transporter, driver, customer, order, vehicle;
 
-    if( st > new Date()){
-      req.flash("error_msg", "Please Check date!");
-      return res.redirect("/order/list");
-    }
+    // if( st > new Date()){
+    //   req.flash("error_msg", "Please Check date!");
+    //   return res.redirect("/order/list");
+      // return res.status(400).send({
+      //   data: {},
+      //   message: "Please Check Date!"
+      // })
+    // }
     
   
     try {  
@@ -238,21 +257,49 @@ exports.filterOrder = async (req, res) => {
         req.flash("error_msg", "There is no order found");
         return res.redirect("/order/list");     
       }else{
-        console.log("else")
+        // console.log("else")
+        // return res.send(DDATA)
+        // console.log(DDATA);
         let exceloutput = Date.now() + "output.xlsx"        
         let xls = json2xls(DDATA);
-
+// console.log(xls,"bfahdbahsdbash")
         fs.writeFileSync(exceloutput, xls, 'binary');
-         res.download(exceloutput,(err) => {
-          if(err){
-              fs.unlinkSync(exceloutput)
-              res.send("Unable to download the excel file")
+        var filename = path.basename(exceloutput);
+        var mimetype = mime.lookup(exceloutput);
+        console.log(mimetype)
+        res.setHeader('Content-disposition', 'attachment; filename=' + filename);
+        res.setHeader('Content-type', mimetype);
+        // console.log(filename)
+        return res.download(filename, (err) => {
+          if (err) {
+            console.log(err)
           }
-          fs.unlinkSync(exceloutput)
+        })
+        // var filestream = fs.createReadStream(exceloutput)
+        // return res.status(200).json({
+        //   data: { file: filestream, mimetype, filename: exceloutput  }
+        // })
+        // console.log(filestream)
+        // filestream.pipe(res);
+
+        // console.log("Order REs", res)
+        // res.download(exceloutput);
+        //  res.download(exceloutput,(err) => {
+        //   if(err){
+        //       // fs.unlinkSync(exceloutput)
+        //       res.send("Unable to download the excel file")
+        //   }
+          // fs.unlinkSync(exceloutput)
+        
+        
+            // res.sendFile(exceloutput);
+        
+
+        
           // return res.render("Order/displayOrders", {
           //         orders: DD,
           // })
-      })
+      // })
       
     //     DD.forEach((order)=>{
     //       // console.log(order,"orderlist")

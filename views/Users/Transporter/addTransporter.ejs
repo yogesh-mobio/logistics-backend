@@ -31,7 +31,7 @@
                       class="form-horizontal"
                       enctype="multipart/form-data"
                     >
-                    <div id="AA"></div>
+                    <div id="vehicle"></div>
                       <div class="form-group row">
                         <label
                           for="transporterFirstName"
@@ -699,7 +699,7 @@
                                     </div>
                                   </div>
 
-                                  <div class="form-group row">
+                                  <div id="numbercss" class="form-group row">
                                     <label
                                       for="vehicleNumber"
                                       class="col-sm-2 col-form-label"
@@ -722,8 +722,8 @@
                                       </div>
                                     </div>
                                   </div>
-
-                                  <div class="form-group row">
+                                  <div id="vehicalerror" style="color: red; margin-left: 186px;margin-bottom: 5px;"><div id="vehicalerrormessage"></div></div>
+                                  <div id="chessiscss" class="form-group row">
                                     <label
                                       for="vehicleChassisNumber"
                                       class="col-sm-2 col-form-label"
@@ -740,7 +740,7 @@
                                       />
                                     </div>
                                   </div>
-
+                                  <div id="vehicalchessiserror" style="color: red; margin-left: 186px;margin-bottom: 5px;"><div id="vehicalerrormessage"></div></div>
                                   <div class="form-group row">
                                     <label
                                       for="vehicleComments"
@@ -916,89 +916,118 @@ firebase.initializeApp(config);
 window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', { size: 'invisible' });
 window.driverRecaptchaVerifier = new firebase.auth.RecaptchaVerifier('driver-recaptcha-container', { size: 'invisible' });
 var myResult;
-// $(document).ready(function(){
-//   $('.form-horizontal').submit(function(e){
-//     e.preventDefault();
-//     // const vehicleNumber = $("#vehicleNumber").val();
-//     // const ChassisNumber = $("#vehicleChassisNumber").val();
-//     const firstname = $("#transporterFirstName").val();
-//     const lastname = $("#transporterLastName").val();
-//     const phone = $("#transporterPhoneNumber").val();
-//     const email = $("#transporterEmail").val();
-//     const address = $("#transporterAddress").val();
-//     const area = $("#area").val();
-//     const city = $("#city").val();
-//     const pincode = $("#pincode").val();
-//     const state = $("#state").val();
-//     const country = $("#country").val();
-//     const status = $("#transporterStatus").val();
-//     const registerNo = $("#transporterRegisterNumber").val();
-//     const gstNo = $("#transporterGstNumber").val();
-//     // const  = $("#chbTransporterAsDriverHidden").val();
-//     // const  = $("#chbTransporterAsDriver").val();
-//     const FirstName = $("#driverFirstName").val();
-//     const LastName = $("#driverLastName").val();
-//     const Email = $("#driverEmail").val();
-//     // const  = $("#driverUid").val();
-//     const Phone = $("#driverPhone").val();
-//     const Age = $("#driverAge").val();
-//     const profilePublicUrl = $("#driverProfilePhoto").val();
-//     const addressProofPublicUrl = $("#driverAddressProof").val();
-//     const identityProofPublicUrl = $("#driverIdentityProof").val();
-//     const vehicleTypeName = $("#vehicleType").val();
-//     const VehicleNumber = $("#vehicleNumber").val();
-//     const ChassisNumber = $("#vehicleChassisNumber").val();
-//     const Comments = $("#vehicleComments").val();
-//     const icons = $("#vehicleIcons").val();
+$(document).ready(function(){
+  $('.form-horizontal').submit(function(e){
+    e.preventDefault();
+    // const vehicleNumber = $("#vehicleNumber").val();
+    // const ChassisNumber = $("#vehicleChassisNumber").val();
+    const firstname = $("#transporterFirstName").val();
+    const lastname = $("#transporterLastName").val();
+    const phone = $("#transporterPhoneNumber").val();
+    const email = $("#transporterEmail").val();
+    const address = $("#transporterAddress").val();
+    const area = $("#area").val();
+    const city = $("#city").val();
+    const pincode = $("#pincode").val();
+    const state = $("#state").val();
+    const country = $("#country").val();
+    const status = $("#transporterStatus").val();
+    const registerNo = $("#transporterRegisterNumber").val();
+    const gstNo = $("#transporterGstNumber").val();
+    // const  = $("#chbTransporterAsDriverHidden").val();
+    // const  = $("#chbTransporterAsDriver").val();
+    const FirstName = $("#driverFirstName").val();
+    const LastName = $("#driverLastName").val();
+    const Email = $("#driverEmail").val();
+    // const  = $("#driverUid").val();
+    const Phone = $("#driverPhone").val();
+    const Age = $("#driverAge").val();
+    const profilePublicUrl = $("#driverProfilePhoto").prop("files");
+    const addressProofPublicUrl = $("#driverAddressProof").prop("files");
+    const identityProofPublicUrl = $("#driverIdentityProof").prop("files");
+    const vehicleTypeName = $("#vehicleType").val();
+    const VehicleNumber = $("#vehicleNumber").val();
+    const ChassisNumber = $("#vehicleChassisNumber").val();
+    const Comments = $("#vehicleComments").val();
+    const icons = $("#vehicleIcons").prop("files");
+    // console.log(profilePublicUrl[0])
+    const data = new FormData()
+    data.append("firstname", firstname)
+    data.append("lastname", lastname)
+    data.append("email",email)
+    data.append("phone",phone)
+    data.append("address",address)
+    data.append("area",area)
+    data.append("city",city)
+    data.append("pincode",pincode)
+    data.append("state",state)
+    data.append("country",country)
+    data.append("status",status)
+    data.append("registerNo",registerNo)
+    data.append("gstNo",gstNo)
+    data.append("FirstName",FirstName)
+    data.append("LastName",LastName)
+    data.append("Email",Email)
+    data.append("Phone",Phone)
+    data.append("Age",Age)
+    data.append("profile",profilePublicUrl[0])
+    data.append("AddressProof",addressProofPublicUrl[0])
+    data.append("IdentityProof",identityProofPublicUrl[0])
+    data.append("vehicleTypeName",vehicleTypeName)
+    data.append("VehicleNumber",VehicleNumber)
+    data.append("ChassisNumber",ChassisNumber)
+    data.append("Comments",Comments)
+    data.append("icons",icons[0])
+    
+    $("#vehicleNumber").change(function(){
+      $("#numbercss").css("margin-bottom", "16px");
+       $("#vehicalerrormessage").hide();
+       $("#vehicalerror").empty();   
+      // $("#vehicalerror").hide();
+    });
+    $("#vehicleChassisNumber").change(function(){
+      $("#chessiscss").css("margin-bottom","16px");
+       $("#vehicalerrormessage").hide();
+       $("#vehicalchessiserror").empty();   
+      // $("#vehicalerror").hide();
+    });
   
-//   $.ajax({
-//         url:`/transporter/createTransporter`,
-//         type:"POST",
-//         dataType: "json",
-//         data:{
-//                firstname : firstname ,
-//                lastname : lastname ,
-//                phone : phone ,
-//                email : email ,
-//                address : address ,
-//                area : area ,
-//                city : city ,
-//                pincode : pincode ,
-//                state : state ,
-//                country : country ,
-//                status : status ,
-//                registerNo : registerNo ,
-//                gstNo : gstNo ,
-//                FirstName :   FirstName ,
-//                LastName : LastName ,
-//                Email : Email ,
-//                Phone : Phone ,
-//                Age : Age ,
-//                profilePublicUrl : profilePublicUrl ,
-//                addressProofPublicUrl : addressProofPublicUrl ,
-//                identityProofPublicUrl : identityProofPublicUrl ,
-//                vehicleTypeName : vehicleTypeName ,
-//                VehicleNumber : VehicleNumber ,
-//                ChassisNumber : ChassisNumber ,
-//                Comments : Comments ,
-//                icons : icons ,
-//              },
-//         success:function(data,status,xhr){
-//           // console.log(data,status,xhr,"res")
-//           // alert(`There is some issue to this`);
-//           // location.reload();
-//           console.log("complete created")
+  $.ajax({
+        url:`/transporter/createTransporter`,
+        type:"POST",
+        // dataType: "json",
+        data:data,
+        processData: false,
+        contentType: false,
+        success:function(data,status,xhr){
+          // console.log(data,status,xhr,"res")
+          // alert(`There is some issue to this`);
+          // location.reload();
+          console.log("complete created")
+          var html = `<div class="alert alert-success" role="alert">
+                        Transporter Created.
+                      </div>`;   
+          $("#vehicle").append(html);  
+          $("#vehicalerrormessage").hide();
+        },
+        error:function(data,status,xhr){
+          // console.log("Hello I am error")
+          if(data.responseJSON.message == "Vehical already exists!"){
+            $("#numbercss").css("margin-bottom", "0px");
+            $("#vehicalerror").add().append(`<div id="vehicalerrormessage">${data.responseJSON.message}</div>`);
+          }else{
+            $("#chessiscss").css("margin-bottom","0px")
+            $("#vehicalchessiserror").add().append(`<div id="vehicalerrormessage">${data.responseJSON.message}</div>`);
+          }
+          // $("#vehicalerror").remove();
           
-//         },
-//         error:function(data,status,xhr){
-//           // console.log(data,status,xhr,"error get")
-//           var html = `<div>Vehicle Number Already Exsits!</div>`
-//           $("#AA").append(html);
-//           // alert(`There is some issue to this`);
-//         }
-//       });
-//     })
-// })
+          // $("#vehicalerrormessage").append(html);
+          // $("#vehicalerrormessage").show();
+          // alert(`There is some issue to this`);
+        }
+      });
+    })
+})
 $(document).ready(function() {
    /* verification for phone number */ 
    $("#transporterPhoneNumber").on("input", function() {
