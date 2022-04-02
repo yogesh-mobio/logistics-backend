@@ -6,6 +6,7 @@ const app = express()
 var path = require('path');
 var mime = require('mime');
 const fs = require('fs');
+const ExcelJS = require('exceljs');
 var bodyParser = require('body-parser')
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended:false}))
@@ -84,6 +85,8 @@ exports.listOrders = async (req, res) => {
 exports.filterOrder = async (req, res) => {
   const date = req.body;
     console.log(date,"date backend")
+    const startDate = moment(date.start, "YYYY-MM-DD").format("DD-MM-YYYY");
+    const endDate = moment(date.end, "YYYY-MM-DD").format("DD-MM-YYYY");
     // if(date.start == "" || date.end == "" || (date.start > date.end)){
       if(date.start == "" || date.end == ""){
       // req.flash("error_msg", "Please Check date!");
@@ -158,97 +161,37 @@ exports.filterOrder = async (req, res) => {
         STATUS.push(status);
         TDATA.push(tData);
         PDATA.push(pData);
+        
         DDATA.push({
           "Id": dData.id,
           // "Last Name": dData.dropLocationData.last_name,
           "Status":status.status,
           // "Transporter Uid":tData.transporter_uid,
-          "Transporter Phone Number":tData.transporterData.phone_number,
-          "GST Number":tData.transporterData.gst_number,
-          "Transporter Name":tData.transporterData.first_name + " " + tData.transporterData.last_name,
+          "Transporter_Phone_Number":tData.transporterData.phone_number,
+          "GST_Number":tData.transporterData.gst_number,
+          "Transporter_Name":tData.transporterData.first_name + " " + tData.transporterData.last_name,
           "DeliveredBy":dData.dropLocationData.first_name + " " +dData.dropLocationData.last_name,
-          "Delivered Phone Number":dData.dropLocationData.phone_number,
+          "Delivered_Phone_Number":dData.dropLocationData.phone_number,
           "Email":dData.dropLocationData.email,
-          "Pin Code":dData.dropLocationData.pincode,
+          "Pin_Code":dData.dropLocationData.pincode,
           "Area":dData.dropLocationData.area,
           "City":dData.dropLocationData.city,
           "State":dData.dropLocationData.state,
           "Country":dData.dropLocationData.country,
           "PickupBy":pData.pickupLocationData.first_name + " " + pData.pickupLocationData.last_name,
-          "Pickup Phone Number":pData.pickupLocationData.phone_number,
-          "Pickup Pin Code":pData.pickupLocationData.pincode,
-          "Pickup Flat Name":pData.pickupLocationData.flat_name,
-          "Pickup Area":pData.pickupLocationData.area,
-          "Pickup City":pData.pickupLocationData.city,
-          "Pickup Country":pData.pickupLocationData.country,
+          "Pickup_Phone_Number":pData.pickupLocationData.phone_number,
+          "Pickup_Pin_Code":pData.pickupLocationData.pincode,
+          "Pickup_Flat_Name":pData.pickupLocationData.flat_name,
+          "Pickup_Area":pData.pickupLocationData.area,
+          "Pickup_City":pData.pickupLocationData.city,
+          "Pickup_Country":pData.pickupLocationData.country,
           "Dimensions":pData.pickupLocationData.dimensions,
-          "Parcel Value":pData.pickupLocationData.parcel_value,
-          "Pickup Time":pData.pickupLocationData.pickup_date_time
+          "Parcel_Value":pData.pickupLocationData.parcel_value,
+          "Pickup_Time":pData.pickupLocationData.pickup_date_time
         });
 
       });
      
-      
-      // const workbook = new excelJS.Workbook();
-      // const workSheet = workbook.addWorksheet("Order Details");
-      // const workSheetpicklocation = workbook.addWorksheet("Pickup Location Details");
-      // const workSheetofdroplocation = workbook.addWorksheet("Drop Location Details");
-      // const workSheetoftransporterdetails = workbook.addWorksheet("Transporter Details");
-      
-      // workSheet.columns = [
-      //   { header:'S.no',key:'s_no',width:5 },
-      //   { header:'ID',key:'id',width:30 },
-      //   { header:'Order Id',key:'order_id',width:20 },
-      //   { header:'Payment Mod',key:'payment_mode',width:20 },
-      //   { header:'Price',key:'price',width:20 },
-      //   { header:'Status',key:'status',width:20 },
-      //   { header:'Vehicle',key:'vehicle_type',width:20 },
-      //   // { header:'First Name',key:'first_name',width:20 },
-      //   // { header:'phone Number',key:'phone_number',width:20},
-      //   // { header:'Width',key:'width',width:20 },
-        
-      // ];
-      // workSheetofdroplocation.columns = [
-      //   { header:'S.no',key:'s_no',width:5 },
-      //   { header:'First Name',key:'first_name',width:15 },
-      //   { header:'Last Name',key:'last_name',width:15 },
-      //   { header:'Phone Number',key:'phone_number',width:15 },
-      //   { header:'Email',key:'email',width:25 },
-      //   { header:'Flat Name',key:'flat_name',width:20 },
-      //   { header:'Area',key:'area',width:20 },
-      //   { header:'City',key:'city',width:20 },
-      //   { header:'State',key:'state',width:10 },
-      //   { header:'Country',key:'country',width:10 },
-      //   { header:'PinCode',key:'pincode',width:10 },
-      // ];
-      // workSheetpicklocation.columns=[
-      //   { header:'S.no',key:'s_no',width:5 },
-      //   { header:'First Name',key:'first_name',width:15 },
-      //   { header:'Last Name',key:'last_name',width:15 },
-      //   { header:'Phone Number',key:'phone_number',width:15 },
-      //   { header:'Email',key:'email',width:25 },
-      //   { header:'Flat Name',key:'flat_name',width:20 },
-      //   { header:'Area',key:'area',width:20 },
-      //   { header:'City',key:'city',width:20 },
-      //   { header:'State',key:'state',width:10 },
-      //   { header:'Country',key:'country',width:10 },
-      //   { header:'PinCode',key:'pincode',width:10 },
-      //   { header:'Parcel Value',key:'parcel_value',width:15 },
-      //   { header:'Weight',key:'weight',width:10 },
-      //   { header:'Dimensions',key:'dimensions',width:15 },
-      //   { header:'Comment',key:'comment',width:25 },
-      //   { header:'Pickup Time',key:'pickup_date_time',width:25 },
-
-      // ];
-      // workSheetoftransporterdetails.columns = [
-      //   { header:'S.no',key:'s_no',width:5 },
-      //   { header:'First Name',key:'first_name',width:15 },
-      //   { header:'Last Name',key:'last_name',width:15 },
-      //   { header:'Phone Number',key:'phone_number',width:15 },
-      //   { header:'Email',key:'email',width:25 },
-      //   { header:'GST Number',key:'gst_number',width:20 },
-      //   { header:'Register Number',key:'register_number',width:20 },
-      // ]
 
       let count = 1;
       // console.log(flatten(DD))  
@@ -257,19 +200,104 @@ exports.filterOrder = async (req, res) => {
         req.flash("error_msg", "There is no order found");
         return res.redirect("/order/list");     
       }else{
-        // console.log("else")
-        // return res.send(DDATA)
-        // console.log(DDATA);
-        let exceloutput = Date.now() + "output.xlsx"        
-        let xls = json2xls(DDATA);
-// console.log(xls,"bfahdbahsdbash")
-        fs.writeFileSync(exceloutput, xls, 'binary');
+        console.log("else")
+//         // return res.send(DDATA)
+//         // console.log(DDATA);
+//         let exceloutput = Date.now() + "output.xlsx"        
+//         let xls = json2xls(DDATA);
+// // console.log(xls,"bfahdbahsdbash")
+//         fs.writeFileSync(exceloutput, xls, 'binary');
+//         var filename = path.basename(exceloutput);
+//         var mimetype = mime.lookup(exceloutput);
+//         console.log(mimetype)
+//         res.setHeader('Content-disposition', 'attachment; filename=' + filename);
+//         res.setHeader('Content-type', mimetype);
+//         // console.log(filename)
+
+        const workbook = new ExcelJS.Workbook();
+        const worksheet = workbook.addWorksheet('Order Details');
+        
+         
+        worksheet.columns = [
+        
+        { header:'ID',key:'id',width:30 },        
+        { header:'Status',key:'status',width:20 },
+
+        // transporter Details
+        { header:'Transporter Name',key:'tr_name',width:20 },
+        { header:'Phone Number',key:'tphone_number',width:15 },
+        { header:'GST Number',key:'gst_number',width:20 },
+        
+        //droplocation
+        { header:'Delivered By',key:'delivered_by',width:15 },
+        { header:'Phone Number',key:'dphone_number',width:15 },
+        { header:'Email',key:'demail',width:25 },
+        { header:'Area',key:'darea',width:20 },
+        { header:'City',key:'dcity',width:20 },
+        { header:'State',key:'dstate',width:10 },
+        { header:'Country',key:'dcountry',width:10 },
+
+        //pickup location
+        { header:'Pickup By',key:'pickup_by',width:15 },
+        { header:'Pickup Phone Number',key:'pphone_number',width:20 },
+        { header:'Flat Name',key:'pflat_name',width:20 },
+        { header:'Area',key:'parea',width:20 },
+        { header:'City',key:'pcity',width:20 },
+        { header:'Country',key:'pcountry',width:10 },
+        { header:'PinCode',key:'ppincode',width:10 },
+        { header:'Parcel Value',key:'parcel_value',width:15 },
+        { header:'Dimensions',key:'dimensions',width:15 },
+        { header:'Pickup Time',key:'pickup_date_time',width:25 },
+        ]
+        
+        
+        worksheet.mergeCells('A1', 'V2');
+        worksheet.getCell('A1').value = `Order Details Start Date:${startDate}`+` To `+ ` End Date:${endDate}`
+        worksheet.getRow(4).values = ['ID', 'Status', 'Transporter Name', 'Phone Number','GST Number','Delivered By','Phone Number','Email','Area','City','State','Country','Pickup By','Pickup Phone Number','Flat Name','Area','City','Country','PinCode','Parcel Value','Dimensions','Pickup Time'];
+        worksheet.getRow(4).eachCell((cell)=>{
+                cell.font = {bold:true}
+              });
+        DDATA.map((A)=>{
+          console.log(A,"stAAAAA")
+          worksheet.addRow({
+            id:A.Id,
+            status:A.Status,
+            tr_name:A.Transporter_Name,
+            tphone_number:A.Transporter_Phone_Number,
+            gst_number:A.GST_Number,
+            delivered_by:A.DeliveredBy,
+            dphone_number:A.Delivered_Phone_Number,
+            demail:A.Email,
+            darea:A.Area,
+            dcity:A.City,
+            dstate:A.State,
+            dcountry:A.Country,
+            pickup_by:A.PickupBy,
+            pphone_number:A.Pickup_Phone_Number,
+            pflat_name:A.Pickup_Flat_Name,
+            parea:A.Pickup_Area,
+            pcity:A.Pickup_City,
+            // pstate:A.,
+            pcountry:A.Pickup_Country,
+            ppincode:A.Pickup_Pin_Code,
+            parcel_value:A.Parcel_Value,
+            dimensions:A.Dimensions,
+            pickup_date_time:A.Pickup_Time,
+          })
+        })
+        
+        // worksheet.addRow(DDATA);
+        
+        let exceloutput = `Order Details`+`From${startDate}`+`TO${endDate}.xlsx`
+
         var filename = path.basename(exceloutput);
         var mimetype = mime.lookup(exceloutput);
-        console.log(mimetype)
+
         res.setHeader('Content-disposition', 'attachment; filename=' + filename);
         res.setHeader('Content-type', mimetype);
-        // console.log(filename)
+        await workbook.xlsx.writeFile(exceloutput);
+        console.log("done")
+        
         return res.download(filename, (err) => {
           if (err) {
             fs.unlinkSync(exceloutput)

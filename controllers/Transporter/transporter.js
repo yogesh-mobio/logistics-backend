@@ -702,10 +702,11 @@ exports.newTransporter = async (req, res) => {
         }
       });
 
-      return res.render("Users/Transporter/addTransporter", {
-        message: "Transporter is created...!!",
-        vehicleTypes: vehicleTypes,
-      });
+      // return res.render("Users/Transporter/addTransporter", {
+      //   message: "Transporter is created...!!",
+      //   vehicleTypes: vehicleTypes,
+      // });
+      // return res.redirect("/transporter/list");
 
       // const address = {
       //   flatNumber: data.address,
@@ -732,7 +733,7 @@ exports.newTransporter = async (req, res) => {
       //   .collection("address")
       //   .add(address);
     }
-    // return res.redirect("/transporter/createTransporter");
+    return res.redirect("/transporter/list");
   } catch (error) {
     const errors = [];
     if (error.code == "auth/email-already-in-use") {

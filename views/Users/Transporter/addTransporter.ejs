@@ -993,7 +993,7 @@ $(document).ready(function(){
     });
   
   $.ajax({
-        url:`/transporter/createTransporter`,
+        url:`/transporter/create`,
         type:"POST",
         // dataType: "json",
         data:data,
@@ -1004,11 +1004,13 @@ $(document).ready(function(){
           // alert(`There is some issue to this`);
           // location.reload();
           console.log("complete created")
-          var html = `<div class="alert alert-success" role="alert">
-                        Transporter Created.
-                      </div>`;   
-          $("#vehicle").append(html);  
+          // var html = `<div class="alert alert-success" role="alert">
+          //               Transporter Created.
+          //             </div>`;   
+          // $("#vehicle").append(html);  
           $("#vehicalerrormessage").hide();
+          window.location.href = '/transporter/list';
+          
         },
         error:function(data,status,xhr){
           // console.log("Hello I am error")

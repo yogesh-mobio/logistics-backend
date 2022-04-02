@@ -35,12 +35,12 @@ var upload = multer({
 });
 
 // Routes for Vehicle-Type
-vehicleTypeRouter.get("/createVehicleType", (req, res) => {
+vehicleTypeRouter.get("/create", (req, res) => {
   res.render("VehicleType/addVehicleType");
 });
 
 vehicleTypeRouter.post(
-  "/createVehicleType",
+  "/create",
   upload.array("icons", 5),
   // upload.single("icons"),
   newVehicleType

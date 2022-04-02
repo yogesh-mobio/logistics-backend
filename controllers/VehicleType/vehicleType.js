@@ -113,6 +113,19 @@ exports.newVehicleType = async (req, res) => {
       icons.push(icon);
     }
 
+    let start = [] ;
+    let end = [];
+    for (var i=0; i<= data.kmFrom.length; i++){
+      
+      start.push(data.kmFrom[i])
+    }
+    for (var i=0; i<= data.kmTo.length; i++){
+      
+      end.push(data.kmTo[i])
+    }
+    // console.log(start)
+    // console.log(end.length)
+
     const vehicleData = {
       vehicle_type: data.name,
       vahicle_capacity: data.capacity,
@@ -299,14 +312,20 @@ exports.updatedVehicleType = async (req, res) => {
       
       end.push(data.kmTo[i])
     }
+    // console.log(end[end.length - 2],".....././..././././././")
     for(var i=0; i<=start.length-2; i++){
-      if(Number(start[i]) > Number(end[i])){
-        const error = "Please Check kilo meter"
-        req.flash("error_msg", error);
-          return res.redirect(`/vehicle-type/editVehicleType/${id}`);
+      if( end[end.length - 2] == -1 ){
+        console.log("........")
       }else{
-        console.log("1")
+        if(Number(start[i]) > Number(end[i])){
+          const error = "Please Check kilo meter"
+          req.flash("error_msg", error);
+            return res.redirect(`/vehicle-type/editVehicleType/${id}`);
+        }else{
+          console.log("wwwwwwww")
+        }
       }
+      
     }
 // console.log(start,"start")
 // console.log(end,"end")
