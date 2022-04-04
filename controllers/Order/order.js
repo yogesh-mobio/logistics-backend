@@ -7,9 +7,9 @@ var path = require('path');
 var mime = require('mime');
 const fs = require('fs');
 const ExcelJS = require('exceljs');
-var bodyParser = require('body-parser')
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({extended:false}))
+// var bodyParser = require('body-parser')
+// app.use(bodyParser.json())
+// app.use(bodyParser.urlencoded({extended:false}))
 
 // Get all orders controller
 exports.listOrders = async (req, res) => {
