@@ -6,7 +6,7 @@
     </button>
   </li>
   <li class="hide-phone list-inline-item app-search">
-    <h3 class="page-title">Add Vehicle-Type</h3>
+    <h3 class="page-title">Add Vehicle Type</h3>
   </li>
 </ul>
 
@@ -151,7 +151,9 @@
                   Add Rates
                 </button>
               </div>
-
+              <div id="error" style="color: red; margin-left: 160px;">
+                <div id="errormessage"></div>
+              </div>
               <div
                 style="display: none"
                 class="form-group row"
@@ -202,7 +204,8 @@
                       &nbsp;
                     </div>
                     <br />
-                    <div>
+                    <div id="checkk">
+                    <div id="checkdiv">
                       <label class="col-sm-0">Onwards</label>
                       <input
                         type="hidden"
@@ -217,6 +220,7 @@
                         class="chb_rate_default"
                       />
                     </div>
+                    </div>
                   </div>
                 </div>
 
@@ -230,7 +234,11 @@
               </div>
 
               <button
+                id="addvehicle"
                 type="submit"
+                 
+                title="Please Check Onwards Value"
+                value="hover me please"
                 class="btn btn-primary btn-group waves-effect"
               >
                 Add Vehicle
@@ -258,13 +266,35 @@
   $(function () {
     $("#btnRates").click(function () {
       $("#div_rate").toggle();
+      $("#addvehicle").attr("disabled",true);
+      $("#addvehicle").css({"background-color": "#cccccc", "color": "#666666","border":"1px solid #999999","cursor": "not-allowed"});
     });
 
     $(document).on("click", ".add_more_rate", function (e) {
       e.preventDefault();
+      i=0
       let cnt = $(".rates").length;
       let id = "newRate_" + cnt;
-
+      $("#checkk").hide();
+      $("#checkdiv").remove();
+      let startValue0 = $(".rates_input_div").find("#kmFrom_newRate_0").attr("name", "kmFrom").val();
+      let startValue1 = $(".rates_input_div").find("#kmFrom_newRate_1").attr("name", "kmFrom").val();
+      let startValue2 = $(".rates_input_div").find("#kmFrom_newRate_2").attr("name", "kmFrom").val();
+      let startValue3 = $(".rates_input_div").find("#kmFrom_newRate_3").attr("name", "kmFrom").val();
+      let startValue4 = $(".rates_input_div").find("#kmFrom_newRate_4").attr("name", "kmFrom").val();
+      let startValue5 = $(".rates_input_div").find("#kmFrom_newRate_5").attr("name", "kmFrom").val();
+      let startValue6 = $(".rates_input_div").find("#kmFrom_newRate_6").attr("name", "kmFrom").val();
+      let startValue7 = $(".rates_input_div").find("#kmFrom_newRate_7").attr("name", "kmFrom").val();
+      let startValue8 = $(".rates_input_div").find("#kmFrom_newRate_8").attr("name", "kmFrom").val();
+      let startValue9 = $(".rates_input_div").find("#kmFrom_newRate_9").attr("name", "kmFrom").val();
+      let startValue10 = $(".rates_input_div").find("#kmFrom_newRate_10").attr("name", "kmFrom").val();
+      let startValue11 = $(".rates_input_div").find("#kmFrom_newRate_11").attr("name", "kmFrom").val();
+      let startValue12 = $(".rates_input_div").find("#kmFrom_newRate_12").attr("name", "kmFrom").val();
+      let startValue13 = $(".rates_input_div").find("#kmFrom_newRate_13").attr("name", "kmFrom").val();
+      let startValue14 = $(".rates_input_div").find("#kmFrom_newRate_14").attr("name", "kmFrom").val();
+      let startValue15 = $(".rates_input_div").find("#kmFrom_newRate_15").attr("name", "kmFrom").val();
+      let startValue16 = $(".rates_input_div").find("#kmFrom_newRate_16").attr("name", "kmFrom").val();
+      
       let endValue = $(".rates_input_div")
         .find(".km-to:last")
         .attr("name", "kmTo")
@@ -272,11 +302,16 @@
       let convertEndValue = parseInt(endValue, 10);
       let newValue = convertEndValue + 1;
 
+      $(".rates_input_div").find(".km-to:last").attr("name", "kmTo").change(function(){
+      // $("#numbercss").css("margin-bottom", "16px");
+       $("#errormessage").hide();   
+       $("#error").empty();
+      });
       var html =
         `<div class="rates" id=` +
         id +
         `>
-          <br />
+          
           <div
             class="input-group bootstrap-touchspin bootstrap-touchspin-injected"
           >
@@ -325,7 +360,7 @@
             &nbsp;
           </div>
           <br/>
-          <div>
+          <div id="checkdiv">
             <label class="col-sm-0">Onwards</label>
             <input type="hidden" id="chbPriceHidden_` +
         id +
@@ -346,19 +381,153 @@
           </div>
         </div>
       </div>`;
-      $(".rates_input_div").append(html);
+      if(Number(startValue0)>endValue){
+        var html = ` Please Check Date`;
+                      $("#error").add().append(`<div id="errormessage" style="margin-left: 40px;">Check kilometer</div>`);
+      }else if(Number(startValue1)>endValue){
+        var html = ` Please Check Date`;
+                      $("#error").add().append(`<div id="errormessage" style="margin-left: 40px;">Check kilometer</div>`); 
+      }else if(Number(startValue2)>endValue){
+        var html = ` Please Check Date`;
+                      $("#error").add().append(`<div id="errormessage" style="margin-left: 40px;">Check kilometer</div>`);
+      }else if(Number(startValue3)>endValue){
+        var html = ` Please Check Date`;
+                      $("#error").add().append(`<div id="errormessage" style="margin-left: 40px;">Check kilometer</div>`);
+      }else if(Number(startValue4)>endValue){
+        var html = ` Please Check Date`;
+                      $("#error").add().append(`<div id="errormessage" style="margin-left: 40px;">Check kilometer</div>`);
+      }else if(Number(startValue5)>endValue){
+        var html = ` Please Check Date`;
+                      $("#error").add().append(`<div id="errormessage" style="margin-left: 40px;">Check kilometer</div>`);
+      }else if(Number(startValue6)>endValue){
+        var html = ` Please Check Date`;
+                      $("#error").add().append(`<div id="errormessage" style="margin-left: 40px;">Check kilometer</div>`);
+      }else if(Number(startValue7)>endValue){
+        var html = ` Please Check Date`;
+                      $("#error").add().append(`<div id="errormessage" style="margin-left: 40px;">Check kilometer</div>`);
+      }else if(Number(startValue8)>endValue){
+        var html = ` Please Check Date`;
+                      $("#error").add().append(`<div id="errormessage" style="margin-left: 40px;">Check kilometer</div>`);
+      }else if(Number(startValue9)>endValue){
+        var html = ` Please Check Date`;
+                      $("#error").add().append(`<div id="errormessage" style="margin-left: 40px;">Check kilometer</div>`);
+      }else if(Number(startValue10)>endValue){
+        var html = ` Please Check Date`;
+                      $("#error").add().append(`<div id="errormessage" style="margin-left: 40px;">Check kilometer</div>`);
+      }else if(Number(startValue11)>endValue){
+        var html = ` Please Check Date`;
+                      $("#error").add().append(`<div id="errormessage" style="margin-left: 40px;">Check kilometer</div>`);
+      }else if(Number(startValue12)>endValue){
+        var html = ` Please Check Date`;
+                      $("#error").add().append(`<div id="errormessage" style="margin-left: 40px;">Check kilometer</div>`);
+      }else if(Number(startValue13)>endValue){
+        var html = ` Please Check Date`;
+                      $("#error").add().append(`<div id="errormessage" style="margin-left: 40px;">Check kilometer</div>`);
+      }else if(Number(startValue14)>endValue){
+        var html = ` Please Check Date`;
+                      $("#error").add().append(`<div id="errormessage" style="margin-left: 40px;">Check kilometer</div>`);
+      }else if(Number(startValue15)>endValue){
+        var html = ` Please Check Date`;
+                      $("#error").add().append(`<div id="errormessage" style="margin-left: 40px;">Check kilometer</div>`);
+      }else if(Number(startValue16)>endValue){
+        var html = ` Please Check Date`;
+                      $("#error").add().append(`<div id="errormessage" style="margin-left: 40px;">Check kilometer</div>`);
+      }
+      else{
+        $(".rates_input_div").append(html);
+      }
 
       $(".rates").find(".km-from").attr("readonly", true);
       $(".rates")
         .find("#kmFrom_" + id)
         .val(newValue);
     });
+    $('div').each(function() {
+     var $p = $(this);
+     if($.trim($p.html())==='') {
+        $p.remove();
+     }
+    });
+    let i = 0
+    let j = 1;
 
     $(document).on("click", ".remove_rate", function () {
-      let id = $(this).attr("id");
-      let split_id = id.split("_");
-      let removeId = "#newRate_" + split_id[2];
-      $(removeId).remove();
+      $("#errormessage").hide();   
+       $("#error").empty();
+       if(i == 0){
+        let cnt = $(".rates").length - i;
+        let idd = "newRate_" + String(Number(cnt)-1);
+        var tick =
+        `<div class="rates" id=` +
+        idd +
+        `>
+          
+          <div id="checkdiv">
+            <label class="col-sm-0">Onwards</label>
+            <input type="hidden" id="chbPriceHidden_` +
+        idd +
+        `" value="unchecked" class="chb_rate" />
+            <input type="checkbox" id="chbPrice_` +
+        idd +
+        `" value="checked" class="chb_rate" />
+            &nbsp;
+            &nbsp;
+            &nbsp;
+            &nbsp;
+            &nbsp;
+            <button id="btnRemoveRate_` +
+        idd +
+        `" type="button" class="btn btn-danger btn-sm waves-effect remove_rate">
+              Remove
+            </button>
+          </div>
+        </div>
+      </div>`;
+
+      $("#"+`${idd}`).remove();
+      $(".rates_input_div").append(tick)
+      i += 1;
+       }else{
+        let cnt = $(".rates").length - 1;
+        let idd = "newRate_" + String(Number(cnt)-1);
+        console.log("cnt else",cnt);
+        console.log("else idd",idd)
+
+        var tick =
+        `<div class="rates" id=` +
+        idd +
+        `>
+                  
+          <div id="checkdiv">
+            <label class="col-sm-0">Onwards</label>
+            <input type="hidden" id="chbPriceHidden_` +
+        idd +
+        `" value="unchecked" class="chb_rate" />
+            <input type="checkbox" id="chbPrice_` +
+        idd +
+        `" value="checked" class="chb_rate" />
+            &nbsp;
+            &nbsp;
+            &nbsp;
+            &nbsp;
+            &nbsp;
+            <button id="btnRemoveRate_` +
+        idd +
+        `" type="button" class="btn btn-danger btn-sm waves-effect remove_rate">
+              Remove
+            </button>
+          </div>
+        </div>
+      </div>`;
+
+      $("#"+`${idd}`).remove();
+      // $(".rates_input_div").append(tick)
+       }
+       i += 1;
+      // let id = $(this).attr("id");
+      // let split_id = id.split("_");
+      // let removeId = "#newRate_" + split_id[2];
+      // $(removeId).remove();
     });
 
     $(document).on("click", ".chb_rate_default", function () {
@@ -366,10 +535,14 @@
         $("#kmTo").val("-1");
         $("#btnAddRate").attr("disabled", true);
         $("#kmTo").attr("readonly", true);
+        $("#addvehicle").attr("disabled",false);
+        $("#addvehicle").css({"background-color": "#67a8e4","color":"white", "border": "1px solid #67a8e4", "cursor": "pointer"});
       } else {
         $("#kmTo").val("");
         $("#btnAddRate").attr("disabled", false);
         $("#kmTo").attr("readonly", false);
+        $("#addvehicle").attr("disabled",true);
+        $("#addvehicle").css({"background-color": "#cccccc", "color": "#666666","border":"1px solid #999999","cursor": "not-allowed"});
       }
     });
 
@@ -382,11 +555,15 @@
         $("#btnAddRate").attr("disabled", true);
         $("#btnRemoveRate_" + slice_id).attr("disabled", true);
         $("#kmTo_" + slice_id).attr("readonly", true);
+        $("#addvehicle").attr("disabled",false);
+        $("#addvehicle").css({"background-color": "#67a8e4","color":"white", "border": "1px solid #67a8e4", "cursor": "pointer"});
       } else {
         $("#kmTo_" + slice_id).val("");
         $("#btnAddRate").attr("disabled", false);
         $("#btnRemoveRate_" + slice_id).attr("disabled", false);
         $("#kmTo_" + slice_id).attr("readonly", false);
+        $("#addvehicle").attr("disabled",true);
+        $("#addvehicle").css({"background-color": "#cccccc", "color": "#666666","border":"1px solid #999999","cursor": "not-allowed"});
       }
     });
   });

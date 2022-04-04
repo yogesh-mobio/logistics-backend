@@ -42,10 +42,10 @@ const {
 const { isAuthenticated } = require("../middleware/authGaurd");
 
 // Routes for Transporters
-transporterRouter.get("/createTransporter", getNewTransporter);
+transporterRouter.get("/create", getNewTransporter);
 
 transporterRouter.post(
-  "/createTransporter",
+  "/create",
   upload.fields([
     { name: "profile" },
     { name: "AddressProof" },

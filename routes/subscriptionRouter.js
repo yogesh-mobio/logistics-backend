@@ -13,9 +13,9 @@ const {
 const { isAuthenticated } = require("../middleware/authGaurd");
 
 // Routes for Subscription
-subscriptionRouter.get("/createSubscription", addSubscription);
+subscriptionRouter.get("/create", addSubscription);
 
-subscriptionRouter.post("/createSubscription", addedSubscription);
+subscriptionRouter.post("/create", addedSubscription);
 
 subscriptionRouter.get("/list", listSubscriptions);
 

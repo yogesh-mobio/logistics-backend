@@ -63,7 +63,7 @@ exports.listDrivers = async (req, res) => {
       }
 
     });
-    console.log(drivers,"driverlist")
+    // console.log(drivers,"driverlist")
     return res.render("Users/Driver/displayDrivers", {
       drivers: drivers,
     });
@@ -598,10 +598,10 @@ exports.removeDriver = async (req, res) => {
   try {
     // const transporter_id = req.params.transporter_id;
     // const driver_id = req.params.driver_id;
-    // console.log("HELLO YOU ARE IN DELETE API OF TRANSPORTER");
-    // console.log("DATA", req.body);
-    // console.log("ID", driver_id);
-    // console.log("ID", transporter_id);
+    console.log("HELLO YOU ARE IN DELETE API OF TRANSPORTER");
+    console.log("DATA", req.body);
+    console.log("ID", driver_id);
+    console.log("ID", transporter_id);
 
     const user = await db.collection("users").doc(driver_id);
     const data = await user.get();
