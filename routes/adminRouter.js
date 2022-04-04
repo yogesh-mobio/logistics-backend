@@ -25,7 +25,7 @@ adminRouter.get("/list", listAdmins);
 
 adminRouter.post("/removeAdmin/:admin_id", removeAdmin);
 
-adminRouter.get("/adminDetails/:admin_id", adminDetails);
+adminRouter.get("/:admin_id/details", adminDetails);
 
 adminRouter.post("/status/:admin_id", changeAdminStatus);
 

@@ -119,7 +119,7 @@ exports.updatedVehicle = async (req, res) => {
       .collection("vehicle_details")
       .doc(vehicle_id);
     await getVehicle.update(vehicleData);
-    return res.redirect(`/transporter/transporterDetails/${transporter_id}`);
+    return res.redirect(`/transporter/${transporter_id}/details`);
   } catch (error) {
     const errors = [];
     errors.push({ msg: error.code });

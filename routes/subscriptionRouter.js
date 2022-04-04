@@ -25,17 +25,17 @@ subscriptionRouter.get(
 );
 
 subscriptionRouter.get(
-  "/subscriptionDetails/:subscription_id",
+  "/:subscription_id/details",
   subscriptionDetails
 );
 
 subscriptionRouter.get(
-  "/editSubscription/:subscription_id",
+  "/:subscription_id/edit",
   updateSubscription
 );
 
 subscriptionRouter.post(
-  "/editSubscription/:subscription_id",
+  "/:subscription_id/edit",
   updatedSubscription
 );
 

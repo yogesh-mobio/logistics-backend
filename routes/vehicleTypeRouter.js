@@ -52,12 +52,12 @@ vehicleTypeRouter.get("/list", listVehicleTypes);
 vehicleTypeRouter.post("/removeVehicleType/:vehicleType_id", removeVehicleType);
 
 vehicleTypeRouter.get(
-  "/vehicleTypeDetails/:vehicleType_id",
+  "/:vehicleType_id/details",
   vehicleTypeDetails
 );
 
-vehicleTypeRouter.get("/editVehicleType/:vehicleType_id", updateVehicleType);
+vehicleTypeRouter.get("/:vehicleType_id/edit", updateVehicleType);
 
-vehicleTypeRouter.post("/editVehicleType/:vehicleType_id", updatedVehicleType);
+vehicleTypeRouter.post("/:vehicleType_id/edit", updatedVehicleType);
 
 module.exports = vehicleTypeRouter;

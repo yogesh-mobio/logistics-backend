@@ -298,7 +298,7 @@ exports.updatedVehicleType = async (req, res) => {
       if (errors.length > 0) {
         for (var i = 0; i <= errors.length; i++) {
           req.flash("error_msg", errors[i].msg);
-          return res.redirect(`/vehicle-type/editVehicleType/${id}`);
+          return res.redirect(`/vehicle-type/${id}/edit`);
         }
       }
     }
@@ -320,7 +320,7 @@ exports.updatedVehicleType = async (req, res) => {
         if(Number(start[i]) > Number(end[i])){
           const error = "Please Check kilo meter"
           req.flash("error_msg", error);
-            return res.redirect(`/vehicle-type/editVehicleType/${id}`);
+            return res.redirect(`/vehicle-type/${id}/edit`);
         }else{
           console.log("wwwwwwww")
         }

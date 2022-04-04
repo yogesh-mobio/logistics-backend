@@ -195,7 +195,7 @@ exports.updatedSubscription = async (req, res) => {
       if (errors.length > 0) {
         for (var i = 0; i <= errors.length; i++) {
           req.flash("error_msg", errors[i].msg);
-          return res.redirect(`/subscription/editSubscription/${id}`);
+          return res.redirect(`/subscription/${id}/edit`);
         }
       }
     }

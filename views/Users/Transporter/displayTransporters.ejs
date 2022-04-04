@@ -123,7 +123,7 @@
                   class="btn btn-warning waves-effect waves-light m-r-5"
                   data-toggle="tooltip"
                   data-original-title="Edit"
-                  onclick="location.href='/transporter/updateTransporter/<%= transporters[i].id %>'"
+                  onclick="location.href='/transporter/<%= transporters[i].id %>/edit'"
                 >
                   <i class="mdi mdi-grease-pencil"></i>
                   <!-- <span> Edit </span> -->
@@ -140,7 +140,7 @@
                     type="button" 
                     class="btn btn-info waves-effect waves-light m-r-5" 
                     data-toggle="tooltip" data-original-title="View"
-                    onclick="location.href='/transporter/transporterDetails/<%= transporters[i].id %>'"
+                    onclick="location.href='/transporter/<%= transporters[i].id %>/details'"
                     >
                     <i class="mdi mdi-file-document"></i>
                     <!-- <span> View </span> -->

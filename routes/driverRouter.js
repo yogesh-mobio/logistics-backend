@@ -25,14 +25,14 @@ driverRouter.get("/list",listDrivers);
 
 driverRouter.get("/:transporter_id/details/:id",dDetails);
 
-driverRouter.get("/:transporter_id/updateDriver/:driver_id",up);
-driverRouter.post("/:transporter_id/updateDriver/:driver_id",updDriver)
+driverRouter.get("/:transporter_id/update/:driver_id",up);
+driverRouter.post("/:transporter_id/update/:driver_id",updDriver)
 
 driverRouter.get("/:transporter_id/driverDetails/:driver_id", driverDetails);
 
-driverRouter.get("/:transporter_id/editDriver/:driver_id", updateDriver);
+driverRouter.get("/:transporter_id/edit/:driver_id", updateDriver);
 
-driverRouter.post("/:transporter_id/editDriver/:driver_id", updatedDriver);
+driverRouter.post("/:transporter_id/edit/:driver_id", updatedDriver);
 
 driverRouter.post("/:transporter_id/removeDriver/:driver_id", removeDriver);
 
