@@ -8,7 +8,7 @@ const { isAuthenticated } = require("../middleware/authGaurd");
 orderRouter.get("/list", listOrders);
 orderRouter.post("/list", filterOrder);
 
-orderRouter.get("/orderDetails/:order_id", orderDetails);
+orderRouter.get("/:order_id/details", orderDetails);
 
 // orderRouter.post("/neel",exportDetails)
 // orderRouter.get("/exportDetails/startDateDetails/endDateDetails",exportDetails)

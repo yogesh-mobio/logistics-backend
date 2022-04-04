@@ -10,6 +10,6 @@ const { isAuthenticated } = require("../middleware/authGaurd");
 // Routes for Orders
 contactRouter.get("/list", listContacts);
 
-contactRouter.get("/contactDetails/:contact_id", contactDetails);
+contactRouter.get("/:contact_id/details", contactDetails);
 
 module.exports = contactRouter;

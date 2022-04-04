@@ -60,13 +60,13 @@ transporterRouter.get("/list", listTransporters);
 transporterRouter.post("/removeTransporter/:transporter_id", removeTransporter);
 
 transporterRouter.get(
-  "/transporterDetails/:transporter_id",
+  "/:transporter_id/details",
   transporterDetails
 );
 
-transporterRouter.get("/updateTransporter/:transporter_id", updateTransporter);
+transporterRouter.get("/:transporter_id/edit", updateTransporter);
 
-transporterRouter.post("/updateTransporter/:transporter_id", updatedTransporter);
+transporterRouter.post("/:transporter_id/edit", updatedTransporter);
 
 transporterRouter.post("/status/:transporter_id", changeTransporterStatus);
 

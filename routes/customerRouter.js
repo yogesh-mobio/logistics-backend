@@ -15,7 +15,7 @@ customerRouter.get("/list", listCustomers);
 // customerRouter.delete("/removeCustomer/:customer_id", removeCustomer);
 customerRouter.post("/removeCustomer/:customer_id", removeCustomer);
 
-customerRouter.get("/customerDetails/:customer_id", customerDetails);
+customerRouter.get("/:customer_id/details", customerDetails);
 
 customerRouter.post("/status/:customer_id", changeCustomerStatus);
 

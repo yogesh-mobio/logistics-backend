@@ -269,7 +269,7 @@ console.log(transporter_id,driver_id,"...........id....")
     //   .doc(transporter_id)
       await transporter.update(updateData);
       // console.log( transporter,"................ get driver..............")
-    return res.redirect(`/driver/${transporter_id}/updateDriver/${driver_id}`);
+    return res.redirect(`/driver/${transporter_id}/update/${driver_id}`);
 
   } catch (error) {
     
@@ -356,7 +356,7 @@ exports.updatedDriver = async (req, res) => {
       .collection("driver_details")
       .doc(driver_id);
     await getDriver.update(driverData);
-    return res.redirect(`/transporter/transporterDetails/${transporter_id}`);
+    return res.redirect(`/transporter/${transporter_id}/details`);
   } catch (error) {
     const errors = [];
     errors.push({ msg: error.code });
@@ -717,7 +717,7 @@ exports.verifyDriver = async (req, res) => {
     await sendAdminNotification(transporter_id, driver_id, "verified");
 
     // return res.redirect("back");
-    return res.redirect(`/transporter/transporterDetails/${transporter_id}`);
+    return res.redirect(`/transporter/${transporter_id}/details`);
   } catch (error) {
     const errors = [];
     console.log(error);
@@ -781,7 +781,7 @@ exports.rejectDriver = async (req, res) => {
     await sendAdminNotification(transporter_id, driver_id, "rejected");
 
     // return res.redirect("back");
-    return res.redirect(`/transporter/transporterDetails/${transporter_id}`);
+    return res.redirect(`/transporter/${transporter_id}/details`);
   } catch (error) {
     const errors = [];
     console.log(error);
